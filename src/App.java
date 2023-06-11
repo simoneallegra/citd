@@ -93,6 +93,7 @@ public class App {
 				provaLabel.setBounds(10, 9, 65, 14);
 				userSetupPanel.add(provaLabel);
 				
+				//ciao
 				
 			}
 		});
