@@ -3,7 +3,10 @@ import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;
 
@@ -95,28 +98,38 @@ public class App {
 				frame.getContentPane().add(userSetupPanel, "userSetupPanel");
 				userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.X_AXIS));
 				
-				String data[][] ={{""}};
+		          
 				try {
 					
+					
 					BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
+					int lines = 0;
+					while (br.readLine() != null) lines++;
+										
+					String data[][] = new String[lines][2];
+					br.close();
+					
+					br = new BufferedReader(new FileReader("./database/db_users.txt"));
 					String s = "";
 					int i = 0;
-						while((s = br.readLine()) != null){
-							data[i] = s.split(",");
-							System.out.println(i);
-							i = i +1;
-						}
-						
+					while((s = br.readLine()) != null){
+						data[i] = s.split(",");
+						System.out.println(data[i][0]);
+						i++;
+					}
 					
-						br.close();
+					br.close();
+					
+					String column[]={"USERNAME"};
+					jt = new JTable(data,column); 
+					jt.setLayout(null);
+				    jt.setBounds(15,20,50,50);            
+				    userSetupPanel.add(new JScrollPane(jt));
+				    
 				}catch(Exception e) {
+					System.out.println(e);
 				}
 				
-				
-				String column[]={"USERNAME"};
-				jt = new JTable(data,column);    
-			    jt.setBounds(30,40,100,100);            
-			    userSetupPanel.add(new JScrollPane(jt));
 				
 			    userAddPanel = new JPanel();
 			    userAddPanel.setLayout(null);
