@@ -17,30 +17,16 @@ public class CITD {
 	private Impiegato impiegato;
 
 	private Utente[] listaUtenti;
+	
+	private Utils utility;
 
 	public CITD(){
+		utility = new Utils();
 	}
 	
 	public Utente Login(String matricola, String password) {
 		
-		String hashPassword = "";
 		
-		MessageDigest digest;
-		try {
-			digest = MessageDigest.getInstance("SHA-256");
-			byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-			BigInteger number = new BigInteger(1, hash);
-			StringBuilder hexString = new StringBuilder(number.toString(16));
-			while (hexString.length() < 64)
-	        {
-	            hexString.insert(0, '0');
-	        }
-			hashPassword = hexString.toString();
-			
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		try {
 			
@@ -53,7 +39,7 @@ public class CITD {
 					data = s.split(",");
 					
 					
-					if((data[0].equals(matricola)) && (data[1].equals(hashPassword))){
+					if((data[0].equals(matricola)) && (data[1].equals(utility.getEncryptPassword(password)))){
 						System.out.println("login done");
 						return new Utente(matricola);
 					}else {
