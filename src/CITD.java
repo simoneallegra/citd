@@ -1,16 +1,18 @@
 import java.io.*;
 import java.math.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
 
-public class CITD {
+public class CITD implements CITDamministratore{
 
 	private Prodotto[] prodotto;
 
-	private CITDamministratore cITDamministratore;
 
 	private Prodotto[] listaProdotto;
 
@@ -23,6 +25,7 @@ public class CITD {
 	public CITD(){
 		utility = new Utils();
 	}
+	
 	
 	public Utente Login(String matricola, String password) {
 		
@@ -53,6 +56,17 @@ public class CITD {
 		
 		return null;
 	}
+	
+	@Override
+	public void inserisciNuovoUtente (Utente utente, String password) {
+		System.out.println("provaprova");
+		try {
+			String newField = utente.matricola + "," + utility.getEncryptPassword(password);
+			Files.write(Paths.get("./database/db_users.txt"), newField.getBytes(), StandardOpenOption.APPEND);
+			
+		}catch(Exception e) {}
+		
+	}
 
 	public Prodotto visualizzaProdotto(char[] nome) {
 		return null;
@@ -68,6 +82,20 @@ public class CITD {
 
 	public void aggiungiProdotto(Prodotto prodotto) {
 
+	}
+
+
+	@Override
+	public void eliminaProdotto(int IAPprodotto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void eliminaUtente(Utente utente) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

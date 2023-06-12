@@ -6,7 +6,7 @@ public interface CITDamministratore {
 
 	public void eliminaProdotto(int IAPprodotto);
 
-	public void inserisciNuovoUtente(Utente utente);
+	public void inserisciNuovoUtente(Utente utente, String password);
 
 	public void eliminaUtente(Utente utente);
 
