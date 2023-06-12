@@ -95,40 +95,9 @@ public class App {
 				// da rivedere funzionamento apertura panel
 				
 				userSetupPanel = new JPanel();
+				userSetupPanel.setPreferredSize(new Dimension(200, 200));
 				frame.getContentPane().add(userSetupPanel, "userSetupPanel");
 				userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.X_AXIS));
-				
-		          
-				try {
-					
-					
-					BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
-					int lines = 0;
-					while (br.readLine() != null) lines++;
-										
-					String data[][] = new String[lines][2];
-					br.close();
-					
-					br = new BufferedReader(new FileReader("./database/db_users.txt"));
-					String s = "";
-					int i = 0;
-					while((s = br.readLine()) != null){
-						data[i] = s.split(",");
-						System.out.println(data[i][0]);
-						i++;
-					}
-					
-					br.close();
-					
-					String column[]={"USERNAME"};
-					jt = new JTable(data,column); 
-					jt.setLayout(null);
-				    jt.setBounds(15,20,50,50);            
-				    userSetupPanel.add(new JScrollPane(jt));
-				    
-				}catch(Exception e) {
-					System.out.println(e);
-				}
 				
 				
 			    userAddPanel = new JPanel();
@@ -165,10 +134,38 @@ public class App {
 					}
 				});
 				addBtn.setBounds(85, 66, 150, 20);
+				userAddPanel.setPreferredSize(new Dimension(300,300));
 				userAddPanel.add(addBtn);
 				
 				userSetupPanel.add(userAddPanel);
 				
+				try {
+					
+					
+					BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
+					int lines = 0;
+					while (br.readLine() != null) lines++;
+										
+					String data[][] = new String[lines][2];
+					br.close();
+					
+					br = new BufferedReader(new FileReader("./database/db_users.txt"));
+					String s = "";
+					int i = 0;
+					while((s = br.readLine()) != null){
+						data[i] = s.split(",");
+						i++;
+					}
+					
+					br.close();
+					
+					String column[]={"USERNAME"};
+					jt = new JTable(data,column); 
+				    userSetupPanel.add(new JScrollPane(jt));
+				    
+				}catch(Exception e) {
+					System.out.println(e);
+				}
 				
 			}
 		});

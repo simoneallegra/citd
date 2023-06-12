@@ -59,12 +59,15 @@ public class CITD implements CITDamministratore{
 	
 	@Override
 	public void inserisciNuovoUtente (Utente utente, String password) {
-		System.out.println("provaprova");
+		
 		try {
 			String newField = utente.matricola + "," + utility.getEncryptPassword(password);
+			System.out.println(newField);
 			Files.write(Paths.get("./database/db_users.txt"), newField.getBytes(), StandardOpenOption.APPEND);
 			
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			System.out.println(e);
+		}
 		
 	}
 
