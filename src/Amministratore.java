@@ -4,7 +4,6 @@ public class Amministratore {
 
 	private Utente utente;
 
-	private CITDamministratore cITDamministratore;
 
 
 }

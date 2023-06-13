@@ -26,17 +26,21 @@ public class App {
 	
 	public CITD citd;
 	
-	public CITDamministratore citdAmministratore;
+	public Utils utility;
 	
 	public App() {
-		//initialize();
-		home(new Utente("pippo"));
-	}
-	
-	private void initialize() {
+		
+		utility = new Utils();
+		
 		frame = new JFrame("CITD");
 		frame.setBounds(100, 100, 663, 420);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		initialize();	
+	}
+	
+	private void initialize() {
+		
+		
 		
 		loginPanel = new JPanel();
 		frame.getContentPane().add(loginPanel, "loginPanel");
@@ -67,6 +71,7 @@ public class App {
 				Utente userLogged = null;
 				citd = new CITD();
 				userLogged = citd.Login(matricolaField.getText(), passwordField.getText());
+				frame.getContentPane().remove(loginPanel);
 				home(userLogged);
 				
 			}
@@ -78,12 +83,6 @@ public class App {
 	
 	private void home(Utente utente){
 		
-		// DA RIMUOVERE
-		frame = new JFrame("CITD - " + utente.matricola);
-		frame.setBounds(100, 100, 663, 420);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		// -----------
-		
 		homeBar = new JMenuBar();
 		frame.setJMenuBar(homeBar);
 				
@@ -94,6 +93,7 @@ public class App {
 		itemUserSetup.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				// da rivedere funzionamento apertura panel
+				citd = new CITD();
 				
 				userSetupPanel = new JPanel();
 				userSetupPanel.setPreferredSize(new Dimension(200, 200));
@@ -127,9 +127,9 @@ public class App {
 					public void actionPerformed(ActionEvent arg0) {
 						//System.out.println(matricolaField.getText() +" "+ passwordField.getText());
 						
-						Utente newUser = new Utente(matricolaField.getText());
-						citd = new CITD();
-						citd.inserisciNuovoUtente(newUser, passwordField.getText());
+						Utente newUser = new Utente(matricolaField.getText(), utility.getEncryptPassword(passwordField.getText()));
+						
+						citd.inserisciNuovoUtente(newUser);
 						
 						
 					}
@@ -172,15 +172,44 @@ public class App {
 				                final int row = jTable.getSelectedRow();
 				                final int column = jTable.getSelectedColumn();
 				                valueInCell = (String)jTable.getValueAt(row, column);
-				                System.out.println(valueInCell);
+				                
 				            }
 				        }});
 				    
 				    editBtn = new JButton("Edit");
 				    editBtn.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							System.out.println(valueInCell);
-							
+							if(valueInCell != "") {
+								
+								
+								System.out.println(valueInCell);
+								frame.getContentPane().remove(userSetupPanel);
+	
+	
+								userSetupPanel = new JPanel();
+								userSetupPanel.setPreferredSize(new Dimension(200, 200));
+								frame.getContentPane().add(userSetupPanel, "userSetupPanel");
+								
+								addLabel = new JLabel("Matricola");
+								addLabel.setBounds(10, 9, 65, 14);
+								userSetupPanel.add(addLabel);
+								matricolaField = new JTextField();
+								matricolaField.setBounds(85, 6, 144, 20);
+								userSetupPanel.add(matricolaField);
+								matricolaField.setColumns(10);
+								matricolaField.setText(valueInCell);
+								
+								//da sostituire con l'utente ottenuto in fase di return details
+								final Utente editUtente = citd.getDetailsUtente(valueInCell);
+								
+								editBtn = new JButton("Edit");
+								 editBtn.addActionListener(new ActionListener() {
+										public void actionPerformed(ActionEvent arg0) {
+											citd.updateUtente(editUtente);
+										}});
+								editBtn.setBounds(85, 66, 72, 20);
+							    userSetupPanel.add(editBtn);
+							}
 						}
 					});
 				    editBtn.setBounds(85, 66, 72, 20);
