@@ -16,12 +16,13 @@ public class App {
 	private JPanel loginPanel, userSetupPanel, userAddPanel;
 	private JLabel matricolaLabel, passwordLabel, addLabel;
 	private JTextField matricolaField, passwordField;
-	private JButton loginBtn, addBtn;
+	private JButton loginBtn, addBtn, editBtn;
 	private JTable jt;
 	
 	private JMenuBar homeBar;
 	private JMenu setupMenu;
 	private JMenuItem itemUserSetup;
+	String valueInCell = "";
 	
 	public CITD citd;
 	
@@ -138,7 +139,7 @@ public class App {
 				userAddPanel.add(addBtn);
 				
 				userSetupPanel.add(userAddPanel);
-				
+				userSetupPanel.setVisible(true);
 				try {
 					
 					
@@ -162,6 +163,28 @@ public class App {
 					String column[]={"USERNAME"};
 					jt = new JTable(data,column); 
 				    userSetupPanel.add(new JScrollPane(jt));
+				    
+				    jt.addMouseListener(new MouseAdapter() {
+				        @Override
+				        public void mouseClicked(final MouseEvent e){
+				            if (e.getClickCount() == 1){
+				                final JTable jTable= (JTable)e.getSource();
+				                final int row = jTable.getSelectedRow();
+				                final int column = jTable.getSelectedColumn();
+				                valueInCell = (String)jTable.getValueAt(row, column);
+				                System.out.println(valueInCell);
+				            }
+				        }});
+				    
+				    editBtn = new JButton("Edit");
+				    editBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							System.out.println(valueInCell);
+							
+						}
+					});
+				    editBtn.setBounds(85, 66, 72, 20);
+				    userSetupPanel.add(editBtn);
 				    
 				}catch(Exception e) {
 					System.out.println(e);
