@@ -62,9 +62,8 @@ public class CITD{
 		try {
 			
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
-			
-			
 			String s = "";
+<<<<<<< Updated upstream
 				while((s = br.readLine()) != null){
 					String data[] = new String[2];
 					data = s.split(",");
@@ -77,13 +76,24 @@ public class CITD{
 						System.out.println("wrong credentials");
 					}
 					
+=======
+			while((s = br.readLine()) != null){
+				String data[] = new String[2];
+				data = s.split(",");
+				if((data[0].equals(matricola)) && (data[1].equals(hashPassword))){
+					System.out.println("login done");
+					return new Utente(matricola);
+				}else {
+					System.out.println("wrong credentials");
+>>>>>>> Stashed changes
 				}
-			
-				br.close();
+			}
+			br.close();
 		}catch(Exception e) {}
 		
 		return null;
 	}
+<<<<<<< Updated upstream
 	
 	public void inserisciNuovoUtente (Utente utente) {
 		
@@ -153,8 +163,8 @@ public class CITD{
 	
 	public Prodotto visualizzaProdotto(char[] nome) {
 		return null;
-	}
-	
+=======
+
 	public Prodotto visualizzaProdotto(String nome) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
@@ -177,6 +187,7 @@ public class CITD{
 		}catch(Exception e) {
 			return null;
 		}
+>>>>>>> Stashed changes
 	}
 
 	public void modificaProdotto(Prodotto prodotto) {

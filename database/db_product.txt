@@ -1,0 +1,9 @@
+pc, CITD0001
+smartphone, CITD0002
+monitor, CITD0003
+cuffie,CITD0004
+tastiera,CITD0005
+prova,prpva
+ciao,ciao
+boh,boh
+giovanni,zitto
