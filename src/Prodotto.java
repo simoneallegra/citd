@@ -1,8 +1,14 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
 public class Prodotto {
 
-	private int nome;
+	private String nome;
 
-	private int serial_number;
+	private String serial_number;
 
 	private int IAP;
 
@@ -17,15 +23,25 @@ public class Prodotto {
 	/**
 	 *  
 	 */
-	public Prodotto(int nome, int serial_number, int IAP, int tipo, int marca, int barcode, boolean inStock) {
+	public Prodotto(String nome, String serial_number, int IAP, int tipo, int marca, int barcode, boolean inStock) {
 
 	}
 
+	public Prodotto() {
+		
+	}
+	
+	public Prodotto(String nome, String serial_number) {
+		this.nome = nome;
+		this.serial_number = serial_number;
+	}
+
+	@Override
 	public String toString() {
-		return "ciao";
+		return "Prodotto [nome=" + nome + ", serial_number=" + serial_number + "]";
 	}
 
-	public Prodotto getProdotto(char[] nome) {
+	public Prodotto getProdotto(String nome) {
 		return null;
 	}
 
@@ -33,12 +49,53 @@ public class Prodotto {
 
 	}
 
-	public void destroy(Prodotto prodotto) {
-
+	public String destroy(String serial_number) {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+			String s,prova = "";
+			Boolean found = false;
+			while((s = br.readLine()) != null){
+				String data[] = s.split(",");
+				String numeroseriale = data[1];
+				if(!numeroseriale.equalsIgnoreCase(serial_number)){
+			        prova = prova + s + '\n';
+			    }else {
+					found = true;
+				}
+			}			
+	        FileWriter fw = new FileWriter("./database/db_product.txt");
+	        BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(prova);
+			br.close();
+	        bw.flush();
+	        bw.close();
+	        if(found) {
+				return "Prodotto eliminato dal DB";
+			}else {
+				return "Prodotto non presente in DB";				
+			}
+		}catch(Exception e) {
+			return null;
+		}
 	}
 
 	public void edit(Prodotto prodotto) {
 
 	}
 
+	public String aggiungiProdotto(String nome, String serial_number) {
+		try {
+			String line = nome + "," + serial_number;
+	        FileWriter fw = new FileWriter("./database/db_product.txt", true);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        bw.write(line);
+	        bw.write("\n");
+	        bw.flush();
+	        bw.close();
+            return "Prodotto aggiunto al DB";
+		}catch(Exception e) {
+			return null;
+		}
+	}
+	
 }

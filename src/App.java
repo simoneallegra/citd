@@ -10,15 +10,15 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
+
 public class App {
 	
 	private JFrame frame;
-	private JPanel loginPanel, userSetupPanel, userAddPanel;
-	private JLabel matricolaLabel, passwordLabel, addLabel;
-	private JTextField matricolaField, passwordField;
-	private JButton loginBtn, addBtn, editBtn;
-	private JTable jt;
-	
+	private JTable jt, jtProduct;
+	private JPanel loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel;
+	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel, iapProductLabel;
+	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField;
+	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton;
 	private JMenuBar homeBar;
 	private JMenu setupMenu;
 	private JMenuItem itemUserSetup;
@@ -27,23 +27,21 @@ public class App {
 	public CITD citd;
 	
 	public Utils utility;
+	private JMenuItem itemProductSetup;
+
 	
 	public App() {
-		
 		utility = new Utils();
-		
-		frame = new JFrame("CITD");
-		frame.setBounds(100, 100, 663, 420);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		initialize();	
+		initialize();
 	}
+
 	
 	private void initialize() {
 		
-		
-		
+		frame = new JFrame("CITD");
+		frame.setBounds(100,100,640,480);
 		loginPanel = new JPanel();
-		frame.getContentPane().add(loginPanel, "loginPanel");
+		frame.add(loginPanel);
 		loginPanel.setLayout(null);
 
 		matricolaLabel = new JLabel("matricola");
@@ -71,7 +69,7 @@ public class App {
 				Utente userLogged = null;
 				citd = new CITD();
 				userLogged = citd.Login(matricolaField.getText(), passwordField.getText());
-				frame.getContentPane().remove(loginPanel);
+				//frame.getContentPane().remove(loginPanel);
 				home(userLogged);
 				
 			}
@@ -82,147 +80,436 @@ public class App {
 	}
 	
 	private void home(Utente utente){
-		
-		homeBar = new JMenuBar();
-		frame.setJMenuBar(homeBar);
-				
-		setupMenu = new JMenu("Gestione");
-		homeBar.add(setupMenu);
-		
-		itemUserSetup = new JMenuItem("Gestione Utenti");
-		itemUserSetup.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				// da rivedere funzionamento apertura panel
-				citd = new CITD();
-				
-				userSetupPanel = new JPanel();
-				userSetupPanel.setPreferredSize(new Dimension(200, 200));
-				frame.getContentPane().add(userSetupPanel, "userSetupPanel");
-				userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.X_AXIS));
-				
-				
-			    userAddPanel = new JPanel();
-			    userAddPanel.setLayout(null);
-			    
-				addLabel = new JLabel("Matricola");
-				addLabel.setBounds(10, 9, 65, 14);
-				userAddPanel.add(addLabel);
-				
-				matricolaField = new JTextField();
-				matricolaField.setBounds(85, 6, 144, 20);
-				userAddPanel.add(matricolaField);
-				matricolaField.setColumns(10);
-				
-				addLabel = new JLabel("Password");
-				addLabel.setBounds(10, 29, 65, 14);
-				userAddPanel.add(addLabel);
-				
-				passwordField = new JTextField();
-				passwordField.setBounds(85, 26, 144, 20);
-				userAddPanel.add(passwordField);
-				passwordField.setColumns(10);
-				
-				addBtn = new JButton("Aggiungi");
-				addBtn.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						//System.out.println(matricolaField.getText() +" "+ passwordField.getText());
-						
-						Utente newUser = new Utente(matricolaField.getText(), utility.getEncryptPassword(passwordField.getText()));
-						
-						citd.inserisciNuovoUtente(newUser);
-						
-						
-					}
-				});
-				addBtn.setBounds(85, 66, 150, 20);
-				userAddPanel.setPreferredSize(new Dimension(300,300));
-				userAddPanel.add(addBtn);
-				
-				userSetupPanel.add(userAddPanel);
-				userSetupPanel.setVisible(true);
-				try {
+		try {
+			System.out.println(utente.matricola);
+			// DA RIMUOVERE
+			/*frame = new JFrame("CITD - " + utente.matricola);
+			frame.setBounds(100, 100, 663, 420);
+			frame.getContentPane().setLayout(new CardLayout(0, 0));*/
+			loginPanel.setVisible(false);
+			// -----------
+			homeBar = new JMenuBar();
+			frame.setJMenuBar(homeBar);
+			setupMenu = new JMenu("Gestione");
+			homeBar.add(setupMenu);
+			itemUserSetup = new JMenuItem("Gestione Utenti");
+			itemUserSetup.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					frame.getContentPane().revalidate();
+					// da rivedere funzionamento apertura panel
+					userSetupPanel = new JPanel();
+					userSetupPanel.setPreferredSize(new Dimension(200, 200));
+					frame.add(userSetupPanel);
+					userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.X_AXIS));
 					
 					
-					BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
-					int lines = 0;
-					while (br.readLine() != null) lines++;
-										
-					String data[][] = new String[lines][2];
-					br.close();
-					
-					br = new BufferedReader(new FileReader("./database/db_users.txt"));
-					String s = "";
-					int i = 0;
-					while((s = br.readLine()) != null){
-						data[i] = s.split(",");
-						i++;
-					}
-					
-					br.close();
-					
-					String column[]={"USERNAME"};
-					jt = new JTable(data,column); 
-				    userSetupPanel.add(new JScrollPane(jt));
+				    userAddPanel = new JPanel();
+				    userAddPanel.setLayout(null);
 				    
-				    jt.addMouseListener(new MouseAdapter() {
-				        @Override
-				        public void mouseClicked(final MouseEvent e){
-				            if (e.getClickCount() == 1){
-				                final JTable jTable= (JTable)e.getSource();
-				                final int row = jTable.getSelectedRow();
-				                final int column = jTable.getSelectedColumn();
-				                valueInCell = (String)jTable.getValueAt(row, column);
-				                
-				            }
-				        }});
-				    
-				    editBtn = new JButton("Edit");
-				    editBtn.addActionListener(new ActionListener() {
+					addLabel = new JLabel("Matricola");
+					addLabel.setBounds(10, 9, 65, 14);
+					userAddPanel.add(addLabel);
+					
+					matricolaField = new JTextField();
+					matricolaField.setBounds(85, 6, 144, 20);
+					userAddPanel.add(matricolaField);
+					matricolaField.setColumns(10);
+					
+					addLabel = new JLabel("Password");
+					addLabel.setBounds(10, 29, 65, 14);
+					userAddPanel.add(addLabel);
+					
+					passwordField = new JTextField();
+					passwordField.setBounds(85, 26, 144, 20);
+					userAddPanel.add(passwordField);
+					passwordField.setColumns(10);
+					
+					addBtn = new JButton("Aggiungi");
+					addBtn.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							if(valueInCell != "") {
-								
-								
-								System.out.println(valueInCell);
-								frame.getContentPane().remove(userSetupPanel);
-	
-	
-								userSetupPanel = new JPanel();
-								userSetupPanel.setPreferredSize(new Dimension(200, 200));
-								frame.getContentPane().add(userSetupPanel, "userSetupPanel");
-								
-								addLabel = new JLabel("Matricola");
-								addLabel.setBounds(10, 9, 65, 14);
-								userSetupPanel.add(addLabel);
-								matricolaField = new JTextField();
-								matricolaField.setBounds(85, 6, 144, 20);
-								userSetupPanel.add(matricolaField);
-								matricolaField.setColumns(10);
-								matricolaField.setText(valueInCell);
-								
-								//da sostituire con l'utente ottenuto in fase di return details
-								final Utente editUtente = citd.getDetailsUtente(valueInCell);
-								
-								editBtn = new JButton("Edit");
-								 editBtn.addActionListener(new ActionListener() {
-										public void actionPerformed(ActionEvent arg0) {
-											citd.updateUtente(editUtente);
-										}});
-								editBtn.setBounds(85, 66, 72, 20);
-							    userSetupPanel.add(editBtn);
-							}
+							//System.out.println(matricolaField.getText() +" "+ passwordField.getText());
+							
+							Utente newUser = new Utente(matricolaField.getText(), utility.getEncryptPassword(passwordField.getText()));
+							citd.inserisciNuovoUtente(newUser);
+							
+							
 						}
 					});
-				    editBtn.setBounds(85, 66, 72, 20);
-				    userSetupPanel.add(editBtn);
-				    
-				}catch(Exception e) {
-					System.out.println(e);
-				}
-				
-			}
-		});
-		setupMenu.add(itemUserSetup);
+					addBtn.setBounds(85, 66, 150, 20);
+					userAddPanel.setPreferredSize(new Dimension(300,300));
+					userAddPanel.add(addBtn);
+					
+					userSetupPanel.add(userAddPanel);
+					userSetupPanel.setVisible(true);
+					try {
+						
+						
+						BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
+						int lines = 0;
+						while (br.readLine() != null) lines++;
+											
+						String data[][] = new String[lines][2];
+						br.close();
+						
+						br = new BufferedReader(new FileReader("./database/db_users.txt"));
+						String s = "";
+						int i = 0;
+						while((s = br.readLine()) != null){
+							data[i] = s.split(",");
+							i++;
+						}
+						
+						br.close();
+						
+						String column[]={"USERNAME"};
+						jt = new JTable(data,column); 
+					    userSetupPanel.add(new JScrollPane(jt));
+					    
+					    jt.addMouseListener(new MouseAdapter() {
+					        @Override
+					        public void mouseClicked(final MouseEvent e){
+					            if (e.getClickCount() == 1){
+					                final JTable jTable= (JTable)e.getSource();
+					                final int row = jTable.getSelectedRow();
+					                final int column = jTable.getSelectedColumn();
+					                valueInCell = (String)jTable.getValueAt(row, column);
+					                
+					            }
+					        }});
+					    
+					    editBtn = new JButton("Edit");
+					    editBtn.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								if(valueInCell != "") {
+																	
+									System.out.println(valueInCell);
+									//frame.getContentPane().remove(userSetupPanel);
+									userSetupPanel.setVisible(false);	
 		
+									userSetupPanel = new JPanel();
+									userSetupPanel.setPreferredSize(new Dimension(200, 200));
+									frame.add(userSetupPanel);
+									
+									addLabel = new JLabel("Matricola");
+									addLabel.setBounds(10, 9, 65, 14);
+									userSetupPanel.add(addLabel);
+									matricolaField = new JTextField();
+									matricolaField.setBounds(85, 6, 144, 20);
+									userSetupPanel.add(matricolaField);
+									matricolaField.setColumns(10);
+									matricolaField.setText(valueInCell);
+									
+									//da sostituire con l'utente ottenuto in fase di return details
+									final Utente editUtente = citd.getDetailsUtente(valueInCell);
+									
+									editBtn = new JButton("Edit");
+									 editBtn.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												citd.updateUtente(editUtente);
+											}});
+									editBtn.setBounds(85, 66, 72, 20);
+								    userSetupPanel.add(editBtn);
+								}
+							}
+						});
+					    editBtn.setBounds(85, 66, 72, 20);
+					    userSetupPanel.add(editBtn);
+					    
+					    deleteBtn = new JButton("Delete");
+					    deleteBtn.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								if(valueInCell != "") {
+																	
+									System.out.println(valueInCell);
+									//frame.getContentPane().remove(userSetupPanel);
+									citd.eliminaUtente(valueInCell.toString());
+									
+									userSetupPanel.setVisible(false);	
+		
+									
+								}
+							}
+						});
+					    deleteBtn.setBounds(85, 86, 72, 20);
+					    userSetupPanel.add(deleteBtn);
+					}catch(Exception e) {
+						System.out.println(e);
+					}
+					
+				}
+			});
+			setupMenu.add(itemUserSetup);
+
+			itemProductSetup = new JMenuItem("Gestione Prodotti");
+			itemProductSetup.setLayout(new BorderLayout());
+			setupMenu.add(itemProductSetup);
+			itemProductSetup.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					frame.getContentPane().revalidate();
+					productSetupPanel = new JPanel();
+					frame.add(productSetupPanel);	
+					//All'interno del panel inserisco un tris di bottoni
+					//RICERCA PRODOTTO, AGGIUNTA ED ELIMINAZIONE
+					searchProductButton = new JButton("Cerca Prodotto");
+					productSetupPanel.add(searchProductButton);
+					
+					addProductButton = new JButton("Aggiungi Prodotto");
+					productSetupPanel.add(addProductButton);
+					
+					viewProductButton = new JButton("Visualizza Prodotti");
+					productSetupPanel.add(viewProductButton);
+					
+					//evento ricerca prodotto
+					searchProductButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							researchProductPanel = new JPanel();
+							frame.add(researchProductPanel);
+							productSetupPanel.setVisible(false);
+														
+							productLabel = new JLabel("Nome Prodotto");
+							//productLabel.setBounds(10, 9, 65, 14);
+							researchProductPanel.add(productLabel);
+							
+							researchProductField = new JTextField();
+							researchProductPanel.add(researchProductField);
+							researchProductField.setColumns(10);
+							
+							researchProductButton = new JButton("Cerca");
+							researchProductPanel.add(researchProductButton);
+							researchProductButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									citd = new CITD();
+									Prodotto product = citd.visualizzaProdotto(researchProductField.getText());
+									if (product != null) {
+										System.out.println("Il prodotto che ho trovato e':" + product);
+									}else {
+										System.out.println("Non vi sono prodotti che corrispondono in DB");														
+									}
+								}
+							});
+						}
+					});
+
+
+					//evento aggiungi prodotto
+					addProductButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							//inserisci nome e IAP del prodotto
+							
+							addProductPanel = new JPanel();
+							addProductPanel.setLayout(null);
+							frame.add(addProductPanel);
+							productSetupPanel.setVisible(false);
+
+							addProductLabel = new JLabel("Nome Prodotto");
+							addProductLabel.setBounds(200, 120, 185, 14);
+							addProductPanel.add(addProductLabel);
+							
+							addProductField = new JTextField();
+							addProductField.setBounds(300, 120, 144, 20);
+							addProductPanel.add(addProductField);
+							addProductField.setColumns(10);
+
+							iapProductLabel = new JLabel("IAP Prodotto");
+							iapProductLabel.setBounds(200, 150, 185, 14);
+							addProductPanel.add(iapProductLabel);
+							
+							serialNumberProductField = new JTextField();
+							serialNumberProductField.setBounds(300, 150, 144, 20);
+							addProductPanel.add(serialNumberProductField);
+							serialNumberProductField.setColumns(10);				
+							
+							addProductButton = new JButton("Aggiungi");
+							addProductPanel.add(addProductButton);
+							addProductButton.setBounds(250, 190, 150, 20);
+							addProductButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									String product = citd.aggiungiProdotto(addProductField.getText(),serialNumberProductField.getText());
+									if (product != null) {
+										System.out.println(product);
+									}else {
+										System.out.println("Non è stato possibile inserire il prodotto in DB");														
+									}
+								}
+							});
+							addProductPanel.setPreferredSize(new Dimension(300,300));			
+						}
+					});
+					
+					//evento elimina e modifica prodotto
+					viewProductButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							viewProductPanel = new JPanel();
+							frame.add(viewProductPanel);
+							productSetupPanel.setVisible(false);
+
+							try {
+								BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+								int lines = 0;
+								while (br.readLine() != null) lines++;
+								String data[][] = new String[lines][2];
+								br.close();
+								br = new BufferedReader(new FileReader("./database/db_product.txt"));
+								String s = "";
+								int i = 0;
+								while((s = br.readLine()) != null){
+									data[i] = s.split(",");
+									i++;
+								}
+								br.close();
+								String colonna[]={"NOME","NUMERO SERIALE"};
+								jtProduct = new JTable(data,colonna);
+								viewProductPanel.add(new JScrollPane(jtProduct));
+								
+								jtProduct.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(final MouseEvent e){
+										if (e.getClickCount() == 1){
+											final JTable jTable= (JTable)e.getSource();
+											final int row = jTable.getSelectedRow();
+											final int column = jTable.getSelectedColumn();
+											valueInCell = (String)jTable.getValueAt(row, column);
+											
+											//EVENTO MODIFICA
+											if(!valueInCell.equalsIgnoreCase("")) {
+												editProductBtn.addActionListener(new ActionListener() {
+													public void actionPerformed(ActionEvent arg0) {
+														
+														editProductPanel = new JPanel();
+														frame.add(editProductPanel);
+														viewProductPanel.setVisible(false);
+										
+									//String nome, String serial_number, int IAP, int tipo, int marca, int barcode, boolean inStock
+														//String nome, String serial_number, int IAP, int marca
+														
+														
+														JLabel nameProductLabel = new JLabel("Nome Prodotto");
+														nameProductLabel.setBounds(10, 9, 65, 14);
+														editProductPanel.add(nameProductLabel);
+														
+														JTextField nameProductField = new JTextField();
+														nameProductField.setBounds(85, 6, 144, 20);
+														editProductPanel.add(nameProductField);
+														nameProductField.setColumns(10);
+														//nameProductField.setText(valueInCell);
+
+														JButton editNameProductButton = new JButton("Edit");
+														editProductPanel.add(editNameProductButton);
+														//addProductButton.setBounds(250, 190, 150, 20);
+														
+														JLabel numberProductLabel = new JLabel("Numero Seriale");
+														numberProductLabel.setBounds(200, 120, 185, 14);
+														editProductPanel.add(numberProductLabel);
+														
+														JTextField numberProductField = new JTextField();
+														numberProductField.setBounds(300, 150, 144, 20);
+														editProductPanel.add(numberProductField);
+														numberProductField.setColumns(10);				
+														
+														
+														
+														/*JLabel iapProductLabel = new JLabel("IAP");
+														//addProductLabel.setBounds(200, 120, 185, 14);
+														editProductPanel.add(iapProductLabel);
+														
+														JTextField iapProductField = new JTextField();
+														//serialNumberProductField.setBounds(300, 150, 144, 20);
+														editProductPanel.add(iapProductField);
+														iapProductField.setColumns(10);		
+														
+														
+														
+														JLabel brandProductLabel = new JLabel("Marca");
+														//addProductLabel.setBounds(200, 120, 185, 14);
+														editProductPanel.add(brandProductLabel);
+														
+														JTextField brandProductField = new JTextField();
+														//serialNumberProductField.setBounds(300, 150, 144, 20);
+														editProductPanel.add(brandProductField);
+														brandProductField.setColumns(10);	*/	
+														
+														
+														
+														/*JLabel nameProductLabel = new JLabel("Nome Prodotto");
+														//addProductLabel.setBounds(200, 120, 185, 14);
+														editProductPanel.add(nameProductLabel);
+														
+														
+														JLabel nameProductLabel = new JLabel("Nome Prodotto");
+														//addProductLabel.setBounds(200, 120, 185, 14);
+														editProductPanel.add(nameProductLabel);*/
+														
+
+													
+														
+														
+														
+														
+														
+														
+														
+													
+													}
+												});
+											}
+											
+											if(!valueInCell.equalsIgnoreCase("")) {
+												deleteProductBtn.addActionListener(new ActionListener() {
+													public void actionPerformed(ActionEvent arg0) {
+														String result = citd.eliminaProdotto(valueInCell);
+														if (result != null) {
+															System.out.println("Elemento eliminato dal DB");
+															try {
+																BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+																int lines = 0;
+																while (br.readLine() != null) lines++;
+																String data[][] = new String[lines][2];
+																br.close();
+																br = new BufferedReader(new FileReader("./database/db_product.txt"));
+																String s = "";
+																int i = 0;
+																while((s = br.readLine()) != null){
+																	data[i] = s.split(",");
+																	i++;
+																}
+																br.close();
+																String colonna[]={"NOME","NUMERO SERIALE"};
+																Model table = new Model(data,colonna);
+																jtProduct.setModel(table);
+																((Model) jTable.getModel()).fireTableDataChanged();
+
+															}catch(Exception e) {
+																System.out.println(e.getMessage());
+															}
+														}	
+														
+													}
+												});
+											}
+										}
+									}
+								});
+							}catch(Exception e) {
+								System.out.println(e.getMessage());
+							}		
+							
+							editProductBtn = new JButton("Modifica");
+							editProductBtn.setBounds(85, 66, 72, 20);
+							viewProductPanel.add(editProductBtn);
+							
+							
+							deleteProductBtn = new JButton("Elimina");
+							deleteProductBtn.setBounds(85, 66, 72, 20);
+							viewProductPanel.add(deleteProductBtn);
+
+
+						}
+					});
+				}
+			});
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	public static void main(String[] args) {
