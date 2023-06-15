@@ -7,6 +7,8 @@ public class Utils {
 
 	String hashPassword = "";
 	
+	public String db_user_path = "\"./database/db_users.txt\"";
+	
 	public Utils() {
 		
 	}

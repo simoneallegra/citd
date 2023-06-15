@@ -18,7 +18,7 @@ public class App {
 	private JPanel loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel, iapProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField;
-	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, editProductBtn, viewProductButton;
+	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton;
 	private JMenuBar homeBar;
 	private JMenu setupMenu;
 	private JMenuItem itemUserSetup;
@@ -130,7 +130,6 @@ public class App {
 							//System.out.println(matricolaField.getText() +" "+ passwordField.getText());
 							
 							Utente newUser = new Utente(matricolaField.getText(), utility.getEncryptPassword(passwordField.getText()));
-							
 							citd.inserisciNuovoUtente(newUser);
 							
 							
@@ -216,6 +215,23 @@ public class App {
 					    editBtn.setBounds(85, 66, 72, 20);
 					    userSetupPanel.add(editBtn);
 					    
+					    deleteBtn = new JButton("Delete");
+					    deleteBtn.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								if(valueInCell != "") {
+																	
+									System.out.println(valueInCell);
+									//frame.getContentPane().remove(userSetupPanel);
+									citd.eliminaUtente(valueInCell.toString());
+									
+									userSetupPanel.setVisible(false);	
+		
+									
+								}
+							}
+						});
+					    deleteBtn.setBounds(85, 86, 72, 20);
+					    userSetupPanel.add(deleteBtn);
 					}catch(Exception e) {
 						System.out.println(e);
 					}
