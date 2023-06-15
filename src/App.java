@@ -45,7 +45,7 @@ public class App {
 		mainPanel = new JPanel(cl);
 				
 		frame = new JFrame("CITD");
-		frame.setBounds(100,100,640,480);
+		frame.setBounds(100,100,1280,720);
 		loginPanel = new JPanel();
 		loginPanel.setLayout(null);
 
@@ -75,7 +75,8 @@ public class App {
 				citd = new CITD();
 				userLogged = citd.Login(matricolaField.getText(), passwordField.getText());
 				//frame.getContentPane().remove(loginPanel);
-				home(userLogged);
+				if(userLogged != null)
+					home(userLogged);
 				
 			}
 		});
@@ -189,8 +190,7 @@ public class App {
 																		
 									userSetupPanel = new JPanel();
 									userSetupPanel.setPreferredSize(new Dimension(200, 200));
-									
-									
+																		
 									addLabel = new JLabel("Matricola");
 									addLabel.setBounds(10, 9, 65, 14);
 									userSetupPanel.add(addLabel);
@@ -201,12 +201,11 @@ public class App {
 									matricolaField.setText(valueInCell);
 									
 									//da sostituire con l'utente ottenuto in fase di return details
-									final Utente editUtente = citd.getDetailsUtente(valueInCell);
 									
 									saveBtn = new JButton("Save");
 									saveBtn.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent arg0) {
-												citd.updateUtente(editUtente);
+												citd.updateUtente(valueInCell, new Utente(matricolaField.getText()));
 											}});
 									saveBtn.setBounds(85, 66, 72, 20);
 								    userSetupPanel.add(saveBtn);
@@ -224,7 +223,6 @@ public class App {
 							public void actionPerformed(ActionEvent arg0) {
 								if(valueInCell != "") {
 																	
-									System.out.println(valueInCell);
 									//frame.getContentPane().remove(userSetupPanel);
 									citd.eliminaUtente(valueInCell.toString());									
 								}

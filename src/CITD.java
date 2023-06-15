@@ -66,8 +66,8 @@ public class CITD{
 		utente.set(utente);
 	}
 	
-	public void updateUtente(Utente utente) {
-		utente.edit(utente);
+	public void updateUtente(String oldMatricola, Utente utente) {
+		utente.edit(oldMatricola, utente);
 	}
 	
 	public void eliminaUtente(String matricola) {

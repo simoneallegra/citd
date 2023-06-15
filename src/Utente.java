@@ -83,7 +83,7 @@ public class Utente extends Amministratore {
 		}
 	}
 	
-	public void edit(Utente utente) {
+	public void edit(String oldMatricola, Utente utente) {
 		try {
 			
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
@@ -94,12 +94,12 @@ public class Utente extends Amministratore {
 					String data[] = new String[2];
 					data = s.split(",");
 					
-					if((data[0].equals(utente.matricola))){
-						this.remove(utente);
+					if((data[0].equals(oldMatricola))){
+						Utente utenteTrovato = this.get(oldMatricola);
+						utente.password = utenteTrovato.getEncryptedPassword();
+						this.remove(new Utente(oldMatricola));
 						this.set(utente);
 						return;
-					}else {
-						System.out.println("wrong credentials");
 					}
 					
 				}
@@ -112,24 +112,39 @@ public class Utente extends Amministratore {
 	
 	public void remove(Utente utente) {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(utility.db_user_path));
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
 			String s,prova = "";
-
+			Boolean found = false;
+			System.out.println(utente.matricola);
 			while((s = br.readLine()) != null){
 				String data[] = s.split(",");
 				String matricola = data[0];
+				System.out.println(matricola);
 				if(!matricola.equalsIgnoreCase(utente.matricola)){
 			        prova = prova + s + '\n';
-			    }
-				FileWriter fw = new FileWriter(utility.db_user_path);
-		        BufferedWriter bw = new BufferedWriter(fw);
-				bw.write(prova);
-				br.close();
-		        bw.flush();
-		        bw.close();
-			}	
+			    }else {
+					found = true;
+				}
+			}
+			FileWriter fw = new FileWriter("./database/db_users.txt");
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        System.out.println(prova);
+			bw.write(prova);
+			br.close();
+	        bw.flush();
+	        bw.close();
+	        
+	        if(found) {
+	        	System.out.println("eliminato");
+	        	return;
+	        }else {
+	        	System.out.println("non to");
+	        }
+		        
+				
 
 		}catch(Exception e) {
+			System.out.println(e);
 		}
 	}
 	
