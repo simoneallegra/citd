@@ -13,12 +13,14 @@ import javax.swing.*;
 
 public class App {
 	
+	static CardLayout cl;
+	
 	private JFrame frame;
 	private JTable jt, jtProduct;
-	private JPanel loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel;
+	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel, iapProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField;
-	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton;
+	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn;
 	private JMenuBar homeBar;
 	private JMenu setupMenu;
 	private JMenuItem itemUserSetup;
@@ -30,18 +32,21 @@ public class App {
 	private JMenuItem itemProductSetup;
 
 	
-	public App() {
-		utility = new Utils();
+	public App() {	
 		initialize();
 	}
 
 	
 	private void initialize() {
 		
+		utility = new Utils();
+		cl = new CardLayout(100,100);
+		
+		mainPanel = new JPanel(cl);
+				
 		frame = new JFrame("CITD");
 		frame.setBounds(100,100,640,480);
 		loginPanel = new JPanel();
-		frame.add(loginPanel);
 		loginPanel.setLayout(null);
 
 		matricolaLabel = new JLabel("matricola");
@@ -77,31 +82,28 @@ public class App {
 		loginBtn.setBounds(85, 66, 72, 20);
 		loginPanel.add(loginBtn);
 		
+		mainPanel.add(loginPanel,"loginPanel");
+        frame.add(mainPanel);
+        cl.show(mainPanel, "loginPanel");
+		
 	}
 	
 	private void home(Utente utente){
 		try {
-			System.out.println(utente.matricola);
-			// DA RIMUOVERE
-			/*frame = new JFrame("CITD - " + utente.matricola);
-			frame.setBounds(100, 100, 663, 420);
-			frame.getContentPane().setLayout(new CardLayout(0, 0));*/
-			loginPanel.setVisible(false);
-			// -----------
+			homePanel = new JPanel();
+			
 			homeBar = new JMenuBar();
 			frame.setJMenuBar(homeBar);
 			setupMenu = new JMenu("Gestione");
 			homeBar.add(setupMenu);
+			mainPanel.add(homePanel,"homePanel");
+			cl.show(mainPanel, "homePanel");
 			itemUserSetup = new JMenuItem("Gestione Utenti");
 			itemUserSetup.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
-					frame.getContentPane().revalidate();
-					// da rivedere funzionamento apertura panel
 					userSetupPanel = new JPanel();
 					userSetupPanel.setPreferredSize(new Dimension(200, 200));
-					frame.add(userSetupPanel);
 					userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.X_AXIS));
-					
 					
 				    userAddPanel = new JPanel();
 				    userAddPanel.setLayout(null);
@@ -138,9 +140,12 @@ public class App {
 					addBtn.setBounds(85, 66, 150, 20);
 					userAddPanel.setPreferredSize(new Dimension(300,300));
 					userAddPanel.add(addBtn);
-					
 					userSetupPanel.add(userAddPanel);
-					userSetupPanel.setVisible(true);
+					
+					mainPanel.add(userSetupPanel, "userSetupPanel");
+					cl.show(mainPanel, "userSetupPanel");
+					
+					
 					try {
 						
 						
@@ -181,14 +186,10 @@ public class App {
 					    editBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								if(valueInCell != "") {
-																	
-									System.out.println(valueInCell);
-									//frame.getContentPane().remove(userSetupPanel);
-									userSetupPanel.setVisible(false);	
-		
+																		
 									userSetupPanel = new JPanel();
 									userSetupPanel.setPreferredSize(new Dimension(200, 200));
-									frame.add(userSetupPanel);
+									
 									
 									addLabel = new JLabel("Matricola");
 									addLabel.setBounds(10, 9, 65, 14);
@@ -202,13 +203,16 @@ public class App {
 									//da sostituire con l'utente ottenuto in fase di return details
 									final Utente editUtente = citd.getDetailsUtente(valueInCell);
 									
-									editBtn = new JButton("Edit");
-									 editBtn.addActionListener(new ActionListener() {
+									saveBtn = new JButton("Save");
+									saveBtn.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent arg0) {
 												citd.updateUtente(editUtente);
 											}});
-									editBtn.setBounds(85, 66, 72, 20);
-								    userSetupPanel.add(editBtn);
+									saveBtn.setBounds(85, 66, 72, 20);
+								    userSetupPanel.add(saveBtn);
+								    
+								    mainPanel.add(userSetupPanel, "userSetupPanelEdit");
+									cl.show(mainPanel, "userSetupPanelEdit");
 								}
 							}
 						});
@@ -222,11 +226,7 @@ public class App {
 																	
 									System.out.println(valueInCell);
 									//frame.getContentPane().remove(userSetupPanel);
-									citd.eliminaUtente(valueInCell.toString());
-									
-									userSetupPanel.setVisible(false);	
-		
-									
+									citd.eliminaUtente(valueInCell.toString());									
 								}
 							}
 						});
@@ -245,9 +245,7 @@ public class App {
 			setupMenu.add(itemProductSetup);
 			itemProductSetup.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
-					frame.getContentPane().revalidate();
 					productSetupPanel = new JPanel();
-					frame.add(productSetupPanel);	
 					//All'interno del panel inserisco un tris di bottoni
 					//RICERCA PRODOTTO, AGGIUNTA ED ELIMINAZIONE
 					searchProductButton = new JButton("Cerca Prodotto");
@@ -259,12 +257,13 @@ public class App {
 					viewProductButton = new JButton("Visualizza Prodotti");
 					productSetupPanel.add(viewProductButton);
 					
+					mainPanel.add(productSetupPanel, "productSetupPanel");
+					cl.show(mainPanel, "productSetupPanel");
+					
 					//evento ricerca prodotto
 					searchProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							researchProductPanel = new JPanel();
-							frame.add(researchProductPanel);
-							productSetupPanel.setVisible(false);
 														
 							productLabel = new JLabel("Nome Prodotto");
 							//productLabel.setBounds(10, 9, 65, 14);
@@ -287,9 +286,14 @@ public class App {
 									}
 								}
 							});
+							
+							mainPanel.add(researchProductPanel, "researchProductPanel");
+							cl.show(mainPanel, "researchProductPanel");
+							
 						}
 					});
-
+					
+					
 
 					//evento aggiungi prodotto
 					addProductButton.addActionListener(new ActionListener() {
@@ -298,8 +302,6 @@ public class App {
 							
 							addProductPanel = new JPanel();
 							addProductPanel.setLayout(null);
-							frame.add(addProductPanel);
-							productSetupPanel.setVisible(false);
 
 							addProductLabel = new JLabel("Nome Prodotto");
 							addProductLabel.setBounds(200, 120, 185, 14);
@@ -332,7 +334,10 @@ public class App {
 									}
 								}
 							});
-							addProductPanel.setPreferredSize(new Dimension(300,300));			
+							addProductPanel.setPreferredSize(new Dimension(300,300));
+							
+							mainPanel.add(addProductPanel, "addProductPanel");
+							cl.show(mainPanel, "addProductPanel");
 						}
 					});
 					
@@ -340,7 +345,6 @@ public class App {
 					viewProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							viewProductPanel = new JPanel();
-							frame.add(viewProductPanel);
 							productSetupPanel.setVisible(false);
 
 							try {
@@ -376,8 +380,6 @@ public class App {
 													public void actionPerformed(ActionEvent arg0) {
 														
 														editProductPanel = new JPanel();
-														frame.add(editProductPanel);
-														viewProductPanel.setVisible(false);
 										
 									//String nome, String serial_number, int IAP, int tipo, int marca, int barcode, boolean inStock
 														//String nome, String serial_number, int IAP, int marca
@@ -406,7 +408,8 @@ public class App {
 														editProductPanel.add(numberProductField);
 														numberProductField.setColumns(10);				
 														
-														
+														mainPanel.add(editProductPanel, "editProductPanel");
+														cl.show(mainPanel, "editProductPanel");
 														
 														/*JLabel iapProductLabel = new JLabel("IAP");
 														//addProductLabel.setBounds(200, 120, 185, 14);
@@ -451,6 +454,8 @@ public class App {
 													
 													}
 												});
+												
+												
 											}
 											
 											if(!valueInCell.equalsIgnoreCase("")) {
@@ -501,10 +506,15 @@ public class App {
 							deleteProductBtn = new JButton("Elimina");
 							deleteProductBtn.setBounds(85, 66, 72, 20);
 							viewProductPanel.add(deleteProductBtn);
-
+							
+							mainPanel.add(viewProductPanel, "viewProductPanel");
+							cl.show(mainPanel, "viewProductPanel");
 
 						}
 					});
+					
+					
+					
 				}
 			});
 		}catch(Exception e) {
