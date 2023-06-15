@@ -41,7 +41,7 @@ public class Prodotto {
 		return "Prodotto [nome=" + nome + ", serial_number=" + serial_number + "]";
 	}
 
-	public Prodotto getProdotto(char[] nome) {
+	public Prodotto getProdotto(String nome) {
 		return null;
 	}
 
@@ -52,28 +52,20 @@ public class Prodotto {
 	public String destroy(String serial_number) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
-			//PrintWriter outputStream = new PrintWriter(new FileWriter("./database/db_product.txt"));
-
-	        FileWriter fw = new FileWriter("./database/db_product.txt",true);
-	        BufferedWriter bw = new BufferedWriter(fw);
-	        /*
-	        bw.write(line);
-	        bw.write("\n");
-	        bw.flush();
-	        bw.close();
-			*/
-			String s = "";
+			String s,prova = "";
 			Boolean found = false;
 			while((s = br.readLine()) != null){
 				String data[] = s.split(",");
 				String numeroseriale = data[1];
 				if(!numeroseriale.equalsIgnoreCase(serial_number)){
-			        bw.write(s);
-			        bw.write("\n");
+			        prova = prova + s + '\n';
 			    }else {
 					found = true;
 				}
-			}
+			}			
+	        FileWriter fw = new FileWriter("./database/db_product.txt");
+	        BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(prova);
 			br.close();
 	        bw.flush();
 	        bw.close();
@@ -83,7 +75,7 @@ public class Prodotto {
 				return "Prodotto non presente in DB";				
 			}
 		}catch(Exception e) {
-			return "Errore durante l'eliminazione del prodotto";
+			return null;
 		}
 	}
 
