@@ -1,8 +1,2 @@
-pc, CITD0001
-smartphone, CITD0002
-monitor, CITD0003
-cuffie,CITD0004
-tastiera,CITD0005
-ciao,ciao
-prova,prova
-dasd,dasdas
+smartphone, CITD001, SN0123, telefono, Iphone
+pc, CITD002, SN0456, dotazioni, DELL

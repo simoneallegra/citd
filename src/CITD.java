@@ -22,10 +22,12 @@ public class CITD{
 	
 	private Utils utility;
 	private Utente utente;
+	private Prodotto prod;
 
 	public CITD(){
 		utility = new Utils();
 		utente = new Utente();
+		prod = new Prodotto();
 	}
 	
 	public Utente Login(String matricola, String password) {
@@ -74,41 +76,27 @@ public class CITD{
 		utente.remove(new Utente(matricola));
 	}
 	
-	public Prodotto visualizzaProdotto(char[] nome) {
-		return null;
-	}
 	
 	public Prodotto visualizzaProdotto(String nome) {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
-			String s = "";
-			Prodotto prod = null;
-			while((s = br.readLine()) != null){
-				String data[] = s.split(",");
-				String name = data[0];
-				String serial_number = data[1]; 
-				if(name.equalsIgnoreCase(nome)){
-					System.out.println("Product Found");
-					prod = new Prodotto(name, serial_number);
+			prod = prod.visualizza(nome);
+			if(prod == null) {
+				return null;
+			}else {
 					return prod;
-				}else {
-					System.out.println("Product not found");
-				}
 			}
-			br.close();
-			return prod;
 		}catch(Exception e) {
 			return null;
-		}
+			}
 	}
 
-	public void modificaProdotto(Prodotto prodotto) {
-
+	public Prodotto modificaProdotto(String prodotto) {
+		prod = prod.edit(prodotto);
+			return prod;
 	}
 
 	public String eliminaProdotto(String numeroseriale) {
 		try {
-			Prodotto prod = new Prodotto();
 			String product = prod.destroy(numeroseriale);
 			return product;
 		}catch(Exception e) {
@@ -116,10 +104,9 @@ public class CITD{
 		}
 	}
 
-	public String aggiungiProdotto(String nome, String serial_number) {
+	public String aggiungiProdotto(String nome, String serial_number, String iap, String tipo, String marca) {
 		try {
-			Prodotto prod = new Prodotto();
-			String product = prod.aggiungiProdotto(nome, serial_number);
+			String product = prod.aggiungiProdotto(nome, serial_number, iap, tipo, marca);
 			return product;
 		}catch(Exception e) {
 			return null;
