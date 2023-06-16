@@ -19,7 +19,8 @@ public class App {
 	private JTable jt, jtProduct;
 	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel,researchErrorLabel;
-	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField;
+	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
+	private JRadioButton superuserField;
 	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn;
 	private JMenuBar homeBar;
 	private JMenu setupMenu;
@@ -130,19 +131,55 @@ public class App {
 					passwordField.setBounds(85, 26, 144, 20);
 					userAddPanel.add(passwordField);
 					passwordField.setColumns(10);
+
+					addLabel = new JLabel("Nome");
+					addLabel.setBounds(10, 49, 65, 14);
+					userAddPanel.add(addLabel);
+					
+					nomeField = new JTextField();
+					nomeField.setBounds(85, 46, 144, 20);
+					userAddPanel.add(nomeField);
+					nomeField.setColumns(10);
+
+					addLabel = new JLabel("Cognome");
+					addLabel.setBounds(10, 69, 65, 14);
+					userAddPanel.add(addLabel);
+					
+					cognomeField = new JTextField();
+					cognomeField.setBounds(85, 66, 144, 20);
+					userAddPanel.add(cognomeField);
+					cognomeField.setColumns(10);
+
+					addLabel = new JLabel("Email");
+					addLabel.setBounds(10, 89, 65, 14);
+					userAddPanel.add(addLabel);
+					
+					emailField = new JTextField();
+					emailField.setBounds(85, 86, 144, 20);
+					userAddPanel.add(emailField);
+					emailField.setColumns(10);
+
+					addLabel = new JLabel("Amministratore");
+					addLabel.setBounds(10, 109, 150, 14);
+					userAddPanel.add(addLabel);
+					
+					superuserField = new JRadioButton();
+					superuserField.setBounds(150, 106, 144, 20);
+					userAddPanel.add(superuserField);
+					// superuserField.setColumns(10);
 					
 					addBtn = new JButton("Aggiungi");
 					addBtn.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							//System.out.println(matricolaField.getText() +" "+ passwordField.getText());
-							
-							Utente newUser = new Utente(matricolaField.getText(), utility.getEncryptPassword(passwordField.getText()));
+							System.out.println(passwordField.getText());
+							Utente newUser = new Utente(matricolaField.getText(), passwordField.getText(), nomeField.getText(), cognomeField.getText(), emailField.getText(), superuserField.isSelected());
+							System.out.println(newUser.nome);
 							citd.inserisciNuovoUtente(newUser);
 							
 							
 						}
 					});
-					addBtn.setBounds(85, 66, 150, 20);
+					addBtn.setBounds(85, 146, 150, 20);
 					userAddPanel.setPreferredSize(new Dimension(300,300));
 					userAddPanel.add(addBtn);
 					userSetupPanel.add(userAddPanel);
@@ -158,20 +195,21 @@ public class App {
 						int lines = 0;
 						while (br.readLine() != null) lines++;
 											
-						String data[][] = new String[lines][2];
+						String data[][] = new String[lines][6];
 						br.close();
 						
 						br = new BufferedReader(new FileReader("./database/db_users.txt"));
 						String s = "";
 						int i = 0;
 						while((s = br.readLine()) != null){
+							
 							data[i] = s.split(",");
 							i++;
 						}
 						
 						br.close();
 						
-						String column[]={"USERNAME"};
+						String column[]={"USERNAME","PASSWORD","NOME","COGNOME","EMAIL","AMMINISTRATORE"};
 						jt = new JTable(data,column); 
 					    userSetupPanel.add(new JScrollPane(jt));
 					    
@@ -198,6 +236,7 @@ public class App {
 									addLabel = new JLabel("Matricola");
 									addLabel.setBounds(10, 9, 65, 14);
 									userSetupPanel.add(addLabel);
+
 									matricolaField = new JTextField();
 									matricolaField.setBounds(85, 6, 144, 20);
 									userSetupPanel.add(matricolaField);
@@ -366,6 +405,7 @@ public class App {
 										System.out.println(product);
 									}else {
 										System.out.println("Non è stato possibile inserire il prodotto in DB");														
+									
 									}
 								}
 								}

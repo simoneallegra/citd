@@ -11,14 +11,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class CITD{
 
-	private Prodotto[] prodotto;
-
-
-	private Prodotto[] listaProdotto;
-
-	private Impiegato impiegato;
-
-	private Utente[] listaUtenti;
 	
 	private Utils utility;
 	private Utente utente;
@@ -64,12 +56,13 @@ public class CITD{
 		return utente.get(matricola);
 	}
 	
-	public void inserisciNuovoUtente (Utente utente) {
-		utente.set(utente);
+	public void inserisciNuovoUtente (Utente user) {
+		System.out.println(user.password);
+		utente.set(user);
 	}
 	
-	public void updateUtente(String oldMatricola, Utente utente) {
-		utente.edit(oldMatricola, utente);
+	public void updateUtente(String oldMatricola, Utente user) {
+		utente.edit(oldMatricola, user);
 	}
 	
 	public void eliminaUtente(String matricola) {

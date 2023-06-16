@@ -6,27 +6,29 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class Utente extends Amministratore {
+public class Utente{
 
-	private String nome;
+	public String nome;
 
-	private String cognome;
+	public String cognome;
 
 	public String matricola;
 	
-	private String password;
+	public String password;
 
-	private String email;
+	public String email;
 
-	private boolean isLogged;
+	public int superuser;
 
-	private Impiegato impiegato;
-
-	private Amministratore amministratore;
 	
 	public Utils utility;
 	
 	public Utente(){
+		utility = new Utils();
+	}
+
+	public Utente(String matricola){
+		this.matricola = matricola;
 		utility = new Utils();
 	}
 
@@ -36,14 +38,16 @@ public class Utente extends Amministratore {
 		utility = new Utils();
 	}
 	
-	public Utente(String matricola){
+	public Utente(String matricola, String password, String nome, String cognome, String email, boolean superuser){
 		this.matricola = matricola;
+		this.password = password;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.email = email;
+		this.superuser = superuser ? 1 : 0;
 		utility = new Utils();
 	}
 	
-	public String getEncryptedPassword() {
-		return this.password;
-	}
 	
 	
 	public Utente get(String matricola) {
@@ -54,27 +58,35 @@ public class Utente extends Amministratore {
 			
 			String s = "";
 				while((s = br.readLine()) != null){
-					String data[] = new String[2];
+					String data[] = new String[6];
 					data = s.split(",");
 					
 					
 					if((data[0].equals(matricola))){
 						System.out.println("login done");
-						return new Utente(data[0], data[1]);
+						return new Utente(data[0], data[1], data[2], data[3], data[4], Boolean.valueOf(data[5]));
 					}else {
 						System.out.println("wrong credentials");
 					}
 					
 				}
 			
-				br.close();
+			br.close();
 		}catch(Exception e) {}
 		
 		return null;
 	}
 	public void set(Utente utente) {
 		try {
-			String newField = utente.matricola + "," + utility.getEncryptPassword(utente.getEncryptedPassword())+'\n';
+			System.out.println(utente.password);
+			String newField = 
+				utente.matricola + "," 
+				+ utility.getEncryptPassword(utente.password) + ","
+				+ utente.nome + "," 
+				+ utente.cognome + "," 
+				+ utente.email + "," 
+				+ utente.superuser +'\n';
+
 			System.out.println(newField);
 			Files.write(Paths.get("./database/db_users.txt"), newField.getBytes(), StandardOpenOption.APPEND);
 			
@@ -96,7 +108,7 @@ public class Utente extends Amministratore {
 					
 					if((data[0].equals(oldMatricola))){
 						Utente utenteTrovato = this.get(oldMatricola);
-						utente.password = utenteTrovato.getEncryptedPassword();
+						utente.password = utenteTrovato.password;
 						this.remove(new Utente(oldMatricola));
 						this.set(utente);
 						return;
@@ -104,7 +116,7 @@ public class Utente extends Amministratore {
 					
 				}
 			
-				br.close();
+			br.close();
 		}catch(Exception e) {}
 		
 		return;
