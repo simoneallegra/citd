@@ -28,6 +28,7 @@ public class App {
 	private JTextArea text;
 
 	String valueInCell = "";
+	String[] arrayString;
 	int pressButton=0;
 	Boolean found= false;
 	
@@ -219,8 +220,13 @@ public class App {
 					            if (e.getClickCount() == 1){
 					                final JTable jTable= (JTable)e.getSource();
 					                final int row = jTable.getSelectedRow();
-					                final int column = jTable.getSelectedColumn();
-					                valueInCell = (String)jTable.getValueAt(row, column);
+
+									arrayString = new String[jTable.getColumnCount()];
+									int i = 0;
+									while (i<jTable.getColumnCount()){
+										arrayString[i] = (String)jTable.getValueAt(row, i);
+										i++;
+									}
 					                
 					            }
 					        }});
@@ -228,7 +234,8 @@ public class App {
 					    editBtn = new JButton("Edit");
 					    editBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
-								if(valueInCell != "") {
+								System.out.println(arrayString[0]);
+								if(!arrayString.equals(null)) {
 																		
 									userSetupPanel = new JPanel();
 									userSetupPanel.setPreferredSize(new Dimension(200, 200));
@@ -241,14 +248,63 @@ public class App {
 									matricolaField.setBounds(85, 6, 144, 20);
 									userSetupPanel.add(matricolaField);
 									matricolaField.setColumns(10);
-									matricolaField.setText(valueInCell);
+									matricolaField.setText(arrayString[0]);
+
+									addLabel = new JLabel("Password");
+									addLabel.setBounds(10, 29, 65, 14);
+									userSetupPanel.add(addLabel);
+									
+									passwordField = new JTextField();
+									passwordField.setBounds(85, 26, 144, 20);
+									userSetupPanel.add(passwordField);
+									passwordField.setColumns(10);
+
+									addLabel = new JLabel("Nome");
+									addLabel.setBounds(10, 49, 65, 14);
+									userSetupPanel.add(addLabel);
+									
+									nomeField = new JTextField();
+									nomeField.setBounds(85, 46, 144, 20);
+									userSetupPanel.add(nomeField);
+									nomeField.setColumns(10);
+									nomeField.setText(arrayString[2]);
+
+									addLabel = new JLabel("Cognome");
+									addLabel.setBounds(10, 69, 65, 14);
+									userSetupPanel.add(addLabel);
+									
+									cognomeField = new JTextField();
+									cognomeField.setBounds(85, 66, 144, 20);
+									userSetupPanel.add(cognomeField);
+									cognomeField.setColumns(10);
+									cognomeField.setText(arrayString[3]);
+
+									addLabel = new JLabel("Email");
+									addLabel.setBounds(10, 89, 65, 14);
+									userSetupPanel.add(addLabel);
+									
+									
+									emailField = new JTextField();
+									emailField.setBounds(85, 86, 144, 20);
+									userSetupPanel.add(emailField);
+									emailField.setColumns(10);
+									emailField.setText(arrayString[4]);
+
+									addLabel = new JLabel("Amministratore");
+									addLabel.setBounds(10, 109, 150, 14);
+									userSetupPanel.add(addLabel);
+									
+									superuserField = new JRadioButton();
+									superuserField.setBounds(150, 106, 144, 20);
+									userSetupPanel.add(superuserField);
+									superuserField.setSelected(Integer.valueOf(arrayString[5]) == 1 ? true : false);
 									
 									//da sostituire con l'utente ottenuto in fase di return details
 									
 									saveBtn = new JButton("Save");
 									saveBtn.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent arg0) {
-												citd.updateUtente(valueInCell, new Utente(matricolaField.getText()));
+												citd.updateUtente(arrayString[0], new Utente(matricolaField.getText(),passwordField.getText(),nomeField.getText(),cognomeField.getText(),emailField.getText(),superuserField.isSelected()));
 											}});
 									saveBtn.setBounds(85, 66, 72, 20);
 								    userSetupPanel.add(saveBtn);
@@ -264,10 +320,10 @@ public class App {
 					    deleteBtn = new JButton("Delete");
 					    deleteBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
-								if(valueInCell != "") {
+								if(arrayString[0] != "") {
 																	
 									//frame.getContentPane().remove(userSetupPanel);
-									citd.eliminaUtente(valueInCell.toString());									
+									citd.eliminaUtente(arrayString[0].toString());									
 								}
 							}
 						});

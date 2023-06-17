@@ -1,2 +1,2 @@
 pippo,a2242ead55c94c3deb7cf2340bfef9d5bcaca22dfe66e646745ee4371c633fc8,Simone,Allegra,sallegra@email.it,1
-thasup,f8e8222b291aec9bbc8afd83f97a5ad905dfdef38acdb58fc97ca354119f67df,Giovanni,Salamone,gsalamone@email.it,0
+thasup,1892a35d9f1a3dddb41be885961a00931fec40e1c5e769e8ccb5471c364920e9,Giovanni,Salamone,gsalamone@email.it,1
