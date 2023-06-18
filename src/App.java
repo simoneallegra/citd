@@ -17,8 +17,8 @@ public class App {
 	
 	private JFrame frame;
 	private JTable jt, jtProduct;
-	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel;
-	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel,researchErrorLabel;
+	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel, userPanel;
+	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel,researchErrorLabel, iapProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
 	private JRadioButton superuserField;
 	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn;
@@ -46,30 +46,32 @@ public class App {
 	private void initialize() {
 		
 		utility = new Utils();
-		cl = new CardLayout(100,100);
+		cl = new CardLayout();
 		
 		mainPanel = new JPanel(cl);
 				
 		frame = new JFrame("CITD");
-		frame.setBounds(100,100,1280,720);
+		frame.setBounds(600,300,640,480);
+		frame.setLocationRelativeTo(null);
+		//frame.setResizable(false);
 		loginPanel = new JPanel();
 		loginPanel.setLayout(null);
 
 		matricolaLabel = new JLabel("matricola");
-		matricolaLabel.setBounds(10, 9, 65, 14);
+		matricolaLabel.setBounds(180, 150, 70, 15);
 		loginPanel.add(matricolaLabel);
 		
 		matricolaField = new JTextField();
-		matricolaField.setBounds(85, 6, 144, 20);
+		matricolaField.setBounds(250, 150, 144, 20);
 		loginPanel.add(matricolaField);
 		matricolaField.setColumns(10);
 		
 		passwordLabel = new JLabel("password");
-		passwordLabel.setBounds(10, 39, 65, 14);
+		passwordLabel.setBounds(180, 180, 70, 15);
 		loginPanel.add(passwordLabel);
 		
 		passwordField = new JTextField();
-		passwordField.setBounds(85, 36, 144, 20);
+		passwordField.setBounds(250, 180, 144, 20);
 		loginPanel.add(passwordField);
 		passwordField.setColumns(10);
 		
@@ -86,7 +88,7 @@ public class App {
 				
 			}
 		});
-		loginBtn.setBounds(85, 66, 72, 20);
+		loginBtn.setBounds(250, 210, 144, 20);
 		loginPanel.add(loginBtn);
 		
 		mainPanel.add(loginPanel,"loginPanel");
@@ -109,27 +111,26 @@ public class App {
 			itemUserSetup.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
 					userSetupPanel = new JPanel();
-					userSetupPanel.setPreferredSize(new Dimension(200, 200));
-					userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.X_AXIS));
+					userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.Y_AXIS));
 					
 				    userAddPanel = new JPanel();
-				    userAddPanel.setLayout(null);
-				    
+				    userAddPanel.setAlignmentX( Component.RIGHT_ALIGNMENT );
+					
 					addLabel = new JLabel("Matricola");
-					addLabel.setBounds(10, 9, 65, 14);
+					//addLabel.setBounds(10, 10, 70, 15);
 					userAddPanel.add(addLabel);
 					
 					matricolaField = new JTextField();
-					matricolaField.setBounds(85, 6, 144, 20);
+					//matricolaField.setBounds(80, 10, 144, 20);
 					userAddPanel.add(matricolaField);
 					matricolaField.setColumns(10);
 					
 					addLabel = new JLabel("Password");
-					addLabel.setBounds(10, 29, 65, 14);
+					//addLabel.setBounds(10, 40, 70, 15);
 					userAddPanel.add(addLabel);
 					
 					passwordField = new JTextField();
-					passwordField.setBounds(85, 26, 144, 20);
+					//passwordField.setBounds(80, 40, 144, 20);
 					userAddPanel.add(passwordField);
 					passwordField.setColumns(10);
 
@@ -180,8 +181,8 @@ public class App {
 							
 						}
 					});
-					addBtn.setBounds(85, 146, 150, 20);
-					userAddPanel.setPreferredSize(new Dimension(300,300));
+					addBtn.setBounds(80, 70, 144, 20);
+
 					userAddPanel.add(addBtn);
 					userSetupPanel.add(userAddPanel);
 					
@@ -190,7 +191,8 @@ public class App {
 					
 					
 					try {
-						
+						userPanel = new JPanel();
+				    	userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.X_AXIS));
 						
 						BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
 						int lines = 0;
@@ -212,7 +214,7 @@ public class App {
 						
 						String column[]={"USERNAME","PASSWORD","NOME","COGNOME","EMAIL","AMMINISTRATORE"};
 						jt = new JTable(data,column); 
-					    userSetupPanel.add(new JScrollPane(jt));
+					    userPanel.add(new JScrollPane(jt));
 					    
 					    jt.addMouseListener(new MouseAdapter() {
 					        @Override
@@ -315,8 +317,8 @@ public class App {
 							}
 						});
 					    editBtn.setBounds(85, 66, 72, 20);
-					    userSetupPanel.add(editBtn);
-					    
+					    userPanel.add(editBtn);
+						
 					    deleteBtn = new JButton("Delete");
 					    deleteBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
@@ -328,7 +330,8 @@ public class App {
 							}
 						});
 					    deleteBtn.setBounds(85, 86, 72, 20);
-					    userSetupPanel.add(deleteBtn);
+					    userPanel.add(deleteBtn);
+						userSetupPanel.add(userPanel);
 					}catch(Exception e) {
 						System.out.println(e);
 					}
@@ -448,7 +451,7 @@ public class App {
 
 							addProductButton = new JButton("Aggiungi");
 							addProductPanel.add(addProductButton);
-							addProductButton.setBounds(250, 190, 150, 20);
+							addProductButton.setBounds(300, 180, 144, 20);
 							addProductButton.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
 									if(!addProductField.getText().equalsIgnoreCase("") && !serialNumberProductField.getText().equalsIgnoreCase("") 
@@ -478,6 +481,7 @@ public class App {
 					viewProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							viewProductPanel = new JPanel();
+							viewProductPanel.setLayout(new BoxLayout(viewProductPanel,BoxLayout.X_AXIS));
 							productSetupPanel.setVisible(false);
 
 							try {
