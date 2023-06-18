@@ -31,6 +31,7 @@ public class App {
 	String[] arrayString;
 	int pressButton=0;
 	Boolean found= false;
+	Utente userLogged = null;
 	
 	public CITD citd;
 	
@@ -79,10 +80,11 @@ public class App {
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//System.out.println(matricolaField.getText() +" "+ passwordField.getText());
-				Utente userLogged = null;
+				
 				citd = new CITD();
 				userLogged = citd.Login(matricolaField.getText(), passwordField.getText());
 				//frame.getContentPane().remove(loginPanel);
+				System.out.println(userLogged.superuser);
 				if(userLogged != null)
 					home(userLogged);
 				
@@ -171,16 +173,7 @@ public class App {
 					// superuserField.setColumns(10);
 					
 					addBtn = new JButton("Aggiungi");
-					addBtn.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							System.out.println(passwordField.getText());
-							Utente newUser = new Utente(matricolaField.getText(), passwordField.getText(), nomeField.getText(), cognomeField.getText(), emailField.getText(), superuserField.isSelected());
-							System.out.println(newUser.nome);
-							citd.inserisciNuovoUtente(newUser);
-							
-							
-						}
-					});
+					
 					addBtn.setBounds(80, 70, 144, 20);
 
 					userAddPanel.add(addBtn);
@@ -233,6 +226,47 @@ public class App {
 					            }
 					        }});
 					    
+						addBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							System.out.println(passwordField.getText());
+							Utente newUser = new Utente(matricolaField.getText(), passwordField.getText(), nomeField.getText(), cognomeField.getText(), emailField.getText(), superuserField.isSelected());
+							System.out.println(newUser.nome);
+							citd.inserisciNuovoUtente(newUser);
+							
+							try {
+										userPanel = new JPanel();
+										userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.X_AXIS));
+										
+										BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
+										int lines = 0;
+										while (br.readLine() != null) lines++;
+															
+										String data[][] = new String[lines][6];
+										br.close();
+										
+										br = new BufferedReader(new FileReader("./database/db_users.txt"));
+										String s = "";
+										int i = 0;
+										while((s = br.readLine()) != null){
+											
+											data[i] = s.split(",");
+											i++;
+										}
+										
+										br.close();
+										
+										String column[]={"USERNAME","PASSWORD","NOME","COGNOME","EMAIL","AMMINISTRATORE"};
+										Model table = new Model(data,column);
+										jt.setModel(table);
+										((Model) jt.getModel()).fireTableDataChanged();
+									}
+									catch(Exception e){
+
+									}
+							
+						}
+					});
+
 					    editBtn = new JButton("Edit");
 					    editBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
@@ -325,7 +359,38 @@ public class App {
 								if(arrayString[0] != "") {
 																	
 									//frame.getContentPane().remove(userSetupPanel);
-									citd.eliminaUtente(arrayString[0].toString());									
+									citd.eliminaUtente(arrayString[0].toString());
+									
+									try {
+										userPanel = new JPanel();
+										userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.X_AXIS));
+										
+										BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
+										int lines = 0;
+										while (br.readLine() != null) lines++;
+															
+										String data[][] = new String[lines][6];
+										br.close();
+										
+										br = new BufferedReader(new FileReader("./database/db_users.txt"));
+										String s = "";
+										int i = 0;
+										while((s = br.readLine()) != null){
+											
+											data[i] = s.split(",");
+											i++;
+										}
+										
+										br.close();
+										
+										String column[]={"USERNAME","PASSWORD","NOME","COGNOME","EMAIL","AMMINISTRATORE"};
+										Model table = new Model(data,column);
+										jt.setModel(table);
+										((Model) jt.getModel()).fireTableDataChanged();
+									}
+									catch(Exception e){
+
+									}
 								}
 							}
 						});
@@ -637,7 +702,7 @@ public class App {
 																String colonna[]={"NOME","NUMERO SERIALE"};
 																Model table = new Model(data,colonna);
 																jtProduct.setModel(table);
-																((Model) jTable.getModel()).fireTableDataChanged();
+																((Model) jtProduct.getModel()).fireTableDataChanged();
 
 															}catch(Exception e) {
 																System.out.println(e.getMessage());

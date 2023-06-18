@@ -39,7 +39,7 @@ public class CITD{
 					
 					if((data[0].equals(matricola)) && (data[1].equals(utility.getEncryptPassword(password)))){
 						System.out.println("login done");
-						return new Utente(data[0], data[1]);
+						return new Utente(data[0], data[1], data[2], data[3], data[4], Boolean.valueOf(data[5]));
 					}else {
 						System.out.println("wrong credentials");
 					}
