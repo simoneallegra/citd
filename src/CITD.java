@@ -11,21 +11,15 @@ import java.security.NoSuchAlgorithmException;
 
 public class CITD{
 
-	private Prodotto[] prodotto;
-
-
-	private Prodotto[] listaProdotto;
-
-	private Impiegato impiegato;
-
-	private Utente[] listaUtenti;
 	
 	private Utils utility;
 	private Utente utente;
+	private Prodotto prod;
 
 	public CITD(){
 		utility = new Utils();
 		utente = new Utente();
+		prod = new Prodotto();
 	}
 	
 	public Utente Login(String matricola, String password) {
@@ -45,7 +39,7 @@ public class CITD{
 					
 					if((data[0].equals(matricola)) && (data[1].equals(utility.getEncryptPassword(password)))){
 						System.out.println("login done");
-						return new Utente(data[0], data[1]);
+						return new Utente(data[0], data[1], data[2], data[3], data[4], Boolean.valueOf(data[5]));
 					}else {
 						System.out.println("wrong credentials");
 					}
@@ -62,53 +56,40 @@ public class CITD{
 		return utente.get(matricola);
 	}
 	
-	public void inserisciNuovoUtente (Utente utente) {
-		utente.set(utente);
+	public void inserisciNuovoUtente (Utente user) {
+		System.out.println(user.password);
+		utente.set(user, true);
 	}
 	
-	public void updateUtente(String oldMatricola, Utente utente) {
-		utente.edit(oldMatricola, utente);
+	public void updateUtente(String oldMatricola, Boolean passwordUpdate, Utente user) {
+		utente.edit(oldMatricola, passwordUpdate, user);
 	}
 	
 	public void eliminaUtente(String matricola) {
 		utente.remove(new Utente(matricola));
 	}
 	
-	public Prodotto visualizzaProdotto(char[] nome) {
-		return null;
-	}
 	
 	public Prodotto visualizzaProdotto(String nome) {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
-			String s = "";
-			Prodotto prod = null;
-			while((s = br.readLine()) != null){
-				String data[] = s.split(",");
-				String name = data[0];
-				String serial_number = data[1]; 
-				if(name.equalsIgnoreCase(nome)){
-					System.out.println("Product Found");
-					prod = new Prodotto(name, serial_number);
+			prod = prod.visualizza(nome);
+			if(prod == null) {
+				return null;
+			}else {
 					return prod;
-				}else {
-					System.out.println("Product not found");
-				}
 			}
-			br.close();
-			return prod;
 		}catch(Exception e) {
 			return null;
-		}
+			}
 	}
 
-	public void modificaProdotto(Prodotto prodotto) {
-
+	public Prodotto modificaProdotto(String prodotto) {
+		prod = prod.edit(prodotto);
+			return prod;
 	}
 
 	public String eliminaProdotto(String numeroseriale) {
 		try {
-			Prodotto prod = new Prodotto();
 			String product = prod.destroy(numeroseriale);
 			return product;
 		}catch(Exception e) {
@@ -116,10 +97,9 @@ public class CITD{
 		}
 	}
 
-	public String aggiungiProdotto(String nome, String serial_number) {
+	public String aggiungiProdotto(String nome, String serial_number, String iap, String tipo, String marca) {
 		try {
-			Prodotto prod = new Prodotto();
-			String product = prod.aggiungiProdotto(nome, serial_number);
+			String product = prod.aggiungiProdotto(nome, serial_number, iap, tipo, marca);
 			return product;
 		}catch(Exception e) {
 			return null;
