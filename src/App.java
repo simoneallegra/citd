@@ -52,27 +52,27 @@ public class App {
 		mainPanel = new JPanel(cl);
 				
 		frame = new JFrame("CITD");
-		frame.setBounds(600,300,640,480);
+		frame.setBounds(600,300,980,720);
 		frame.setLocationRelativeTo(null);
 		//frame.setResizable(false);
 		loginPanel = new JPanel();
 		loginPanel.setLayout(null);
 
 		matricolaLabel = new JLabel("matricola");
-		matricolaLabel.setBounds(180, 150, 70, 15);
+		matricolaLabel.setBounds(350, 250, 70, 15);
 		loginPanel.add(matricolaLabel);
 		
 		matricolaField = new JTextField();
-		matricolaField.setBounds(250, 150, 144, 20);
+		matricolaField.setBounds(420, 250, 144, 20);
 		loginPanel.add(matricolaField);
 		matricolaField.setColumns(10);
 		
 		passwordLabel = new JLabel("password");
-		passwordLabel.setBounds(180, 180, 70, 15);
+		passwordLabel.setBounds(350, 280, 70, 15);
 		loginPanel.add(passwordLabel);
 		
 		passwordField = new JTextField();
-		passwordField.setBounds(250, 180, 144, 20);
+		passwordField.setBounds(420, 280, 144, 20);
 		loginPanel.add(passwordField);
 		passwordField.setColumns(10);
 		
@@ -90,7 +90,7 @@ public class App {
 				}				
 			}
 		});
-		loginBtn.setBounds(250, 210, 144, 20);
+		loginBtn.setBounds(420, 310, 144, 20);
 		loginPanel.add(loginBtn);
 		
 		mainPanel.add(loginPanel,"loginPanel");
@@ -115,7 +115,7 @@ public class App {
 					userSetupPanel = new JPanel();
 					userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.Y_AXIS));
 					
-				    userAddPanel = new JPanel();
+				    userAddPanel = new JPanel(new GridLayout(4,3,5,25));
 				    userAddPanel.setAlignmentX( Component.RIGHT_ALIGNMENT );
 					
 					addLabel = new JLabel("Matricola");
@@ -274,18 +274,20 @@ public class App {
 								if(!arrayString.equals(null)) {
 																		
 									userSetupPanel = new JPanel();
-									userSetupPanel.setPreferredSize(new Dimension(200, 200));
+									userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.Y_AXIS));
+									//userSetupPanel.setPreferredSize(new Dimension(200, 200));
 									
 									backBtn = new JButton("Back");
 									backBtn.addActionListener(new ActionListener() {
 										public void actionPerformed(ActionEvent arg0) {
-											cl.previous(mainPanel);
-										}});
+											cl.show(mainPanel, "userSetupPanel");
+										}
+									});
 									backBtn.setBounds(85, 66, 72, 20);
 					    			userSetupPanel.add(backBtn);
 
 									addLabel = new JLabel("Matricola");
-									addLabel.setBounds(10, 9, 65, 14);
+									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
 
 									matricolaField = new JTextField();
@@ -295,7 +297,7 @@ public class App {
 									matricolaField.setText(arrayString[0]);
 
 									addLabel = new JLabel("Password");
-									addLabel.setBounds(10, 29, 65, 14);
+									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
 									
 									passwordField = new JTextField();
@@ -304,7 +306,7 @@ public class App {
 									passwordField.setColumns(10);
 
 									addLabel = new JLabel("Nome");
-									addLabel.setBounds(10, 49, 65, 14);
+									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
 									
 									nomeField = new JTextField();
@@ -314,7 +316,7 @@ public class App {
 									nomeField.setText(arrayString[2]);
 
 									addLabel = new JLabel("Cognome");
-									addLabel.setBounds(10, 69, 65, 14);
+									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
 									
 									cognomeField = new JTextField();
@@ -324,7 +326,7 @@ public class App {
 									cognomeField.setText(arrayString[3]);
 
 									addLabel = new JLabel("Email");
-									addLabel.setBounds(10, 89, 65, 14);
+									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
 									
 									
@@ -335,7 +337,7 @@ public class App {
 									emailField.setText(arrayString[4]);
 
 									addLabel = new JLabel("Amministratore");
-									addLabel.setBounds(10, 109, 150, 14);
+									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
 									
 									superuserField = new JRadioButton();
@@ -457,7 +459,7 @@ public class App {
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
-									cl.previous(mainPanel);
+									cl.show(mainPanel, "productSetupPanel");
 								}});
 							backBtn.setBounds(85, 66, 72, 20);
 							researchProductPanel.add(backBtn);
@@ -516,41 +518,49 @@ public class App {
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
-									cl.previous(mainPanel);
+									cl.show(mainPanel, "productSetupPanel");
 								}});
 							backBtn.setBounds(85, 66, 72, 20);
 							addProductPanel.add(backBtn);
 
 							addProductLabel = new JLabel("Nome Prodotto");
-							//addProductLabel.setBounds(200, 120, 185, 14);
+							addProductLabel.setPreferredSize(new Dimension(200,50));
 							addProductPanel.add(addProductLabel);
+
 							addProductField = new JTextField();
-							addProductField.setBounds(300, 120, 144, 20);
+							//addProductField.setBounds(300, 120, 144, 20);
 							addProductPanel.add(addProductField);
 							addProductField.setColumns(10);
 
 							JLabel serialNumberProductLabel = new JLabel("Numero Seriale");
-							//serialNumberProductLabel.setBounds(200, 150, 185, 14);
+							serialNumberProductLabel.setPreferredSize(new Dimension(200,50));
 							addProductPanel.add(serialNumberProductLabel);
+
 							serialNumberProductField = new JTextField();
 							//serialNumberProductField.setBounds(300, 150, 144, 20);
 							addProductPanel.add(serialNumberProductField);
 							serialNumberProductField.setColumns(10);				
 							
 							JLabel iapProductLabel = new JLabel("IAP");
+							iapProductLabel.setPreferredSize(new Dimension(200,50));
 							addProductPanel.add(iapProductLabel);
+
 							iapProductField = new JTextField();  
 							addProductPanel.add(iapProductField);
 							iapProductField.setColumns(10);
 
 							JLabel typeProductLabel = new JLabel("Tipo");
+							typeProductLabel.setPreferredSize(new Dimension(200,50));
 							addProductPanel.add(typeProductLabel);
+
 							typeProductField = new JTextField();
 							addProductPanel.add(typeProductField);
 							typeProductField.setColumns(10);
 
 							JLabel brandProductLabel = new JLabel("Marca");
+							brandProductLabel.setPreferredSize(new Dimension(200,50));
 							addProductPanel.add(brandProductLabel);
+
 							brandProductField = new JTextField();
 							addProductPanel.add(brandProductField);
 							brandProductField.setColumns(10);
@@ -576,7 +586,7 @@ public class App {
 								}
 							});
 							
-							addProductPanel.setPreferredSize(new Dimension(300,300));
+							//addProductPanel.setPreferredSize(new Dimension(300,300));
 							
 							mainPanel.add(addProductPanel, "addProductPanel");
 							cl.show(mainPanel, "addProductPanel");
@@ -591,7 +601,7 @@ public class App {
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
-									cl.previous(mainPanel);
+									cl.show(mainPanel, "productSetupPanel");
 								}});
 							backBtn.setBounds(85, 66, 72, 20);
 							viewProductPanel.add(backBtn);
@@ -637,7 +647,7 @@ public class App {
 													
 														backBtn.addActionListener(new ActionListener() {
 															public void actionPerformed(ActionEvent arg0) {
-																cl.previous(mainPanel);
+																cl.show(mainPanel, "viewProductPanel");
 															}});
 														backBtn.setBounds(85, 66, 72, 20);
 														editProductPanel.add(backBtn);
