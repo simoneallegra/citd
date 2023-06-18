@@ -362,7 +362,7 @@ public class Prodotto {
 				String data[] = s.split(",");
 				String name = data[0];
 				String serial_number = data[1]; 
-				if(name.equalsIgnoreCase(prodotto) || serial_number.equalsIgnoreCase(prodotto)){
+				if(serial_number.equalsIgnoreCase(prodotto)){
 					System.out.println("Product Found");
 					product = new Prodotto(name, serial_number, data[2], data[3], data[4]);
 					return product;

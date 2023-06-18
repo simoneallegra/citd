@@ -646,8 +646,8 @@ public class App {
 										if (e.getClickCount() == 1){
 											final JTable jTable= (JTable)e.getSource();
 											final int row = jTable.getSelectedRow();
-											final int column = jTable.getSelectedColumn();
-											valueInCell = (String)jTable.getValueAt(row, column);
+											// final int column = jTable.getSelectedColumn();
+											valueInCell = (String)jTable.getValueAt(row, 1);
 											
 											//EVENTO MODIFICA
 											if(!valueInCell.equalsIgnoreCase("") && userLogged != null && userLogged.superuser == true ) {
