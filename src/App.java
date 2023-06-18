@@ -21,7 +21,7 @@ public class App {
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel,researchErrorLabel, iapProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
 	private JRadioButton superuserField;
-	private JButton loginBtn, searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn;
+	private JButton loginBtn,backBtn ,searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn;
 	private JMenuBar homeBar;
 	private JMenu setupMenu;
 	private JMenuItem itemUserSetup;
@@ -275,7 +275,15 @@ public class App {
 																		
 									userSetupPanel = new JPanel();
 									userSetupPanel.setPreferredSize(new Dimension(200, 200));
-																		
+									
+									backBtn = new JButton("Back");
+									backBtn.addActionListener(new ActionListener() {
+										public void actionPerformed(ActionEvent arg0) {
+											cl.previous(mainPanel);
+										}});
+									backBtn.setBounds(85, 66, 72, 20);
+					    			userSetupPanel.add(backBtn);
+
 									addLabel = new JLabel("Matricola");
 									addLabel.setBounds(10, 9, 65, 14);
 									userSetupPanel.add(addLabel);
@@ -340,7 +348,18 @@ public class App {
 									saveBtn = new JButton("Save");
 									saveBtn.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent arg0) {
-												citd.updateUtente(arrayString[0], new Utente(matricolaField.getText(),passwordField.getText(),nomeField.getText(),cognomeField.getText(),emailField.getText(),superuserField.isSelected()));
+												System.out.println("password:"+passwordField.getText());
+												Boolean passwordUpdate = true;
+												String passwordPassed = "";
+												if(passwordField.getText().equalsIgnoreCase("")){
+													passwordPassed = arrayString[1];
+													passwordUpdate = false;
+												}else{
+													passwordPassed = passwordField.getText();
+												}
+
+
+												citd.updateUtente(arrayString[0], passwordUpdate, new Utente(matricolaField.getText(),passwordPassed,nomeField.getText(),cognomeField.getText(),emailField.getText(),superuserField.isSelected()));
 											}});
 									saveBtn.setBounds(85, 66, 72, 20);
 								    userSetupPanel.add(saveBtn);
@@ -429,6 +448,14 @@ public class App {
 					searchProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							researchProductPanel = new JPanel();
+
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.previous(mainPanel);
+								}});
+							backBtn.setBounds(85, 66, 72, 20);
+							researchProductPanel.add(backBtn);
 														
 							productLabel = new JLabel("Nome Prodotto");
 							//productLabel.setBounds(10, 9, 65, 14);
@@ -480,6 +507,15 @@ public class App {
 							
 							addProductPanel = new JPanel();
 							addProductPanel.setLayout(new BoxLayout(addProductPanel, BoxLayout.Y_AXIS));
+
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.previous(mainPanel);
+								}});
+							backBtn.setBounds(85, 66, 72, 20);
+							addProductPanel.add(backBtn);
+
 							addProductLabel = new JLabel("Nome Prodotto");
 							//addProductLabel.setBounds(200, 120, 185, 14);
 							addProductPanel.add(addProductLabel);
@@ -546,6 +582,15 @@ public class App {
 					viewProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							viewProductPanel = new JPanel();
+
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.previous(mainPanel);
+								}});
+							backBtn.setBounds(85, 66, 72, 20);
+							viewProductPanel.add(backBtn);
+
 							viewProductPanel.setLayout(new BoxLayout(viewProductPanel,BoxLayout.X_AXIS));
 							productSetupPanel.setVisible(false);
 
@@ -582,6 +627,16 @@ public class App {
 													public void actionPerformed(ActionEvent arg0) {
 														final Prodotto prod = citd.modificaProdotto(valueInCell);
 														editProductPanel = new JPanel();
+
+														backBtn = new JButton("Back");
+													
+														backBtn.addActionListener(new ActionListener() {
+															public void actionPerformed(ActionEvent arg0) {
+																cl.previous(mainPanel);
+															}});
+														backBtn.setBounds(85, 66, 72, 20);
+														editProductPanel.add(backBtn);
+
 														JLabel nameProductLabel = new JLabel("Nome Prodotto");
 														nameProductLabel.setBounds(10, 9, 65, 14);
 														editProductPanel.add(nameProductLabel);

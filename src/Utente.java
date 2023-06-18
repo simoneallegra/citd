@@ -76,12 +76,12 @@ public class Utente{
 		
 		return null;
 	}
-	public void set(Utente utente) {
+	public void set(Utente utente, Boolean passwordUpdate) {
 		try {
 			System.out.println(utente.password);
 			String newField = 
 				utente.matricola + "," 
-				+ utility.getEncryptPassword(utente.password) + ","
+				+ (passwordUpdate ? utility.getEncryptPassword(utente.password) : utente.password) + ","
 				+ utente.nome + "," 
 				+ utente.cognome + "," 
 				+ utente.email + "," 
@@ -95,7 +95,8 @@ public class Utente{
 		}
 	}
 	
-	public void edit(String oldMatricola, Utente utente) {
+	public void edit(String oldMatricola, Boolean passwordUpdate, Utente utente) {
+		System.out.println("editPass: " + utente.password);
 		try {
 			
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
@@ -107,10 +108,8 @@ public class Utente{
 					data = s.split(",");
 					
 					if((data[0].equals(oldMatricola))){
-						Utente utenteTrovato = this.get(oldMatricola);
-						utente.password = utenteTrovato.password;
 						this.remove(new Utente(oldMatricola));
-						this.set(utente);
+						this.set(utente, passwordUpdate);
 						return;
 					}
 					

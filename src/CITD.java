@@ -58,11 +58,11 @@ public class CITD{
 	
 	public void inserisciNuovoUtente (Utente user) {
 		System.out.println(user.password);
-		utente.set(user);
+		utente.set(user, true);
 	}
 	
-	public void updateUtente(String oldMatricola, Utente user) {
-		utente.edit(oldMatricola, user);
+	public void updateUtente(String oldMatricola, Boolean passwordUpdate, Utente user) {
+		utente.edit(oldMatricola, passwordUpdate, user);
 	}
 	
 	public void eliminaUtente(String matricola) {
