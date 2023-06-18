@@ -24,4 +24,6 @@ hs_err_pid*
 replay_pid*
 /bin/
 
-/database/db_*
+./database/
+
+.project
