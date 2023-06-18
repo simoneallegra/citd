@@ -1,3 +1,3 @@
-thasup,1892a35d9f1a3dddb41be885961a00931fec40e1c5e769e8ccb5471c364920e9,Giovanni,Salamone,gsalamone@email.it,1
-,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,,,,0
-pippo,a2242ead55c94c3deb7cf2340bfef9d5bcaca22dfe66e646745ee4371c633fc8,Simone,Allegra,sallegra@email.it,1
+thasup,1892a35d9f1a3dddb41be885961a00931fec40e1c5e769e8ccb5471c364920e9,Giovanni,Salamone,gsalamone@email.it,true
+,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,,,,true
+pippo,a2242ead55c94c3deb7cf2340bfef9d5bcaca22dfe66e646745ee4371c633fc8,Simone,Allegra,sallegra@email.it,false

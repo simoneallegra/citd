@@ -255,8 +255,45 @@ public class Prodotto {
 		 }
 	}
 	
-	public void setProdotto(Prodotto prodotto) {
+	public void setProdotto(String nome, String numero, String iap, String tipo, String marca) {
+		 try {
+				BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+				String s, file = "";
+				String result ="";
+				String originalname=this.nome; 
+				int i =0;
+				int found=0;
 
+				while((s = br.readLine()) != null){
+					result = result + s + "\n";
+					String data[] = s.split(",");
+					 if(data[0].equalsIgnoreCase(originalname)) {
+						found=i; 
+					 }
+				     i++;
+				}
+				String riga[] = result.split("\n");
+				String campi[] = riga[found].split(",");
+				//cambiare indice ad ogni set
+				campi[0]=nome;
+				campi[1]=numero;
+				campi[2]=iap;
+				campi[3]=tipo;
+				campi[4] = marca;
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4];
+				for(int j=0; j<riga.length; j++) {
+					file = file + riga[j] + "\n";
+				}
+		        FileWriter fw = new FileWriter("./database/db_product.txt");
+		        BufferedWriter bw = new BufferedWriter(fw);
+				bw.write(file);
+				br.close();
+		        bw.flush();
+		        bw.close();
+				this.marca = marca;
+		 }catch(Exception e) {
+			System.out.println(e.getMessage()); 
+		 }
 	}
 	
 	public Prodotto visualizza(String nome) {	
