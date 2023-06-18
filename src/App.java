@@ -84,10 +84,10 @@ public class App {
 				citd = new CITD();
 				userLogged = citd.Login(matricolaField.getText(), passwordField.getText());
 				//frame.getContentPane().remove(loginPanel);
-				System.out.println(userLogged.superuser);
-				if(userLogged != null)
+				if(userLogged != null) {
+					System.out.println(userLogged.superuser);
 					home(userLogged);
-				
+				}				
 			}
 		});
 		loginBtn.setBounds(250, 210, 144, 20);
@@ -332,8 +332,8 @@ public class App {
 									
 									superuserField = new JRadioButton();
 									superuserField.setBounds(150, 106, 144, 20);
-									userSetupPanel.add(superuserField);
-									superuserField.setSelected(Integer.valueOf(arrayString[5]) == 1 ? true : false);
+									userSetupPanel.add(superuserField);									
+									superuserField.setSelected(Boolean.valueOf(arrayString[5]));
 									
 									//da sostituire con l'utente ottenuto in fase di return details
 									
@@ -418,10 +418,15 @@ public class App {
 					
 					addProductButton = new JButton("Aggiungi Prodotto");
 					productSetupPanel.add(addProductButton);
-					
+						
 					viewProductButton = new JButton("Visualizza Prodotti");
 					productSetupPanel.add(viewProductButton);
-					
+				
+					if(userLogged != null && userLogged.superuser == false ) {
+						addProductButton.setVisible(false);
+						viewProductButton.setVisible(false);
+					}
+
 					mainPanel.add(productSetupPanel, "productSetupPanel");
 					cl.show(mainPanel, "productSetupPanel");
 					
@@ -582,8 +587,9 @@ public class App {
 													public void actionPerformed(ActionEvent arg0) {
 														final Prodotto prod = citd.modificaProdotto(valueInCell);
 														editProductPanel = new JPanel();
+														editProductPanel.setLayout(new BoxLayout(editProductPanel, BoxLayout.Y_AXIS));
 														JLabel nameProductLabel = new JLabel("Nome Prodotto");
-														nameProductLabel.setBounds(10, 9, 65, 14);
+														nameProductLabel.setPreferredSize(new Dimension (50,50));
 														editProductPanel.add(nameProductLabel);
 														
 														nameProductField = new JTextField();  
@@ -591,19 +597,9 @@ public class App {
 														editProductPanel.add(nameProductField);
 														nameProductField.setColumns(10);
 														nameProductField.setText(prod.getNome());
-
-														//edit nome prodotto
-														JButton editNameProductButton = new JButton("Edit");
-														editProductPanel.add(editNameProductButton);
-														editNameProductButton.addActionListener(new ActionListener() {
-															public void actionPerformed(ActionEvent arg0) {
-																prod.setNome(nameProductField.getText());
-															}
-														});
-														
 														
 														JLabel numberProductLabel = new JLabel("Numero Seriale");
-														numberProductLabel.setBounds(200, 120, 185, 14);
+														numberProductLabel.setPreferredSize(new Dimension (50,50));
 														editProductPanel.add(numberProductLabel);
 														
 														numberProductField = new JTextField();
@@ -612,66 +608,43 @@ public class App {
 														numberProductField.setColumns(10);				
 														numberProductField.setText(prod.getSerialNumber());
 
-														//edit numero seriale prodotto
-														JButton editNumberProductButton = new JButton("Edit");
-														editProductPanel.add(editNumberProductButton);
-														editNumberProductButton.addActionListener(new ActionListener() {
-															public void actionPerformed(ActionEvent arg0) {
-																prod.setSerialNumber(numberProductField.getText());
-															}
-														});
-														
 														JLabel iapProductLabel = new JLabel("IAP");
 														editProductPanel.add(iapProductLabel);
+														iapProductLabel.setPreferredSize(new Dimension (50,50));
+
 														
 														editIapProductField = new JTextField();
 														editProductPanel.add(editIapProductField);
 														editIapProductField.setColumns(10);
 														editIapProductField.setText(prod.getIAP());
-														
-														//edit iap prodotto
-														JButton editIapProductButton = new JButton("Edit");
-														editProductPanel.add(editIapProductButton);
-														editIapProductButton.addActionListener(new ActionListener() {
-															public void actionPerformed(ActionEvent arg0) {
-																prod.setIAP(editIapProductField.getText());
-															}
-														});
-														
+
 														JLabel typeProductLabel = new JLabel("Tipo");
 														editProductPanel.add(typeProductLabel);
+														typeProductLabel.setPreferredSize(new Dimension (50,50));
+
 														
 														editTypeProductField = new JTextField();
 														editProductPanel.add(editTypeProductField);
 														editTypeProductField.setColumns(10);
 														editTypeProductField.setText(prod.getTipo());
 
-														//edit tipo prodotto
-														JButton editTypeProductButton = new JButton("Edit");
-														editProductPanel.add(editTypeProductButton);
-														editTypeProductButton.addActionListener(new ActionListener() {
-															public void actionPerformed(ActionEvent arg0) {
-																prod.setTipo(editTypeProductField.getText());
-															}
-														});
-														
 														JLabel brandProductLabel = new JLabel("Marca");
 														editProductPanel.add(brandProductLabel);
+														brandProductLabel.setPreferredSize(new Dimension (50,50));
+
 														
 														editBrandProductField = new JTextField();
 														editProductPanel.add(editBrandProductField);
 														editBrandProductField.setColumns(10);
 														editBrandProductField.setText(prod.getMarca());
-														
-														//edit marca prodotto
-														JButton editBrandProductButton = new JButton("Edit");
-														editProductPanel.add(editBrandProductButton);
-														editBrandProductButton.addActionListener(new ActionListener() {
+
+														JButton editProductButton = new JButton("Salva");
+														editProductPanel.add(editProductButton);
+														editProductButton.addActionListener(new ActionListener() {
 															public void actionPerformed(ActionEvent arg0) {
-																prod.setMarca(editBrandProductField.getText());
+																prod.setProdotto(nameProductField.getText(), numberProductField.getText(), editIapProductField.getText(), editTypeProductField.getText(), editBrandProductField.getText());
 															}
 														});
-														
 														
 														mainPanel.add(editProductPanel, "editProductPanel");
 														cl.show(mainPanel, "editProductPanel");

@@ -1,2 +1,3 @@
 smartphone, CITD001, SN0123, telefono, Iphone
-pc, CITD002, SN0456, dotazioni, DELL
+pc, CITD002, SN0456, personalcomputer,Lenovo
+cuffie, CITD003, SN1123, dotazioni, JABRA

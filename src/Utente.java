@@ -18,7 +18,7 @@ public class Utente{
 
 	public String email;
 
-	public int superuser;
+	public boolean superuser;
 
 	
 	public Utils utility;
@@ -44,7 +44,7 @@ public class Utente{
 		this.nome = nome;
 		this.cognome = cognome;
 		this.email = email;
-		this.superuser = superuser ? 1 : 0;
+		this.superuser = superuser;
 		utility = new Utils();
 	}
 	
