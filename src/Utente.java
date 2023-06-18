@@ -72,7 +72,9 @@ public class Utente{
 				}
 			
 			br.close();
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return null;
 	}
@@ -91,7 +93,7 @@ public class Utente{
 			Files.write(Paths.get("./database/db_users.txt"), newField.getBytes(), StandardOpenOption.APPEND);
 			
 		}catch(Exception e) {
-			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -116,7 +118,9 @@ public class Utente{
 				}
 			
 			br.close();
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return;
 	}

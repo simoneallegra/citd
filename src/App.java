@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument.LeafElement;
 
 
 public class App {
@@ -17,14 +19,14 @@ public class App {
 	
 	private JFrame frame;
 	private JTable jt, jtProduct;
-	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel, editProductPanel, userPanel;
+	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel,researchErrorLabel, iapProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
 	private JRadioButton superuserField;
-	private JButton loginBtn,backBtn ,searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn;
+	private JButton loginBtn,backBtn ,searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton;
 	private JMenuBar homeBar;
-	private JMenu setupMenu;
-	private JMenuItem itemUserSetup;
+	private JMenu setupMenu,setupMenuLogout;
+	private JMenuItem itemUserSetup,itemProductSetup,itemLogoutSetup;
 	private JTextArea text;
 
 	String valueInCell = "";
@@ -36,7 +38,6 @@ public class App {
 	public CITD citd;
 	
 	public Utils utility;
-	private JMenuItem itemProductSetup;
 
 	
 	public App() {	
@@ -86,6 +87,8 @@ public class App {
 				//frame.getContentPane().remove(loginPanel);
 				if(userLogged != null) {
 					System.out.println(userLogged.superuser);
+					matricolaField.setText("");
+					passwordField.setText("");
 					home(userLogged);
 				}				
 			}
@@ -106,6 +109,7 @@ public class App {
 			homeBar = new JMenuBar();
 			frame.setJMenuBar(homeBar);
 			setupMenu = new JMenu("Gestione");
+			
 			homeBar.add(setupMenu);
 			mainPanel.add(homePanel,"homePanel");
 			cl.show(mainPanel, "homePanel");
@@ -434,8 +438,8 @@ public class App {
 					productSetupPanel = new JPanel();
 					//All'interno del panel inserisco un tris di bottoni
 					//RICERCA PRODOTTO, AGGIUNTA ED ELIMINAZIONE
-					searchProductButton = new JButton("Cerca Prodotto");
-					productSetupPanel.add(searchProductButton);
+					// searchProductButton = new JButton("Cerca Prodotto");
+					// productSetupPanel.add(searchProductButton);
 					
 					addProductButton = new JButton("Aggiungi Prodotto");
 					productSetupPanel.add(addProductButton);
@@ -445,14 +449,14 @@ public class App {
 				
 					if(userLogged != null && userLogged.superuser == false ) {
 						addProductButton.setVisible(false);
-						viewProductButton.setVisible(false);
+						// viewProductButton.setVisible(false);
 					}
 
 					mainPanel.add(productSetupPanel, "productSetupPanel");
 					cl.show(mainPanel, "productSetupPanel");
 					
 					//evento ricerca prodotto
-					searchProductButton.addActionListener(new ActionListener() {
+					/*searchProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							researchProductPanel = new JPanel();
 
@@ -483,21 +487,29 @@ public class App {
 										researchProductPanel.remove(text);										
 									}
 
-									citd = new CITD();
+									// citd = new CITD();
 									Prodotto product = citd.visualizzaProdotto(researchProductField.getText());
 									if (product != null) {
 										found = true;
 										System.out.println("Il prodotto che ho trovato e':" + product);
 										text = new JTextArea();
+										// String colonna[]={"NOME","NUMERO SERIALE"};
+										// String data[][] = new String[1][2];
+										// data[0][0] = product.getNome();
+										// data[0][1] = product.getNome();
+										// System.out.println("data è :" +data[0]);
+										// jtProduct = new JTable(data,colonna);
+										// researchProductPanel.add(new JScrollPane(jtProduct));
+
 										researchProductPanel.add(text);
 										String textarea = "Prodotto trovato:\n Nome: " + product.getNome() + "\n Numero seriale: " + product.getSerialNumber() +
 														"\n IAP: " + product.getIAP() + "\n Tipo: " + product.getTipo() + "\n Marca: " + product.getMarca();
 										text.setText(textarea);
 									}else {
 										found=false;
-										/*researchErrorLabel = new JLabel("Non vi sono prodotti che corrispondono in DB");
-										researchErrorLabel.setBounds(10, 9, 65, 14);
-										researchProductPanel.add(researchErrorLabel);*/
+										//researchErrorLabel = new JLabel("Non vi sono prodotti che corrispondono in DB");
+										//researchErrorLabel.setBounds(10, 9, 65, 14);
+										//researchProductPanel.add(researchErrorLabel);
 										System.out.println("Non vi sono prodotti che corrispondono in DB");														
 									}
 								}
@@ -506,7 +518,7 @@ public class App {
 							mainPanel.add(researchProductPanel, "researchProductPanel");
 							cl.show(mainPanel, "researchProductPanel");
 						}
-					});
+					});*/
 					//evento aggiungi prodotto
 					addProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
@@ -585,9 +597,7 @@ public class App {
 								}
 								}
 							});
-							
-							//addProductPanel.setPreferredSize(new Dimension(300,300));
-							
+														
 							mainPanel.add(addProductPanel, "addProductPanel");
 							cl.show(mainPanel, "addProductPanel");
 						}
@@ -597,35 +607,38 @@ public class App {
 					viewProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							viewProductPanel = new JPanel();
-
+							viewProductPanel.setLayout(new BoxLayout(viewProductPanel, BoxLayout.Y_AXIS));
+							tableProductPanel = new JPanel(new FlowLayout());
+							researchProductPanel = new JPanel();
+							
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
 									cl.show(mainPanel, "productSetupPanel");
 								}});
 							backBtn.setBounds(85, 66, 72, 20);
-							viewProductPanel.add(backBtn);
+							researchProductPanel.add(backBtn);
 
-							viewProductPanel.setLayout(new BoxLayout(viewProductPanel,BoxLayout.X_AXIS));
-							productSetupPanel.setVisible(false);
+							productLabel = new JLabel("Nome Prodotto");
+							researchProductPanel.add(productLabel);
+							
+							researchProductField = new JTextField();
+							researchProductPanel.add(researchProductField);
+							researchProductField.setColumns(10);
+
+							tableProductPanel.setLayout(new BoxLayout(tableProductPanel,BoxLayout.X_AXIS));
 
 							try {
-								BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
-								int lines = 0;
-								while (br.readLine() != null) lines++;
-								String data[][] = new String[lines][2];
-								br.close();
-								br = new BufferedReader(new FileReader("./database/db_product.txt"));
-								String s = "";
-								int i = 0;
-								while((s = br.readLine()) != null){
-									data[i] = s.split(",");
-									i++;
+								String data[][] = null;
+								try {
+									data = utility.getProductTableData();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
-								br.close();
 								String colonna[]={"NOME","NUMERO SERIALE"};
 								jtProduct = new JTable(data,colonna);
-								viewProductPanel.add(new JScrollPane(jtProduct));
+								tableProductPanel.add(new JScrollPane(jtProduct));
 								
 								jtProduct.addMouseListener(new MouseAdapter() {
 									@Override
@@ -637,7 +650,7 @@ public class App {
 											valueInCell = (String)jTable.getValueAt(row, column);
 											
 											//EVENTO MODIFICA
-											if(!valueInCell.equalsIgnoreCase("")) {
+											if(!valueInCell.equalsIgnoreCase("") && userLogged != null && userLogged.superuser == true ) {
 												editProductBtn.addActionListener(new ActionListener() {
 													public void actionPerformed(ActionEvent arg0) {
 														final Prodotto prod = citd.modificaProdotto(valueInCell);
@@ -717,26 +730,20 @@ public class App {
 												});
 											}
 											
-											if(!valueInCell.equalsIgnoreCase("")) {
+											if(!valueInCell.equalsIgnoreCase("") && userLogged != null && userLogged.superuser == true) {
 												deleteProductBtn.addActionListener(new ActionListener() {
 													public void actionPerformed(ActionEvent arg0) {
 														String result = citd.eliminaProdotto(valueInCell);
 														if (result != null) {
 															System.out.println("Elemento eliminato dal DB");
 															try {
-																BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
-																int lines = 0;
-																while (br.readLine() != null) lines++;
-																String data[][] = new String[lines][2];
-																br.close();
-																br = new BufferedReader(new FileReader("./database/db_product.txt"));
-																String s = "";
-																int i = 0;
-																while((s = br.readLine()) != null){
-																	data[i] = s.split(",");
-																	i++;
+																String data[][] = null;
+																try {
+																	data = utility.getProductTableData();
+																} catch (IOException e) {
+																	// TODO Auto-generated catch block
+																	e.printStackTrace();
 																}
-																br.close();
 																String colonna[]={"NOME","NUMERO SERIALE"};
 																Model table = new Model(data,colonna);
 																jtProduct.setModel(table);
@@ -753,18 +760,72 @@ public class App {
 										}
 									}
 								});
+
+								researchProductButton = new JButton("Cerca");
+								researchProductPanel.add(researchProductButton);
+								researchProductButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										// if (pressButton == 0 || !found) {
+										// 	pressButton++;
+										// }else {
+										// 	text.setText("");
+										// 	researchProductPanel.remove(text);										
+										// }
+
+										Prodotto product = citd.visualizzaProdotto(researchProductField.getText());
+										
+										if (product != null) {
+											found = true;
+											System.out.println("Il prodotto che ho trovato e':" + product);
+											String colonna[]={"NOME","NUMERO SERIALE"};
+											String data[][] = new String[1][2];
+											data[0][0] = product.getNome();
+											data[0][1] = product.getSerialNumber();
+
+											Model table = new Model(data,colonna);
+											jtProduct.setModel(table);
+											((Model) jtProduct.getModel()).fireTableDataChanged();
+										}else {
+											found=false;
+											System.out.println("Non vi sono prodotti che corrispondono in DB");														
+										}
+									}
+								});
+								resetProductTableButton = new JButton("reset");
+								researchProductPanel.add(resetProductTableButton);
+								resetProductTableButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+											String colonna[]={"NOME","NUMERO SERIALE"};
+											String data[][] = null;
+											try {
+												data = utility.getProductTableData();
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+											researchProductField.setText("");
+											Model table = new Model(data,colonna);
+											jtProduct.setModel(table);
+											((Model) jtProduct.getModel()).fireTableDataChanged();
+									}
+								});
 							}catch(Exception e) {
 								System.out.println(e.getMessage());
 							}		
 							
-							editProductBtn = new JButton("Modifica");
-							editProductBtn.setBounds(85, 66, 72, 20);
-							viewProductPanel.add(editProductBtn);
-							
-							
-							deleteProductBtn = new JButton("Elimina");
-							deleteProductBtn.setBounds(85, 66, 72, 20);
-							viewProductPanel.add(deleteProductBtn);
+							if(userLogged != null && userLogged.superuser == true ) {
+								editProductBtn = new JButton("Modifica");
+								editProductBtn.setBounds(85, 66, 72, 20);
+								tableProductPanel.add(editProductBtn);
+								
+								
+								deleteProductBtn = new JButton("Elimina");
+								deleteProductBtn.setBounds(85, 66, 72, 20);
+								tableProductPanel.add(deleteProductBtn);
+							}
+
+							viewProductPanel.add(researchProductPanel);
+							viewProductPanel.add(tableProductPanel);
 							
 							mainPanel.add(viewProductPanel, "viewProductPanel");
 							cl.show(mainPanel, "viewProductPanel");
@@ -774,6 +835,18 @@ public class App {
 					
 					
 					
+				}
+			});
+			setupMenuLogout = new JMenu("Profilo");
+			homeBar.add(setupMenuLogout);
+
+			itemLogoutSetup = new JMenuItem("Logout");
+			itemLogoutSetup.setLayout(new BorderLayout());
+			setupMenuLogout.add(itemLogoutSetup);
+			itemLogoutSetup.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					userLogged = null;
+					cl.show(mainPanel, "loginPanel");
 				}
 			});
 		}catch(Exception e) {

@@ -318,7 +318,7 @@ public class Prodotto {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			return null;
-}
+		}
 	}
 	
 	public String destroy(String prodotto) {
@@ -348,6 +348,7 @@ public class Prodotto {
 				return "Prodotto non presente in DB";				
 			}
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -372,6 +373,7 @@ public class Prodotto {
 			br.close();
 			return product;
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -387,6 +389,7 @@ public class Prodotto {
 	        bw.close();
             return "Prodotto aggiunto al DB";
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}

@@ -71,16 +71,18 @@ public class CITD{
 	
 	
 	public Prodotto visualizzaProdotto(String nome) {
+		Prodotto prodotto;
 		try {
-			prod = prod.visualizza(nome);
-			if(prod == null) {
+			prodotto = prod.visualizza(nome);
+			if(prodotto == null) {
 				return null;
 			}else {
-					return prod;
+				return prodotto;
 			}
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return null;
-			}
+		}
 	}
 
 	public Prodotto modificaProdotto(String prodotto) {
@@ -93,6 +95,7 @@ public class CITD{
 			String product = prod.destroy(numeroseriale);
 			return product;
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -102,6 +105,7 @@ public class CITD{
 			String product = prod.aggiungiProdotto(nome, serial_number, iap, tipo, marca);
 			return product;
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}

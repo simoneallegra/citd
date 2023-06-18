@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -6,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 public class Utils {
 
 	String hashPassword = "";
-	
 	
 	public Utils() {
 		
@@ -31,6 +34,24 @@ public class Utils {
 		}
 		
 		return hashPassword;
+	}
+
+	public String[][] getProductTableData() throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+		int lines = 0;
+		while (br.readLine() != null) lines++;
+		String data[][] = new String[lines][2];
+		br.close();
+		br = new BufferedReader(new FileReader("./database/db_product.txt"));
+		String s = "";
+		int i = 0;
+		while((s = br.readLine()) != null){
+			data[i] = s.split(",");
+			i++;
+		}
+		br.close();
+
+		return data;
 	}
 
 	
