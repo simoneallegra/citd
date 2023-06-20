@@ -36,11 +36,11 @@ public class Utils {
 		return hashPassword;
 	}
 
-	public String[][] getProductTableData() throws IOException{
+	public String[][] getProductTableData(int campi) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
 		int lines = 0;
 		while (br.readLine() != null) lines++;
-		String data[][] = new String[lines][2];
+		String data[][] = new String[lines][campi];
 		br.close();
 		br = new BufferedReader(new FileReader("./database/db_product.txt"));
 		String s = "";
@@ -53,6 +53,24 @@ public class Utils {
 
 		return data;
 	}
+	
+	public String[][] getUsersTableData(int campi) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
+		int lines = 0;
+		while (br.readLine() != null) lines++;					
+		String userdata[][] = new String[lines][campi];
+		br.close();
+		br = new BufferedReader(new FileReader("./database/db_users.txt"));
+		String s = "";
+		int i = 0;
+		while((s = br.readLine()) != null){
+			userdata[i] = s.split(",");
+			i++;
+		}
+		br.close();
+		return userdata;
+	}
+	
 
 	
 	

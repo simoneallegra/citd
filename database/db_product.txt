@@ -1,3 +1,7 @@
-smartphone, CITD001, SN0123, telefono, Iphone
-pc2, CITD002, SN0456, personalcomputer,Lenovo
-cuffie, CITD003, SN1123, dotazioni, JABRA
+smartphone, CITD001, SN0123, telefono, Iphone, null
+pc2, CITD002, SN0456, personalcomputer,Lenovo,pippo
+cuffie, CITD003, SN1123, dotazioni, JABRA,thasup
+tastiera,CITD004,SN0564,dotazioni,Sony, null
+schermo,CITD005,SN7855,dotazioni,DELL,thasup
+mouse,CITD006,SN7531,portable,LG,pippo
+caricatore,CITD006,SN1593,portable,Samsung, null
