@@ -86,13 +86,18 @@ public class CITD{
 	}
 
 	public Prodotto modificaProdotto(String prodotto) {
-		prod = prod.edit(prodotto);
+		try{
+			prod = prod.edit(prodotto);
 			return prod;
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
 	}
 
-	public String eliminaProdotto(String numeroseriale) {
+	public String eliminaProdotto(String iap) {
 		try {
-			String product = prod.destroy(numeroseriale);
+			String product = prod.destroy(iap);
 			return product;
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -100,9 +105,9 @@ public class CITD{
 		}
 	}
 
-	public String aggiungiProdotto(String nome, String serial_number, String iap, String tipo, String marca) {
+	public String aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
 		try {
-			String product = prod.aggiungiProdotto(nome, serial_number, iap, tipo, marca);
+			String product = prod.aggiungiProdotto(nome, iap, serial_number, tipo, marca);
 			return product;
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

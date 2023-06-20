@@ -18,18 +18,21 @@ public class Prodotto {
 
 	private String marca;
 
+	private String utente;
+	
 	private boolean inStock;
 
 	
 	/**
 	 *  
 	 */
-	public Prodotto(String nome, String serial_number, String IAP, String tipo, String marca) {
+	public Prodotto(String nome, String serial_number, String IAP, String tipo, String marca, String utente) {
 		this.nome = nome;
 		this.serial_number = serial_number;
 		this.IAP = IAP;
 		this.tipo = tipo;
-		this.marca = marca;		
+		this.marca = marca;	
+		this.utente= utente;
 	}
 
 	public Prodotto() {
@@ -66,6 +69,10 @@ public class Prodotto {
 		return this.marca;
 	}
 
+	public String getUtente() {
+		return this.utente;
+	}
+	
 	public void setNome(String nome) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
@@ -87,7 +94,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[0] = nome;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 			}			
@@ -98,7 +105,7 @@ public class Prodotto {
 	        bw.flush();
 	        bw.close();
 				
-				this.nome= nome;
+			this.nome= nome;
 
 		 }catch(Exception e) {
 			System.out.println(e.getMessage()); 
@@ -126,7 +133,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[1] = serialnumber;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -164,7 +171,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[2] = iap;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -202,7 +209,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[3] = tipo;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4] + "," + campi[5];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -239,7 +246,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[4] = marca;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4] + "," + campi[5];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -255,7 +262,7 @@ public class Prodotto {
 		 }
 	}
 	
-	public void setProdotto(String nome, String numero, String iap, String tipo, String marca) {
+	public void setUtente(String utente) {
 		 try {
 				BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
 				String s, file = "";
@@ -275,9 +282,46 @@ public class Prodotto {
 				String riga[] = result.split("\n");
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
+				campi[5] = utente;
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5];
+				for(int j=0; j<riga.length; j++) {
+					file = file + riga[j] + "\n";
+				}
+		        FileWriter fw = new FileWriter("./database/db_product.txt");
+		        BufferedWriter bw = new BufferedWriter(fw);
+				bw.write(file);
+				br.close();
+		        bw.flush();
+		        bw.close();
+				this.utente = utente;
+		 }catch(Exception e) {
+			System.out.println(e.getMessage()); 
+		 }
+	}
+	
+	
+	public void setProdotto(String nome, String iap, String numero, String tipo, String marca) {
+		 try {
+				BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+				String s, file = "";
+				String result ="";
+				String originalname=this.nome; 
+				int i =0;
+				int found=0;
+				while((s = br.readLine()) != null){
+					result = result + s + "\n";
+					String data[] = s.split(",");
+					 if(data[0].equalsIgnoreCase(originalname)) {
+						found=i; 
+					 }
+				     i++;
+				}
+				String riga[] = result.split("\n");
+				String campi[] = riga[found].split(",");
+				//cambiare indice ad ogni set
 				campi[0]=nome;
-				campi[1]=numero;
-				campi[2]=iap;
+				campi[1]=iap;
+				campi[2]=numero;
 				campi[3]=tipo;
 				campi[4] = marca;
 				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4];
@@ -307,7 +351,7 @@ public class Prodotto {
 				String serial_number = data[1]; 
 				if(name.equalsIgnoreCase(nome) || serial_number.equalsIgnoreCase(nome)){
 					System.out.println("Product Found");
-					product = new Prodotto(name, serial_number, data[2], data[3], data[4]);
+					product = new Prodotto(name, serial_number, data[2], data[3], data[4], data[5]);
 					br.close();
 					return product;
 				}
@@ -321,7 +365,7 @@ public class Prodotto {
 		}
 	}
 	
-	public String destroy(String prodotto) {
+	public String destroy(String iap) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
 			String s,prova = "";
@@ -329,8 +373,8 @@ public class Prodotto {
 			while((s = br.readLine()) != null){
 				String data[] = s.split(",");
 				String nome = data[0];
-				String numeroseriale = data[1];
-				if(!numeroseriale.equalsIgnoreCase(prodotto) && !nome.equalsIgnoreCase(prodotto)){
+				String iap_db = data[1];
+				if(!iap_db.equalsIgnoreCase(iap) && !nome.equalsIgnoreCase(iap)){
 			        prova = prova + s + '\n';
 			    }else {
 					found = true;
@@ -361,10 +405,11 @@ public class Prodotto {
 			while((s = br.readLine()) != null){
 				String data[] = s.split(",");
 				String name = data[0];
-				String serial_number = data[1]; 
-				if(serial_number.equalsIgnoreCase(prodotto)){
+				String iap = data[1]; 
+				if(name.equalsIgnoreCase(prodotto) || iap.equalsIgnoreCase(prodotto)){
 					System.out.println("Product Found");
-					product = new Prodotto(name, serial_number, data[2], data[3], data[4]);
+					product = new Prodotto(name, iap, data[2], data[3], data[4], data[5]);
+					br.close();
 					return product;
 				}else {
 					System.out.println("Product not found");
@@ -378,9 +423,9 @@ public class Prodotto {
 		}
 	}
 
-	public String aggiungiProdotto(String nome, String serial_number,String iap, String tipo, String marca) {
+	public String aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
 		try {
-			String line = nome + "," + serial_number + "," + iap + "," + tipo + "," + marca;
+			String line = nome + "," + iap + "," + serial_number + "," + tipo + "," + marca + ", null";
 	        FileWriter fw = new FileWriter("./database/db_product.txt", true);
 	        BufferedWriter bw = new BufferedWriter(fw);
 	        bw.write(line);
