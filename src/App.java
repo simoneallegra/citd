@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument.LeafElement;
@@ -19,21 +20,22 @@ public class App {
 	
 	private JFrame frame;
 	private JTable jt, jtProduct;
-	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel;
-	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel,researchErrorLabel, iapProductLabel;
+	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel;
+	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
+	private JTextField ricercaPossesso, ricercaTipo, ricercaCosti, ricercaUtilizzo, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza;
 	private JRadioButton superuserField;
-	private JButton loginBtn,backBtn ,searchProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn;
+	private JButton loginBtn,backBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro;
 	private JMenuBar homeBar;
 	private JMenu setupMenu,setupMenuLogout;
 	private JMenuItem itemUserSetup,itemProductSetup,itemLogoutSetup;
-	private JTextArea text;
 
 	String valueInCell = "";
 	String[] arrayString;
 	int pressButton=0;
 	Boolean found= false;
 	Utente userLogged = null;
+
 	
 	public CITD citd;
 	
@@ -381,8 +383,8 @@ public class App {
 					productSetupPanel = new JPanel();
 					//All'interno del panel inserisco un tris di bottoni
 					//RICERCA PRODOTTO, AGGIUNTA ED ELIMINAZIONE
-					// searchProductButton = new JButton("Cerca Prodotto");
-					// productSetupPanel.add(searchProductButton);
+					proiezioniSpesaProductButton = new JButton("Proiezioni spesa");
+					productSetupPanel.add(proiezioniSpesaProductButton);
 					
 					addProductButton = new JButton("Aggiungi Prodotto");
 					productSetupPanel.add(addProductButton);
@@ -397,6 +399,112 @@ public class App {
 
 					mainPanel.add(productSetupPanel, "productSetupPanel");
 					cl.show(mainPanel, "productSetupPanel");
+
+					//Proiezioni di spesa
+					proiezioniSpesaProductButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							
+							proiezioniSpesaPanel = new JPanel();
+							proiezioniSpesaPanel.setLayout(new BoxLayout(proiezioniSpesaPanel, BoxLayout.Y_AXIS));
+
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.show(mainPanel, "productSetupPanel");
+								}});
+							backBtn.setBounds(85, 66, 72, 20);
+							proiezioniSpesaPanel.add(backBtn);
+							
+							JPanel ricercaPanel = new JPanel(new FlowLayout());
+							// JPanel ricercaPanel2 = new JPanel(new FlowLayout());
+							resultPanel = new JPanel();
+
+							JLabel possessoLabel = new JLabel("Possesso");
+							JLabel tipoLabel = new JLabel("Tipo");
+							JLabel costiLabel = new JLabel("Costi");
+							JLabel impiegatoAssegnatoLabel = new JLabel("Impiegato assegnato");
+							JLabel dataLabel = new JLabel("Data");
+							JLabel cadenzaLabel = new JLabel("Cadenza");
+
+							ricercaPossesso = new JTextField();
+							ricercaPossesso.setColumns(10);
+							ricercaTipo = new JTextField();
+							ricercaTipo.setColumns(10);
+							ricercaCosti = new JTextField();
+							ricercaCosti.setColumns(10);
+							ricercaImpiegatoAssegnato = new JTextField();
+							ricercaImpiegatoAssegnato.setColumns(10);
+							ricercaData = new JTextField();
+							ricercaData.setColumns(10);
+							ricercaCadenza = new JTextField();
+							ricercaCadenza.setColumns(10);	
+
+							ricercaPanel.add(possessoLabel);
+							ricercaPanel.add(ricercaPossesso);
+							ricercaPanel.add(tipoLabel);
+							ricercaPanel.add(ricercaTipo);
+							ricercaPanel.add(costiLabel);
+							ricercaPanel.add(ricercaCosti);
+							ricercaPanel.add(impiegatoAssegnatoLabel);
+							ricercaPanel.add(ricercaImpiegatoAssegnato);
+							ricercaPanel.add(dataLabel);
+							ricercaPanel.add(ricercaData);
+							ricercaPanel.add(cadenzaLabel);
+							ricercaPanel.add(ricercaCadenza);
+
+							String colonna[]={"COSTO "};
+							final String filteredData[][] = new String[1][1];
+							jt = new JTable(filteredData,colonna);
+							resultPanel.add(new JScrollPane(jt));
+
+							filtro = new JButton("Filtra");
+							filtro.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									try {
+										int costo = 0;
+										String data[][] = utility.getProductTableData(9);
+										
+										for(int i=0;i < data.length;i++){
+											if(ricercaPossesso.getText().isEmpty() || ricercaPossesso.getText().equals(data[i][8])){
+												if(ricercaTipo.getText().isEmpty() || ricercaTipo.getText().equals(data[i][3])){
+													if(ricercaCosti.getText().isEmpty() || Integer.parseInt(ricercaCosti.getText()) <= Integer.parseInt(data[i][7])){//per ora min costo
+														if(ricercaImpiegatoAssegnato.getText().isEmpty() || ricercaImpiegatoAssegnato.getText().equals(data[i][5])){
+															if(ricercaData.getText().isEmpty()){//per ora max data, non fa usare le librerire per la data 
+																costo += Integer.parseInt(data[i][7]);
+															}
+														}
+													}
+												}
+											}
+										}
+										if(ricercaCadenza.getText().equals("settimanale")){
+											costo = costo/4;
+										}else if(ricercaCadenza.getText().equals("annuale")){
+											costo = costo*12;
+										}
+										System.out.println("costo :" + costo);
+										filteredData[0][0] = Integer.toString(costo) + "\u20AC";
+										String colonna[]={"COSTO " + (ricercaCadenza.getText().isEmpty() ? "MENSILE" : ricercaCadenza.getText().toUpperCase())};
+										Model table = new Model(filteredData,colonna);
+										jt.setModel(table);
+										((Model) jt.getModel()).fireTableDataChanged();
+										
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}});
+							filtro.setBounds(85, 66, 72, 20);
+							ricercaPanel.add(filtro);
+
+							proiezioniSpesaPanel.add(ricercaPanel);
+							proiezioniSpesaPanel.add(resultPanel);
+														
+							mainPanel.add(proiezioniSpesaPanel, "proiezioniSpesaPanel");
+							cl.show(mainPanel, "proiezioniSpesaPanel");
+						}
+					});
+
 					//evento aggiungi prodotto
 					addProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {

@@ -1,7 +1,8 @@
-smartphone, CITD001, SN0123, telefono, Iphone, null
-pc2, CITD002, SN0456, personalcomputer,Lenovo,pippo
-cuffie, CITD003, SN1123, dotazioni, JABRA,thasup
-tastiera,CITD004,SN0564,dotazioni,Sony, null
-schermo,CITD005,SN7855,dotazioni,DELL,thasup
-mouse,CITD006,SN7531,portable,LG,pippo
-caricatore,CITD006,SN1593,portable,Samsung, null
+smartphone,CITD001,SN0123,telefono,Iphone,null,22/06/2023,50,noleggio
+pc2,CITD002,SN0456,personalcomputer,Lenovo,pippo,28/06/2023,50,noleggio
+cuffie,CITD003,SN1123,dotazioni,JABRA,thasup,22/08/2023,44,acquisto
+tastiera,CITD004,SN0564,dotazioni,Sony,null,null,50,noleggio
+schermo,CITD005,SN7855,dotazioni,DELL,thasup,null,111,noleggio
+mouse,CITD006,SN7531,portable,LG,pippo,12/07/2023,23,abbonamento
+caricatore,CITD007,SN1593,portable,Samsung,null,02/06/2023,520,noleggio
+pc,CITD008,SN1595,portable,Samsung,pippo,null,45,null
