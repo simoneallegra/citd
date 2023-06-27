@@ -6,6 +6,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 
 
@@ -15,11 +18,13 @@ public class CITD{
 	private Utils utility;
 	private Utente utente;
 	private Prodotto prod;
+	private Proiezioni proiezioni;
 
 	public CITD(){
 		utility = new Utils();
 		utente = new Utente();
 		prod = new Prodotto();
+		proiezioni = new Proiezioni();
 	}
 	
 	public Utente Login(String matricola, String password) {
@@ -115,7 +120,14 @@ public class CITD{
 		}
 	}
 
+	public String[][] getProiezioni(String possesso, String tipo, String costoMin,String costoMax, String impiegatoAssegnato, String date, String cadenza ) throws IOException, NumberFormatException{
 
+        String filteredData[][] = new String[1][1];
+        filteredData[0][0] = Integer.toString(proiezioni.proiezione(possesso, tipo, costoMin, costoMax, impiegatoAssegnato, date, cadenza)) + "\u20AC";
+        
+        return filteredData;
+		
+	}
 	
 
 }

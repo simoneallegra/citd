@@ -23,7 +23,7 @@ public class App {
 	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
-	private JTextField ricercaPossesso, ricercaTipo, ricercaCosti, ricercaUtilizzo, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza;
+	private JTextField ricercaPossesso, ricercaTipo, ricercaCostiMin,ricercaCostiMax, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza;
 	private JRadioButton superuserField;
 	private JButton loginBtn,backBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro;
 	private JMenuBar homeBar;
@@ -384,7 +384,7 @@ public class App {
 					//All'interno del panel inserisco un tris di bottoni
 					//RICERCA PRODOTTO, AGGIUNTA ED ELIMINAZIONE
 					proiezioniSpesaProductButton = new JButton("Proiezioni spesa");
-					productSetupPanel.add(proiezioniSpesaProductButton);
+					if(userLogged.superuser) productSetupPanel.add(proiezioniSpesaProductButton);
 					
 					addProductButton = new JButton("Aggiungi Prodotto");
 					productSetupPanel.add(addProductButton);
@@ -421,17 +421,20 @@ public class App {
 
 							JLabel possessoLabel = new JLabel("Possesso");
 							JLabel tipoLabel = new JLabel("Tipo");
-							JLabel costiLabel = new JLabel("Costi");
+							JLabel costiMinLabel = new JLabel("Costo minimo");
+							JLabel costiMaxLabel = new JLabel("Costo massimo");
 							JLabel impiegatoAssegnatoLabel = new JLabel("Impiegato assegnato");
-							JLabel dataLabel = new JLabel("Data");
+							JLabel dataLabel = new JLabel("Data scadenza");
 							JLabel cadenzaLabel = new JLabel("Cadenza");
 
 							ricercaPossesso = new JTextField();
 							ricercaPossesso.setColumns(10);
 							ricercaTipo = new JTextField();
 							ricercaTipo.setColumns(10);
-							ricercaCosti = new JTextField();
-							ricercaCosti.setColumns(10);
+							ricercaCostiMin = new JTextField();
+							ricercaCostiMin.setColumns(10);
+							ricercaCostiMax = new JTextField();
+							ricercaCostiMax.setColumns(10);
 							ricercaImpiegatoAssegnato = new JTextField();
 							ricercaImpiegatoAssegnato.setColumns(10);
 							ricercaData = new JTextField();
@@ -443,8 +446,10 @@ public class App {
 							ricercaPanel.add(ricercaPossesso);
 							ricercaPanel.add(tipoLabel);
 							ricercaPanel.add(ricercaTipo);
-							ricercaPanel.add(costiLabel);
-							ricercaPanel.add(ricercaCosti);
+							ricercaPanel.add(costiMinLabel);
+							ricercaPanel.add(ricercaCostiMin);
+							ricercaPanel.add(costiMaxLabel);
+							ricercaPanel.add(ricercaCostiMax);
 							ricercaPanel.add(impiegatoAssegnatoLabel);
 							ricercaPanel.add(ricercaImpiegatoAssegnato);
 							ricercaPanel.add(dataLabel);
@@ -461,29 +466,7 @@ public class App {
 							filtro.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
 									try {
-										int costo = 0;
-										String data[][] = utility.getProductTableData(9);
-										
-										for(int i=0;i < data.length;i++){
-											if(ricercaPossesso.getText().isEmpty() || ricercaPossesso.getText().equals(data[i][8])){
-												if(ricercaTipo.getText().isEmpty() || ricercaTipo.getText().equals(data[i][3])){
-													if(ricercaCosti.getText().isEmpty() || Integer.parseInt(ricercaCosti.getText()) <= Integer.parseInt(data[i][7])){//per ora min costo
-														if(ricercaImpiegatoAssegnato.getText().isEmpty() || ricercaImpiegatoAssegnato.getText().equals(data[i][5])){
-															if(ricercaData.getText().isEmpty()){//per ora max data, non fa usare le librerire per la data 
-																costo += Integer.parseInt(data[i][7]);
-															}
-														}
-													}
-												}
-											}
-										}
-										if(ricercaCadenza.getText().equals("settimanale")){
-											costo = costo/4;
-										}else if(ricercaCadenza.getText().equals("annuale")){
-											costo = costo*12;
-										}
-										System.out.println("costo :" + costo);
-										filteredData[0][0] = Integer.toString(costo) + "\u20AC";
+										String filteredData[][] = citd.getProiezioni(ricercaPossesso.getText(),ricercaTipo.getText(),ricercaCostiMin.getText(),ricercaCostiMax.getText(),ricercaImpiegatoAssegnato.getText(),ricercaData.getText(),ricercaCadenza.getText());
 										String colonna[]={"COSTO " + (ricercaCadenza.getText().isEmpty() ? "MENSILE" : ricercaCadenza.getText().toUpperCase())};
 										Model table = new Model(filteredData,colonna);
 										jt.setModel(table);
@@ -774,7 +757,7 @@ public class App {
 
 															assignProductButton = new JButton("Assegna Prodotto");
 															assignProductButton.setBounds(85, 106, 72, 20);
-															detailProductPanel.add(assignProductButton);
+															if(userLogged.superuser) detailProductPanel.add(assignProductButton);
 
 															assignProductButton.addActionListener(new ActionListener() {
 																public void actionPerformed(ActionEvent arg0) {
