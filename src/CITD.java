@@ -19,12 +19,14 @@ public class CITD{
 	private Utente utente;
 	private Prodotto prod;
 	private Proiezioni proiezioni;
+	private Manutenzione manutenzione;
 
 	public CITD(){
 		utility = new Utils();
 		utente = new Utente();
 		prod = new Prodotto();
 		proiezioni = new Proiezioni();
+		manutenzione = new Manutenzione();
 	}
 	
 	public Utente Login(String matricola, String password) {
@@ -129,5 +131,15 @@ public class CITD{
 		
 	}
 	
+	public String[][] getMaintenance(){
+		String data[][] = manutenzione.getMaintenanceProduct();
+		return data;
+	}
+	
+	public String[][] acceptMaintenance(String iap,String stato) {
+		manutenzione.acceptMaintenance(iap,stato);
+		String data[][] = getMaintenance();
+		return data;
+	}
 
 }

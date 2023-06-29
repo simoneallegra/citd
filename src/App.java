@@ -20,12 +20,12 @@ public class App {
 	
 	private JFrame frame;
 	private JTable jt, jtProduct;
-	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel;
+	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel,careProductPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
 	private JTextField ricercaPossesso, ricercaTipo, ricercaCostiMin,ricercaCostiMax, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza;
 	private JRadioButton superuserField;
-	private JButton loginBtn,backBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro;
+	private JButton loginBtn,backBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro,careProductButton,acceptMaintenanceBtn,denyMaintenanceBtn;
 	private JMenuBar homeBar;
 	private JMenu setupMenu,setupMenuLogout;
 	private JMenuItem itemUserSetup,itemProductSetup,itemLogoutSetup;
@@ -392,9 +392,13 @@ public class App {
 					viewProductButton = new JButton("Visualizza Prodotti");
 					productSetupPanel.add(viewProductButton);
 
+					//manutenzione = care
+					careProductButton = new JButton("Gestisci Manutenzioni");
+					productSetupPanel.add(careProductButton);
+					
 					if(userLogged != null && userLogged.superuser == false ) {
 						addProductButton.setVisible(false);
-						// viewProductButton.setVisible(false);
+						careProductButton.setVisible(false);
 					}
 
 					mainPanel.add(productSetupPanel, "productSetupPanel");
@@ -889,7 +893,72 @@ public class App {
 
 						}
 					});
+						
+					careProductButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							
+							careProductPanel = new JPanel();
+							careProductPanel.setLayout(new BoxLayout(careProductPanel, BoxLayout.Y_AXIS));
+							
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.show(mainPanel, "productSetupPanel");
+								}
+							});
+							backBtn.setBounds(85, 66, 72, 20);
+							careProductPanel.add(backBtn);
+							String data[][]=citd.getMaintenance();
+							String colonna[]={"NOME","NUMERO SERIALE","STATO MANUTENZIONE"};
+							jtProduct = new JTable(data,colonna);
+							careProductPanel.add(new JScrollPane(jtProduct));
+							
+						    jtProduct.addMouseListener(new MouseAdapter() {
+						        @Override
+						        public void mouseClicked(final MouseEvent e){
+						            if (e.getClickCount() == 1){
+						                final JTable jTable= (JTable)e.getSource();
+						                final int row = jTable.getSelectedRow();			                
+										valueInCell = (String)jTable.getValueAt(row, 1);
+										String stato = (String)jTable.getValueAt(row, 2);
+										if(!valueInCell.equalsIgnoreCase("") && stato.equalsIgnoreCase("lavorazione")) {
 										
+											acceptMaintenanceBtn.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent arg0) {
+													String result[][] = citd.acceptMaintenance(valueInCell,"approvata");
+													String colonna[]={"NOME","NUMERO SERIALE","STATO MANUTENZIONE"};
+													Model table = new Model(result,colonna);
+													jtProduct.setModel(table);
+													((Model) jtProduct.getModel()).fireTableDataChanged();
+												}
+											});
+											denyMaintenanceBtn.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent arg0) {
+													String result[][] = citd.acceptMaintenance(valueInCell,"rifiutata");
+													String colonna[]={"NOME","NUMERO SERIALE","STATO MANUTENZIONE"};
+													Model table = new Model(result,colonna);
+													jtProduct.setModel(table);
+													((Model) jtProduct.getModel()).fireTableDataChanged();
+												}
+											});
+											
+											
+										}
+						            }
+						        }
+						    });
+							acceptMaintenanceBtn = new JButton("Accetta Manutenzione");
+							careProductPanel.add(acceptMaintenanceBtn);	
+							
+							denyMaintenanceBtn = new JButton("Rifiuta   Manutenzione");
+							careProductPanel.add(denyMaintenanceBtn);	
+			
+							mainPanel.add(careProductPanel, "careProductPanel");
+							cl.show(mainPanel, "careProductPanel");
+							
+						}
+					});
+					
 					
 				}
 			});
