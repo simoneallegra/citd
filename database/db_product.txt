@@ -1,5 +1,5 @@
 smartphone,CITD001,SN0123,telefono,Iphone,null,22/06/2023,50,noleggio,null,null,33343132142
-pc2,CITD002,SN0456,personalcomputer,Lenovo,pippo,28/06/2023,50,noleggio,manutenzione,rifiutata,null
+pc2,CITD002,SN0456,personalcomputer,Lenovo,pippo,28/06/2023,50,noleggio,manutenzione,rifiutata
 cuffie,CITD003,SN1123,dotazioni,JABRA,thasup,22/08/2023,44,acquisto,null,null,null
 tastiera,CITD004,SN0564,dotazioni,Sony,null,null,50,noleggio,manutenzione,approvata,null
 schermo,CITD005,SN7855,dotazioni,DELL,thasup,null,111,noleggio,manutenzione,rifiutata,null

@@ -971,6 +971,7 @@ public class App {
 			itemLogoutSetup.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
 					userLogged = null;
+					homeBar.setVisible(false);
 					cl.show(mainPanel, "loginPanel");
 				}
 			});
