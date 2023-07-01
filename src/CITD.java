@@ -6,6 +6,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 
 
@@ -15,11 +18,15 @@ public class CITD{
 	private Utils utility;
 	private Utente utente;
 	private Prodotto prod;
+	private Proiezioni proiezioni;
+	private Manutenzione manutenzione;
 
 	public CITD(){
 		utility = new Utils();
 		utente = new Utente();
 		prod = new Prodotto();
+		proiezioni = new Proiezioni();
+		manutenzione = new Manutenzione();
 	}
 	
 	public Utente Login(String matricola, String password) {
@@ -86,13 +93,18 @@ public class CITD{
 	}
 
 	public Prodotto modificaProdotto(String prodotto) {
-		prod = prod.edit(prodotto);
+		try{
+			prod = prod.edit(prodotto);
 			return prod;
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
 	}
 
-	public String eliminaProdotto(String numeroseriale) {
+	public String eliminaProdotto(String iap) {
 		try {
-			String product = prod.destroy(numeroseriale);
+			String product = prod.destroy(iap);
 			return product;
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -100,9 +112,9 @@ public class CITD{
 		}
 	}
 
-	public String aggiungiProdotto(String nome, String serial_number, String iap, String tipo, String marca) {
+	public String aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
 		try {
-			String product = prod.aggiungiProdotto(nome, serial_number, iap, tipo, marca);
+			String product = prod.aggiungiProdotto(nome, iap, serial_number, tipo, marca);
 			return product;
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -110,7 +122,24 @@ public class CITD{
 		}
 	}
 
+	public String[][] getProiezioni(String possesso, String tipo, String costoMin,String costoMax, String impiegatoAssegnato, String date, String cadenza ) throws IOException, NumberFormatException{
 
+        String filteredData[][] = new String[1][1];
+        filteredData[0][0] = Integer.toString(proiezioni.proiezione(possesso, tipo, costoMin, costoMax, impiegatoAssegnato, date, cadenza)) + "\u20AC";
+        
+        return filteredData;
+		
+	}
 	
+	public String[][] getMaintenance(){
+		String data[][] = manutenzione.getMaintenanceProduct();
+		return data;
+	}
+	
+	public String[][] acceptMaintenance(String iap,String stato) {
+		manutenzione.acceptMaintenance(iap,stato);
+		String data[][] = getMaintenance();
+		return data;
+	}
 
 }
