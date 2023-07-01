@@ -57,29 +57,7 @@ public class Noleggio extends Prodotto{
 	}
 
 	public void updateNoleggio(String newScadenza){
-		try {
-			String[][] productData = utils.getProductTableData(12);
-
-			String rewrite = "";
-
-			for (int row = 0; row < productData.length; row++) {
-					if(productData[row][1].equalsIgnoreCase(this.getIAP()) && productData[row][8].equals("noleggio")){
-						//Elemento trovato -> aggiorna scadenza
-						productData[row][6] = newScadenza;
-					}
-            	rewrite += rewrite + productData[row] +"\n";
-				
-			}
-
-			FileWriter fw = new FileWriter("./database/db_product.txt");
-	        BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(rewrite);
-	        bw.flush();
-	        bw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.setScadenza(newScadenza);
 	}
 	
 }
