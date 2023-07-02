@@ -20,6 +20,7 @@ public class CITD{
 	private Prodotto prod;
 	private Proiezioni proiezioni;
 	private Manutenzione manutenzione;
+	private Noleggio noleggio;
 
 	public CITD(){
 		utility = new Utils();
@@ -27,6 +28,7 @@ public class CITD{
 		prod = new Prodotto();
 		proiezioni = new Proiezioni();
 		manutenzione = new Manutenzione();
+		noleggio = new Noleggio(prod, null);
 	}
 	
 	public Utente Login(String matricola, String password) {
@@ -142,4 +144,9 @@ public class CITD{
 		return data;
 	}
 
+	
+	public Noleggio getNoleggio(){
+		System.out.println("getNoleggio");
+		return noleggio;
+	}
 }
