@@ -1,8 +1,16 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.xml.crypto.Data;
 
@@ -27,9 +35,11 @@ public class Prodotto {
 	private String possesso;
 	
 
-	private String manutenzione; //indica il costo mensile
+	private String manutenzione; //indica se il prodotto è in manutenzione
 
 	private String stato;
+	
+	private String url;//per le licenze software
 
 	
 	/**
@@ -576,5 +586,181 @@ public class Prodotto {
 			return null;
 		}
 	}
+	
+	public String [][] getLicense() {
+		String data[][] = null;
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+			String s = "";
+			int i = 0;
+			int counter = 0;
+			ArrayList <String[]>listOfArrays = new ArrayList<>();
+			while((s = br.readLine()) != null){
+				String split[]	= s.split(",");
+				String scadenza = split[6];
+				int risultato = 0;
+				if(!scadenza.equalsIgnoreCase("null")) {			
+			        DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+			        Date scad=null;
+			        try {
+			            scad = formatoData.parse(scadenza);
+			        } catch (ParseException e) {
+			            e.printStackTrace();
+			        }
+			        Date dataOggi = new Date();
+			        risultato = scad.compareTo(dataOggi);
+				}
+		        //se risultato è minore di 0, la scadenza è precedente alla data di oggi
+				if(split[3].equalsIgnoreCase("software") && risultato<0 ) {
+					String dati[] =  new String[4];
+					counter++;
+					dati[0] = split[0];
+					dati[1] = split[1];
+					dati[2] = split[4];
+					dati[3] = split[6];
+					listOfArrays.add(dati);
+				}	
+				i++;
+			}
+			int riga=0;
+			data = new String[counter][4];
+	        // Copia gli elementi non nulli nella nuova matrice
+	        for (String[] array : listOfArrays) {
+				int column=0;
+	            for (String element : array) {
+	            	data[riga][column]= element;
+	            	column++;
+	            }
+	            riga++;
+	        }
+			br.close();
+			return data;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
+	public String getUrl(String iap) {
+		try {
+		BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+		String s = "";
+		String url="";
+		int i = 0;
+		while((s = br.readLine()) != null){
+			String data[] = s.split(",");
+			if(data[1].equalsIgnoreCase(iap)) {
+				url = data[11];
+				br.close();
+				return url;
+			}
+			i++;
+		}
+		br.close();
+		return null;
+		
+		}catch(FileNotFoundException e) {
+			return null;
+		}catch(IOException e) {
+			return null;			
+		}
+	}
+	
+	
+	public String rinnovaScadenza(String iap, String scadenza) {
+		 try {
+			 int risultato=0;
+		        DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+		        try {
+		            Date data = formatoData.parse(scadenza);
+			        Date dataOggi = new Date();
+			        risultato = data.compareTo(dataOggi);
+			        if(risultato<0) {
+			        	//errore da gestire
+			        	return null;
+			        }
+		        } catch (ParseException e) {
+					e.getMessage();
+		        	return null;
+		        }
+				BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+				String s, file = "";
+				String result ="";
+				int i =0;
+				int found=0;
+				while((s = br.readLine()) != null){
+					result = result + s + "\n";
+					String data[] = s.split(",");
+					 if(data[1].equalsIgnoreCase(iap)) {
+						found=i; 
+					 }
+				     i++;
+				}
+				String riga[] = result.split("\n");
+				String campi[] = riga[found].split(",");		        
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+scadenza+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10] + "," + campi[11];
+				for(int j=0; j<riga.length; j++) {
+					file = file + riga[j] + "\n";
+				}
+		        FileWriter fw = new FileWriter("./database/db_product.txt");
+		        BufferedWriter bw = new BufferedWriter(fw);
+				bw.write(file);
+				br.close();
+		        bw.flush();
+		        bw.close();
+		 }catch(Exception e) {
+			System.out.println(e.getMessage()); 
+			return null;
+		 }
+	        return "ok";
+	}
+
+	public String [][]getUserProduct(String matricola) {
+		String data[][] = null;
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+			String s = "";
+			int i = 0;
+			int counter = 0;
+			ArrayList <String[]>listOfArrays = new ArrayList<>();
+			while((s = br.readLine()) != null){
+				String split[]	= s.split(",");
+				String utente = split[5];
+				if((utente.equalsIgnoreCase(matricola) || utente.equalsIgnoreCase("null")) && !split[3].equalsIgnoreCase("software") ) {
+					String dati[] =  new String[4];
+					counter++;
+					dati[0] = split[0];
+					dati[1] = split[1];
+					dati[2] = split[9];
+					dati[3] = split[10];
+					if(dati[3].equalsIgnoreCase("null")) {
+						dati[3]="-";
+					}
+					listOfArrays.add(dati);
+				}	
+				i++;
+			}
+			int riga=0;
+			data = new String[counter][4];
+	        // Copia gli elementi non nulli nella nuova matrice
+	        for (String[] array : listOfArrays) {
+				int column=0;
+	            for (String element : array) {
+	            	data[riga][column]= element;
+	            	column++;
+	            }
+	            riga++;
+	        }
+			br.close();
+			return data;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	
 }

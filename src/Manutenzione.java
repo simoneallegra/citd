@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class Manutenzione extends Prodotto{
 
 	}
 	
-	public void acceptMaintenance(String iap, String stato) {
+	public void acceptMaintenance(String iap, String stato, Boolean request) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
 				String s, file = "";
@@ -73,7 +74,10 @@ public class Manutenzione extends Prodotto{
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[10] = stato;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				if(request) {
+					campi[9] ="manutenzione";					
+				}
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 			}			
@@ -87,6 +91,50 @@ public class Manutenzione extends Prodotto{
 		 }catch(Exception e) {
 			System.out.println(e.getMessage()); 
 		 }
+	}
+	
+	public void setProblemRequest(String iap, String problema) {
+		try {
+			String richiesta = iap + "," + problema;
+	        FileWriter fw = new FileWriter("./database/db_requests.txt", true);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        bw.write(richiesta);
+	        bw.write("\n");
+	        bw.flush();
+	        bw.close();			
+		}catch(FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		}catch(IOException e) {
+			System.out.println(e.getMessage());			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());			
+		}
+	}
+	
+	public String[][] getCareRequest(String iap){
+		String dati[][] = new String[1][2];
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_requests.txt"));
+			String s = "";
+			int i = 0;
+			while((s = br.readLine()) != null){
+				String split[]	= s.split(",");
+				if(split[0].equalsIgnoreCase(iap)) {
+					dati[0][0] = split[0];
+					dati[0][1] = split[1];
+				}	
+				i++;
+			}
+			br.close();
+			return dati;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		
 	}
 	
 }
