@@ -158,8 +158,8 @@ public class Noleggio extends Prodotto{
 		}
 	}
 
-	public void updateNoleggio(String nome,String newScadenza){
-		Prodotto prodotto = new Prodotto(nome,"");
+	public void updateNoleggio(String iap,String newScadenza){
+		Prodotto prodotto = new Prodotto(iap);
 		prodotto.setScadenza(newScadenza);
 	}
 	

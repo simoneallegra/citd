@@ -68,6 +68,10 @@ public class Prodotto {
 		this.serial_number = serial_number;
 	}
 
+	public Prodotto(String iap) {
+		this.IAP = iap;
+	}
+
 	@Override
 	public String toString() {
 		return "Prodotto [nome=" + nome + ", serial_number=" + serial_number + "]";
@@ -340,14 +344,14 @@ public class Prodotto {
 				BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
 				String s, file = "";
 				String result ="";
-				String originalname=this.nome; 
+				String iap=this.IAP; 
 				int i =0;
 				int found=0;
 
 				while((s = br.readLine()) != null){
 					result = result + s + "\n";
 					String data[] = s.split(",");
-					 if(data[0].equalsIgnoreCase(originalname)) {
+					 if(data[1].equalsIgnoreCase(iap)) {
 						found=i; 
 					 }
 				     i++;

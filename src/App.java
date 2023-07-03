@@ -1219,6 +1219,12 @@ public class App {
 												public void actionPerformed(ActionEvent arg0) {
 													if(newScadenzaField.getText() != "")
 														citd.getNoleggio().updateNoleggio(valueInCell, newScadenzaField.getText());
+
+														String data[][]=citd.getNoleggio().getListaNoleggi();
+														String colonna[]={"NOME","IAP","SCADENZA TRA"};
+														Model table = new Model(data,colonna);
+														jtProduct.setModel(table);
+														((Model) jtProduct.getModel()).fireTableDataChanged();
 												}
 											});
 											openFileBtn.addActionListener(new ActionListener() {
