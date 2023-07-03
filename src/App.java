@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -22,12 +23,13 @@ public class App {
 	
 	private JFrame frame;
 	private JTable jt, jtProduct;
-	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel,careProductPanel,renewalLicensePanel,careRequestPanel;
+
+	private JButton loginBtn,backBtn,linkBtn,detailrequestBtn,renewalBtn, careBtn, problemsBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro,careProductButton,renewalLicenseButton,acceptMaintenanceBtn,denyMaintenanceBtn,careRequestBtn, rentProductButton, openFileBtn, updateRentBtn,updateDocBtn;
+	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel,careProductPanel, rentProductPanel,renewalLicensePanel,careRequestPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel;
 	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
-	private JTextField ricercaPossesso, ricercaTipo, ricercaCostiMin,ricercaCostiMax, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza,scadenza;
+	private JTextField ricercaPossesso, ricercaTipo, ricercaCostiMin,ricercaCostiMax, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza, newScadenzaField,scadenza;
 	private JRadioButton superuserField;
-	private JButton loginBtn,backBtn,linkBtn,detailrequestBtn,renewalBtn, careBtn, problemsBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro,careProductButton,renewalLicenseButton,acceptMaintenanceBtn,denyMaintenanceBtn,careRequestBtn;
 	private JMenuBar homeBar;
 	private JMenu setupMenu,setupMenuLogout;
 	private JMenuItem itemUserSetup,itemProductSetup,itemLogoutSetup;
@@ -397,6 +399,9 @@ public class App {
 					//manutenzione = care
 					careProductButton = new JButton("Gestisci Manutenzioni");
 					productSetupPanel.add(careProductButton);
+
+					rentProductButton = new JButton("Gestisci Noleggio");
+					productSetupPanel.add(rentProductButton);
 					
 					//rinnovo licenze
 					renewalLicenseButton = new JButton("Rinnovo Licenze");
@@ -410,6 +415,7 @@ public class App {
 						addProductButton.setVisible(false);
 						careProductButton.setVisible(false);
 						renewalLicenseButton.setVisible(false);
+						rentProductButton.setVisible(false);
 					}else {
 						careRequestBtn.setVisible(false);
 					}
@@ -1178,6 +1184,94 @@ public class App {
 					});
 					
 					
+					rentProductButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+
+							rentProductPanel = new JPanel();
+							rentProductPanel.setLayout(new BoxLayout(rentProductPanel, BoxLayout.Y_AXIS));
+							
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.show(mainPanel, "productSetupPanel");
+								}
+							});
+							backBtn.setBounds(85, 66, 72, 20);
+							rentProductPanel.add(backBtn);
+
+							JLabel newScadenzaLabel = new JLabel("Nuova scadenza");
+							
+							newScadenzaField = new JTextField();
+
+							String data[][]=citd.getNoleggio().getListaNoleggi();
+							String colonna[]={"NOME","IAP","SCADENZA TRA"};
+							jtProduct = new JTable(data,colonna);
+							rentProductPanel.add(new JScrollPane(jtProduct));
+
+							jtProduct.addMouseListener(new MouseAdapter() {
+						        @Override
+						        public void mouseClicked(final MouseEvent e){
+						            if (e.getClickCount() == 1){
+						                final JTable jTable= (JTable)e.getSource();
+						                final int row = jTable.getSelectedRow();
+										valueInCell = (String)jTable.getValueAt(row, 1);
+											updateRentBtn.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent arg0) {
+													if(newScadenzaField.getText() != "")
+														citd.getNoleggio().updateNoleggio(valueInCell, newScadenzaField.getText());
+												}
+											});
+											openFileBtn.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent arg0) {
+													System.out.println("open documento button");
+													try {
+														citd.getNoleggio().openDocumentoNoleggio(valueInCell);
+													} catch (IOException e) {
+														// TODO Auto-generated catch block
+														e.printStackTrace();
+													}
+												}
+											});
+
+											updateDocBtn.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent arg0) {
+													JFileChooser fileChooser = new JFileChooser();
+
+													int response = fileChooser.showSaveDialog(null);
+
+													if(response == JFileChooser.APPROVE_OPTION){
+														try {
+															citd.getNoleggio().setDocumentoNoleggio(valueInCell, fileChooser.getSelectedFile().getAbsolutePath());
+														} catch (IOException e) {
+															// TODO Auto-generated catch block
+															e.printStackTrace();
+														}
+													}
+												}
+											});
+						            }
+						        }
+						    });
+
+							openFileBtn = new JButton("Apri documento");
+							rentProductPanel.add(openFileBtn);	
+							
+							rentProductPanel.add(newScadenzaLabel);
+							newScadenzaLabel.setPreferredSize(new Dimension (50,50));
+
+							rentProductPanel.add(newScadenzaField);
+							newScadenzaField.setColumns(10);
+
+							updateRentBtn = new JButton("Aggiorna Scadenza");
+							rentProductPanel.add(updateRentBtn);	
+
+							updateDocBtn = new JButton("Aggiorna Documento");
+							rentProductPanel.add(updateDocBtn);	
+
+							mainPanel.add(rentProductPanel, "rentProductPanel");
+							cl.show(mainPanel, "rentProductPanel");
+						}
+					});
 					
 				}
 			});
@@ -1190,6 +1284,7 @@ public class App {
 			itemLogoutSetup.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
 					userLogged = null;
+					homeBar.setVisible(false);
 					cl.show(mainPanel, "loginPanel");
 				}
 			});

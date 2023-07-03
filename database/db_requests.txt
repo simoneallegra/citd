@@ -3,3 +3,4 @@ CITD003, Malfunzionamento
 CITD005, Obsolescenza
 CITD008, Richiede aggiornamenti
 CITD001,rotto
+CITD008,è morto pippo
