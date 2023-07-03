@@ -137,8 +137,38 @@ public class CITD{
 	}
 	
 	public String[][] acceptMaintenance(String iap,String stato) {
-		manutenzione.acceptMaintenance(iap,stato);
+		manutenzione.acceptMaintenance(iap,stato, false);
 		String data[][] = getMaintenance();
+		return data;
+	}
+	
+	public String[][] getLicense(){
+		String data[][] = prod.getLicense();
+		return data;
+	}
+
+	public String getUrl(String iap){
+		String url = prod.getUrl(iap);
+		return url;
+	}
+	
+	public String rinnovaScadenza(String iap, String scadenza) {
+		String controllo =prod.rinnovaScadenza(iap, scadenza);
+		return controllo;
+	}
+	
+	public String[][] getUserProduct(String matricola) {
+		String data[][] = prod.getUserProduct(matricola);
+		return data;
+	}
+	
+	public void setProblemRequest(String iap, String problema){
+		manutenzione.setProblemRequest(iap,problema);
+		manutenzione.acceptMaintenance(iap, "lavorazione", true);
+	}
+
+	public String[][] getCareRequest(String iap){
+		String data[][]=manutenzione.getCareRequest(iap);
 		return data;
 	}
 

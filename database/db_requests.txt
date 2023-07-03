@@ -1,0 +1,5 @@
+CITD006,Descrivi il problema del tuo dispositivo
+CITD003, Malfunzionamento
+CITD005, Obsolescenza
+CITD008, Richiede aggiornamenti
+CITD001,rotto

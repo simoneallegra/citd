@@ -1,0 +1,4 @@
+CITD006,Non funziona 
+CITD006,Descrivi il problema del tuo dispositivo
+CITD006,Killer Queen
+CITD006,Descrivi il problema del tuo dispositivo
