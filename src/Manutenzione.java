@@ -116,14 +116,12 @@ public class Manutenzione extends Prodotto{
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("./database/db_requests.txt"));
 			String s = "";
-			int i = 0;
 			while((s = br.readLine()) != null){
 				String split[]	= s.split(",");
 				if(split[0].equalsIgnoreCase(iap)) {
 					dati[0][0] = split[0];
 					dati[0][1] = split[1];
 				}	
-				i++;
 			}
 			br.close();
 			return dati;

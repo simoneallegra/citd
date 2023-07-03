@@ -1,4 +1,4 @@
-smartphone,CITD001,SN0123,hardware,Iphone,null,22/06/2023,50,noleggio,funzionante,null,null
+smartphone,CITD001,SN0123,hardware,Iphone,null,22/06/2023,50,noleggio,manutenzione,lavorazione,null
 office,CITD002,SN0456,software,Microsoft,pippo,18/10/2023,50,noleggio,null,null,https://www.microsoft.com/it-it
 cuffie,CITD003,SN1123,hardware,JABRA,thasup,22/08/2023,44,acquisto,manutenzione,lavorazione,null
 api,CITD004,SN0564,software,Google,null,15/04/2023,50,noleggio,null,null,https://cloud.google.com/
