@@ -15,8 +15,7 @@ public class Noleggio extends Prodotto{
 	String documentoNoleggio;
 	Utils utils;
 	
-	public Noleggio(Prodotto pr, String documentoNoleggio) {
-		this.setProdotto(pr.getNome(), pr.getIAP(), pr.getSerialNumber(), pr.getScadenza(), pr.getMarca());
+	public Noleggio(String documentoNoleggio) {
 		this.documentoNoleggio = documentoNoleggio;
 		utils = new Utils();
 	}
@@ -140,9 +139,13 @@ public class Noleggio extends Prodotto{
 				
 				String joined = "";
 				for(int i = 0; i< productData[row].length;i++){
+					if(i == productData[row].length){
+						joined += productData[row][i];
+						break;
+					}
 					joined += productData[row][i] + ",";
 				}
-            	rewrite += rewrite +joined +"\n";
+            	rewrite += joined +"\n";
 			}
 
 				

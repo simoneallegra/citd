@@ -87,7 +87,7 @@ public class App {
 		loginBtn = new JButton("Login");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//System.out.println(matricolaField.getText() +" "+ passwordField.getText());
+				System.out.println(matricolaField.getText() +" "+ passwordField.getText());
 				
 				citd = new CITD();
 				userLogged = citd.Login(matricolaField.getText(), passwordField.getText());
@@ -1232,6 +1232,8 @@ public class App {
 													System.out.println("open documento button");
 													try {
 														citd.getNoleggio().openDocumentoNoleggio(valueInCell);
+														openFileBtn.removeActionListener(this);
+
 													} catch (IOException e) {
 														// TODO Auto-generated catch block
 														e.printStackTrace();

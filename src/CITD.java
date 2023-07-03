@@ -28,7 +28,7 @@ public class CITD{
 		prod = new Prodotto();
 		proiezioni = new Proiezioni();
 		manutenzione = new Manutenzione();
-		noleggio = new Noleggio(prod, null);
+		noleggio = new Noleggio(null);
 	}
 	
 	public Utente Login(String matricola, String password) {
