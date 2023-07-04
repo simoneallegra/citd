@@ -7,8 +7,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.time.LocalDate;
 public class Noleggio extends Prodotto{
 
@@ -35,8 +40,10 @@ public class Noleggio extends Prodotto{
 					counter++;
 					dati[0] = split[0];
 					dati[1] = split[1];
-					// dati[2] = String.valueOf(this.giorniRimanenti(split[6]));
-					dati[2] = split[6];
+					int giorniRimanenti = this.giorniRimanenti(split[6]);
+					if(giorniRimanenti < 0) dati[2] = "SCADUTO";
+					else dati[2] = String.valueOf(giorniRimanenti) + " giorni";
+					//dati[2] = split[6];
 					listOfArrays.add(dati);
 				}	
 				i++;
@@ -61,12 +68,33 @@ public class Noleggio extends Prodotto{
 		}
 
 	}
+
+// 	public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+//     long diffInMillies = date2.getTime() - date1.getTime();
+//     return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+// }
 	
 	public int giorniRimanenti(String scadenza){
 
-		String [] splStrings =  scadenza.split("/");
-		LocalDate dataFine = LocalDate.of(Integer.parseInt(splStrings[2]), Integer.parseInt(splStrings[1]), Integer.parseInt(splStrings[0]));
-		return (int) ChronoUnit.DAYS.between(LocalDate.now(), dataFine);
+		// String [] splStrings =  scadenza.split("/");
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy", Locale.getDefault());
+			Date dateScadenza = formatter.parse(scadenza);
+			Date today = new Date();
+
+			long diffInMillies = dateScadenza.getTime() - today.getTime();
+
+			return (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return 0;
+		// String [] splStrings =  scadenza.split("/");
+		// LocalDate dataFine = Date.of(Integer.parseInt(splStrings[2]), Integer.parseInt(splStrings[1]), Integer.parseInt(splStrings[0]));
+		// return (int) ChronoUnit.DAYS.between(LocalDate.now(), dataFine);
 
 	}
 
