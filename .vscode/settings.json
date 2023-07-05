@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "/Users/simon/citd/citd/lib/junit-4.13.2-javadoc.jar"
+        ],
+        "exclude": [
+            "lib/junit-4.13.2-javadoc.jar"
+        ]
+    }
+}
