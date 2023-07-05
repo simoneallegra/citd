@@ -1,0 +1,5 @@
+CITD001,computer,hardware,ASUS,obsolescenza computer vecchio,approvata,pippo
+CITD002,cuffie,hardware,SONY,non si sentono più,rifiutata,pippo
+CITD003,musica,software,Spotify,voglio ascoltare musica,approvata,ciao
+CITD004,trackpad,hardware,Lenovo,non funziona il mouse,In attesa di approvazione,ciao
+CITD005,caricatore,hardware,Dell,non carica il pc,approvata,pippo

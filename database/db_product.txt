@@ -1,5 +1,15 @@
-api,CITD004,SN0564,software,Google,null,15/04/2023,50,abbonamento,null,null,https://cloud.google.com/,null,
-schermo,CITD005,SN7855,hardware,DELL,thasup,01/01/2024,111,noleggio,manutenzione,approvata,null,915.pdf,
-mouse,CITD006,SN7531,hardware,LG,pippo,01/01/2021,23,noleggio,manutenzione,rifiutata,null,772.pdf,
-astah,CITD007,SN1593,software,Astah,null,28/11/2022,520,abbonamento,null,null,https://astah.net/,null,
-pc,CITD008,SN1595,hardware,Samsung,pippo,null,45,acquisto,manutenzione,rifiutata,null,null,
+smartphone,CITD001,SN0123,hardware,Iphone,null,22/06/2023,50,noleggio,funzionante,null,null,null
+office,CITD002,SN0456,software,Microsoft,pippo,01/01/2024,50,noleggio,null,null,https://www.microsoft.com/it-it,null
+cuffie,CITD003,SN1123,hardware,JABRA,thasup,22/08/2023,44,acquisto,manutenzione,rifiutata,null,null
+api,CITD004,SN0564,software,Google,null,15/04/2023,50,abbonamento,null,null,https://cloud.google.com/,null
+schermo,CITD005,SN7855,hardware,DELL,ciao,01/01/2024,111,noleggio,manutenzione,lavorazione,null,915.pdf
+mouse,CITD006,SN7531,hardware,LG,pippo,01/01/2021,23,noleggio,manutenzione,approvata,null,772.pdf
+astah,CITD007,SN1593,software,Astah,null,28/11/2022,520,abbonamento,null,null,https://astah.net/,null
+pc,CITD008,SN1595,hardware,Samsung,pippo,null,45,acquisto,manutenzione,lavorazione,null,null
+monitor,CITD009,SN754,hardware,LG,null,null,80,acquisto,funzionante,null,null,null
+pc fisso,CITD010,SN586,hardware,Apple,ciao,null,752,acquisto,funzionante,null
+photoshop,CITD011,SN798,software,Adobe,null,05/11/2023,8,abbonamento,funzionante,null,https://www.adobe.com/,null
+computer,CITD012,SN136,hardware,ASUS,pippo,null,20,acquisto,funzionante,null,null,null
+cuffie,CITD013,SN621,hardware,SONY,pippo,null,78,acquisto,manutenzione,lavorazione,null,null
+caricatore,CITD014,SN587,hardware,Dell,pippo,null,35,acquisto,funzionante,null,null,null
+musica,CITD015,SN510,software,Spotify,ciao,17/12/2024,5,abbonamento,funzionante,null,https://www.spotify.com,null

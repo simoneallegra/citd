@@ -33,22 +33,23 @@ public class Prodotto {
 	private int costo; //indica il costo mensile
 
 	private String possesso;
-	
-
+		
 	private String manutenzione; //indica se il prodotto è in manutenzione
 
 	private String stato;
 	
 	private String url;//per le licenze software
 
+	private String documents;
+	
+	private Utils utility = new Utils();
 	
 	/**
 	 *  
 	 */
-	public Prodotto(String nome, String serial_number, String IAP, String tipo, String marca, String utente, String scadenza, int costo, String possesso, String manutenzione, String stato) {
+	public Prodotto(String nome, String serial_number, String tipo, String marca, String utente, String scadenza, int costo, String possesso, String manutenzione, String stato) {
 		this.nome = nome;
 		this.serial_number = serial_number;
-		this.IAP = IAP;
 		this.tipo = tipo;
 		this.marca = marca;	
 		this.utente= utente;
@@ -66,6 +67,54 @@ public class Prodotto {
 	public Prodotto(String nome, String serial_number) {
 		this.nome = nome;
 		this.serial_number = serial_number;
+	}
+	
+	public Prodotto(String nome, String serial_number, String tipo, String marca, String tipologia_acquisto, int costo, String scadenza, String link ) {
+		this.nome = nome;
+		//this.IAP = iap;
+		this.serial_number = serial_number;
+		this.tipo = tipo;
+		this.marca = marca;	
+		this.utente= "null";
+		this.scadenza= scadenza;
+		this.costo= costo;	
+		this.possesso=tipologia_acquisto;
+		this.manutenzione= "funzionante";
+		this.stato= "null";
+		this.url =link;
+		this.documents = "null";
+	}
+	
+	public Prodotto(String nome, String serial_number, String tipo, String marca, String utente, String tipologia_acquisto, int costo, String scadenza, String link ) {
+		this.nome = nome;
+		//this.IAP = iap;
+		this.serial_number = serial_number;
+		this.tipo = tipo;
+		this.marca = marca;	
+		this.utente= utente;
+		this.scadenza= scadenza;
+		this.costo= costo;	
+		this.possesso=tipologia_acquisto;
+		this.manutenzione= "funzionante";
+		this.stato= "null";
+		this.url =link;
+		this.documents = "null";
+	}
+
+	public Prodotto(String nome, String iap, String serial_number, String tipo, String marca,String utente, String scadenza, int costo, String tipologia_acquisto, String manutenzione, String stato, String link, String documents ) {
+		this.nome = nome;
+		this.IAP = iap;
+		this.serial_number = serial_number;
+		this.tipo = tipo;
+		this.marca = marca;	
+		this.utente= utente;
+		this.scadenza= scadenza;
+		this.costo= costo;	
+		this.possesso=tipologia_acquisto;
+		this.manutenzione= manutenzione;
+		this.stato= stato;
+		this.url =link;
+		this.documents = documents;
 	}
 
 	public Prodotto(String iap) {
@@ -134,7 +183,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[0] = nome;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 			}			
@@ -173,7 +222,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[1] = serialnumber;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -211,7 +260,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[2] = iap;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -249,7 +298,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[3] = tipo;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -286,7 +335,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[4] = marca;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -323,7 +372,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[5] = utente;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -360,7 +409,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[6] = scadenza;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -397,7 +446,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[7] = costo;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -434,7 +483,7 @@ public class Prodotto {
 				String campi[] = riga[found].split(",");
 				//cambiare indice ad ogni set
 				campi[8] = possesso;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -474,7 +523,7 @@ public class Prodotto {
 				campi[2]=numero;
 				campi[3]=tipo;
 				campi[4] = marca;
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}
@@ -500,10 +549,12 @@ public class Prodotto {
 			while((s = br.readLine()) != null){
 				String data[] = s.split(",");
 				String name = data[0];
-				String serial_number = data[1]; 
-				if(name.equalsIgnoreCase(nome) || serial_number.equalsIgnoreCase(nome)){
+				String iap = data[1]; 
+				//nome       iap     serialN   tipo   marca   utente  data   costo  tipologia inmanutenzione  stato  link     documenti
+
+				if(name.equalsIgnoreCase(nome) || iap.equalsIgnoreCase(nome)){
 					System.out.println("Product Found");
-					product = new Prodotto(name, serial_number, data[2], data[3], data[4], data[5],data[6], Integer.parseInt(data[7]),data[8], data[9], data[10]);
+					product = new Prodotto(name, iap, data[2], data[3], data[4], data[5],data[6], Integer.parseInt(data[7]),data[8], data[9], data[10], data[11],data[12]);
 					br.close();
 					return product;
 				}
@@ -560,7 +611,7 @@ public class Prodotto {
 				String iap = data[1]; 
 				if(name.equalsIgnoreCase(prodotto) || iap.equalsIgnoreCase(prodotto)){
 					System.out.println("Product Found");
-					product = new Prodotto(name, iap, data[2], data[3], data[4], data[5],data[6], Integer.parseInt(data[7]),data[8], data[9], data[10]);
+					product = new Prodotto(name, iap, data[2], data[3], data[4], data[5],data[6], Integer.parseInt(data[7]),data[8], data[9], data[10], data[11], data[12]);
 					br.close();
 					return product;
 				}else {
@@ -575,9 +626,18 @@ public class Prodotto {
 		}
 	}
 
-	public String aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
+	public String aggiungiProdotto(Prodotto prod) {
 		try {
-			String line = nome + "," + iap + "," + serial_number + "," + tipo + "," + marca + ",null"+ ",null" + ",0" + ",null" + ",null"+ ",null" ;
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+			String iap = utility.getIap(br, 1);
+			if(iap != null) {
+				this.IAP=iap;
+			}
+			//CAMPI_DB: nome,iap,serialnumber,tipo,marca,utente,scadenza,costo,Tipo_acquisto,manutenzione,stato_manutenzione,link,documento
+			String line = prod.nome + "," + iap+ "," + prod.serial_number + "," 
+						+ prod.tipo + "," + prod.marca + "," + prod.utente + "," 
+						+ prod.scadenza + "," + prod.costo + "," + prod.possesso + "," 
+						+ prod.manutenzione + "," + prod.stato + "," + prod.url + "," + prod.documents;
 	        FileWriter fw = new FileWriter("./database/db_product.txt", true);
 	        BufferedWriter bw = new BufferedWriter(fw);
 	        bw.write(line);
@@ -704,7 +764,7 @@ public class Prodotto {
 				}
 				String riga[] = result.split("\n");
 				String campi[] = riga[found].split(",");		        
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+scadenza+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10] + "," + campi[11];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+scadenza+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10] + "," + campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 				}

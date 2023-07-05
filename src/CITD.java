@@ -21,6 +21,7 @@ public class CITD{
 	private Proiezioni proiezioni;
 	private Manutenzione manutenzione;
 	private Noleggio noleggio;
+	private RichiestaProdotto requestProduct;
 
 	public CITD(){
 		utility = new Utils();
@@ -29,6 +30,7 @@ public class CITD{
 		proiezioni = new Proiezioni();
 		manutenzione = new Manutenzione();
 		noleggio = new Noleggio(null);
+		requestProduct = new RichiestaProdotto();
 	}
 	
 	public Utente Login(String matricola, String password) {
@@ -114,9 +116,9 @@ public class CITD{
 		}
 	}
 
-	public String aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
+	public String aggiungiProdotto(Prodotto prod) {
 		try {
-			String product = prod.aggiungiProdotto(nome, iap, serial_number, tipo, marca);
+			String product = prod.aggiungiProdotto(prod);
 			return product;
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -178,5 +180,19 @@ public class CITD{
 	public Noleggio getNoleggio(){
 		System.out.println("getNoleggio");
 		return noleggio;
+	}
+
+	public String aggiungiRichiesta(String nome, String tipo, String marca, String dettaglio, String utente){
+		String result = requestProduct.aggiungiRichiesta(nome,tipo,marca,dettaglio,utente);
+		return result;
+	}
+	
+	public String[][] visualizzaRichieste(Utente utente) {
+		String data[][] = requestProduct.visualizza(utente);
+		return data;
+	}
+	
+	public void editRequest(String iap, String esito) {
+		requestProduct.editRichiesta(iap, esito);
 	}
 }

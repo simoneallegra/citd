@@ -77,7 +77,7 @@ public class Manutenzione extends Prodotto{
 				if(request) {
 					campi[9] ="manutenzione";					
 				}
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11];
+				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11]+ ","+campi[12];
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 			}			

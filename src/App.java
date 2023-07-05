@@ -12,23 +12,24 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument.LeafElement;
 
 
 public class App {
-	
+
 	static CardLayout cl;
-	
+
 	private JFrame frame;
 	private JTable jt, jtProduct;
 
-	private JButton loginBtn,backBtn,linkBtn,detailrequestBtn,renewalBtn, careBtn, problemsBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro,careProductButton,renewalLicenseButton,acceptMaintenanceBtn,denyMaintenanceBtn,careRequestBtn, rentProductButton, openFileBtn, updateRentBtn,updateDocBtn;
-	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel,careProductPanel, rentProductPanel,renewalLicensePanel,careRequestPanel;
+	private JButton loginBtn,backBtn,linkBtn,detailrequestBtn,renewalBtn, careBtn, problemsBtn ,proiezioniSpesaProductButton, addProductButton, researchProductButton, deleteProductBtn,  addBtn, editBtn, deleteBtn, editProductBtn, viewProductButton, saveBtn,resetProductTableButton, assignProductButton, detailProductButton,assignBtn,filtro,careProductButton,renewalLicenseButton,acceptMaintenanceBtn,denyMaintenanceBtn,careRequestBtn, rentProductButton, openFileBtn, updateRentBtn,updateDocBtn,newProductRequestBtn,madeRequestBtn,managementRequestBtn,acceptRequestBtn,denyRequestBtn;
+	private JPanel mainPanel, homePanel, loginPanel, userSetupPanel, userAddPanel, productSetupPanel, researchProductPanel, addProductPanel, viewProductPanel,tableProductPanel, editProductPanel, userPanel, detailProductPanel,proiezioniSpesaPanel,resultPanel,careProductPanel, rentProductPanel,renewalLicensePanel,careRequestPanel,newProductRequestPanel,madeRequestPanel,completeRequestPanel,managementRequestPanel;
 	private JLabel matricolaLabel, passwordLabel,addLabel, productLabel, addProductLabel;
-	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField;
-	private JTextField ricercaPossesso, ricercaTipo, ricercaCostiMin,ricercaCostiMax, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza, newScadenzaField,scadenza;
+	private JTextField matricolaField, passwordField, addProductField, serialNumberProductField, researchProductField,iapProductField,typeProductField,brandProductField, nameProductField, numberProductField, editIapProductField,editTypeProductField,editBrandProductField,nomeField,cognomeField,emailField,reasonProductField;
+	private JTextField ricercaPossesso, ricercaTipo, ricercaCostiMin,ricercaCostiMax, ricercaImpiegatoAssegnato, ricercaData, ricercaCadenza, newScadenzaField,scadenza,typeProdField,costProductField,dateProductField,linkProductField;
 	private JRadioButton superuserField;
 	private JMenuBar homeBar;
 	private JMenu setupMenu,setupMenuLogout;
@@ -41,24 +42,24 @@ public class App {
 	Utente userLogged = null;
 
 
-	
+
 	public CITD citd;
-	
+
 	public Utils utility;
 
-	
+
 	public App() {	
 		initialize();
 	}
 
-	
+
 	private void initialize() {
-		
+
 		utility = new Utils();
 		cl = new CardLayout();
-		
+
 		mainPanel = new JPanel(cl);
-				
+
 		frame = new JFrame("CITD");
 		frame.setBounds(600,300,980,720);
 		frame.setLocationRelativeTo(null);
@@ -69,26 +70,26 @@ public class App {
 		matricolaLabel = new JLabel("matricola");
 		matricolaLabel.setBounds(350, 250, 70, 15);
 		loginPanel.add(matricolaLabel);
-		
+
 		matricolaField = new JTextField();
 		matricolaField.setBounds(420, 250, 144, 20);
 		loginPanel.add(matricolaField);
 		matricolaField.setColumns(10);
-		
+
 		passwordLabel = new JLabel("password");
 		passwordLabel.setBounds(350, 280, 70, 15);
 		loginPanel.add(passwordLabel);
-		
+
 		passwordField = new JTextField();
 		passwordField.setBounds(420, 280, 144, 20);
 		loginPanel.add(passwordField);
 		passwordField.setColumns(10);
-		
+
 		loginBtn = new JButton("Login");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(matricolaField.getText() +" "+ passwordField.getText());
-				
+
 				citd = new CITD();
 				userLogged = citd.Login(matricolaField.getText(), passwordField.getText());
 				//frame.getContentPane().remove(loginPanel);
@@ -102,21 +103,21 @@ public class App {
 		});
 		loginBtn.setBounds(420, 310, 144, 20);
 		loginPanel.add(loginBtn);
-		
+
 		mainPanel.add(loginPanel,"loginPanel");
-        frame.add(mainPanel);
-        cl.show(mainPanel, "loginPanel");
-		
+		frame.add(mainPanel);
+		cl.show(mainPanel, "loginPanel");
+
 	}
-	
+
 	private void home(Utente utente){
 		try {
 			homePanel = new JPanel();
-			
+
 			homeBar = new JMenuBar();
 			frame.setJMenuBar(homeBar);
 			setupMenu = new JMenu("Gestione");
-			
+
 			homeBar.add(setupMenu);
 			mainPanel.add(homePanel,"homePanel");
 			cl.show(mainPanel, "homePanel");
@@ -125,23 +126,23 @@ public class App {
 				public void actionPerformed(ActionEvent arg0) {
 					userSetupPanel = new JPanel();
 					userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.Y_AXIS));
-					
-				    userAddPanel = new JPanel(new GridLayout(4,3,5,25));
-				    userAddPanel.setAlignmentX( Component.RIGHT_ALIGNMENT );
-					
+
+					userAddPanel = new JPanel(new GridLayout(4,3,5,25));
+					userAddPanel.setAlignmentX( Component.RIGHT_ALIGNMENT );
+
 					addLabel = new JLabel("Matricola");
 					//addLabel.setBounds(10, 10, 70, 15);
 					userAddPanel.add(addLabel);
-					
+
 					matricolaField = new JTextField();
 					//matricolaField.setBounds(80, 10, 144, 20);
 					userAddPanel.add(matricolaField);
 					matricolaField.setColumns(10);
-					
+
 					addLabel = new JLabel("Password");
 					//addLabel.setBounds(10, 40, 70, 15);
 					userAddPanel.add(addLabel);
-					
+
 					passwordField = new JTextField();
 					//passwordField.setBounds(80, 40, 144, 20);
 					userAddPanel.add(passwordField);
@@ -150,7 +151,7 @@ public class App {
 					addLabel = new JLabel("Nome");
 					addLabel.setBounds(10, 49, 65, 14);
 					userAddPanel.add(addLabel);
-					
+
 					nomeField = new JTextField();
 					nomeField.setBounds(85, 46, 144, 20);
 					userAddPanel.add(nomeField);
@@ -159,7 +160,7 @@ public class App {
 					addLabel = new JLabel("Cognome");
 					addLabel.setBounds(10, 69, 65, 14);
 					userAddPanel.add(addLabel);
-					
+
 					cognomeField = new JTextField();
 					cognomeField.setBounds(85, 66, 144, 20);
 					userAddPanel.add(cognomeField);
@@ -168,7 +169,7 @@ public class App {
 					addLabel = new JLabel("Email");
 					addLabel.setBounds(10, 89, 65, 14);
 					userAddPanel.add(addLabel);
-					
+
 					emailField = new JTextField();
 					emailField.setBounds(85, 86, 144, 20);
 					userAddPanel.add(emailField);
@@ -177,37 +178,37 @@ public class App {
 					addLabel = new JLabel("Amministratore");
 					addLabel.setBounds(10, 109, 150, 14);
 					userAddPanel.add(addLabel);
-					
+
 					superuserField = new JRadioButton();
 					superuserField.setBounds(150, 106, 144, 20);
 					userAddPanel.add(superuserField);
 					// superuserField.setColumns(10);
-					
+
 					addBtn = new JButton("Aggiungi");
-					
+
 					addBtn.setBounds(80, 70, 144, 20);
 
 					userAddPanel.add(addBtn);
 					userSetupPanel.add(userAddPanel);
-					
+
 					mainPanel.add(userSetupPanel, "userSetupPanel");
 					cl.show(mainPanel, "userSetupPanel");
-					
-					
+
+
 					try {
 						userPanel = new JPanel();
-				    	userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.X_AXIS));
+						userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.X_AXIS));
 						String data [][]=utility.getUsersTableData(6);
 						String column[]={"USERNAME","PASSWORD","NOME","COGNOME","EMAIL","AMMINISTRATORE"};
 						jt = new JTable(data,column); 
-					    userPanel.add(new JScrollPane(jt));
-					    
-					    jt.addMouseListener(new MouseAdapter() {
-					        @Override
-					        public void mouseClicked(final MouseEvent e){
-					            if (e.getClickCount() == 1){
-					                final JTable jTable= (JTable)e.getSource();
-					                final int row = jTable.getSelectedRow();
+						userPanel.add(new JScrollPane(jt));
+
+						jt.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(final MouseEvent e){
+								if (e.getClickCount() == 1){
+									final JTable jTable= (JTable)e.getSource();
+									final int row = jTable.getSelectedRow();
 
 									arrayString = new String[jTable.getColumnCount()];
 									int i = 0;
@@ -215,43 +216,43 @@ public class App {
 										arrayString[i] = (String)jTable.getValueAt(row, i);
 										i++;
 									}
-					                
-					            }
-					        }});
-					    
+
+								}
+							}});
+
 						addBtn.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							System.out.println(passwordField.getText());
-							Utente newUser = new Utente(matricolaField.getText(), passwordField.getText(), nomeField.getText(), cognomeField.getText(), emailField.getText(), superuserField.isSelected());
-							System.out.println(newUser.nome);
-							citd.inserisciNuovoUtente(newUser);
-							
-							try {
-										userPanel = new JPanel();
-										userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.X_AXIS));
-										String data [][] = utility.getUsersTableData(6);
-										String column[]={"USERNAME","PASSWORD","NOME","COGNOME","EMAIL","AMMINISTRATORE"};
-										Model table = new Model(data,column);
-										jt.setModel(table);
-										((Model) jt.getModel()).fireTableDataChanged();
-									}
-									catch(Exception e){
+							public void actionPerformed(ActionEvent arg0) {
+								System.out.println(passwordField.getText());
+								Utente newUser = new Utente(matricolaField.getText(), passwordField.getText(), nomeField.getText(), cognomeField.getText(), emailField.getText(), superuserField.isSelected());
+								System.out.println(newUser.nome);
+								citd.inserisciNuovoUtente(newUser);
 
-									}
-							
-						}
-					});
+								try {
+									userPanel = new JPanel();
+									userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.X_AXIS));
+									String data [][] = utility.getUsersTableData(6);
+									String column[]={"USERNAME","PASSWORD","NOME","COGNOME","EMAIL","AMMINISTRATORE"};
+									Model table = new Model(data,column);
+									jt.setModel(table);
+									((Model) jt.getModel()).fireTableDataChanged();
+								}
+								catch(Exception e){
 
-					    editBtn = new JButton("Edit");
-					    editBtn.addActionListener(new ActionListener() {
+								}
+
+							}
+						});
+
+						editBtn = new JButton("Edit");
+						editBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								System.out.println(arrayString[0]);
 								if(!arrayString.equals(null)) {
-																		
+
 									userSetupPanel = new JPanel();
 									userSetupPanel.setLayout(new BoxLayout(userSetupPanel, BoxLayout.Y_AXIS));
 									//userSetupPanel.setPreferredSize(new Dimension(200, 200));
-									
+
 									backBtn = new JButton("Back");
 									backBtn.addActionListener(new ActionListener() {
 										public void actionPerformed(ActionEvent arg0) {
@@ -259,7 +260,7 @@ public class App {
 										}
 									});
 									backBtn.setBounds(85, 66, 72, 20);
-					    			userSetupPanel.add(backBtn);
+									userSetupPanel.add(backBtn);
 
 									addLabel = new JLabel("Matricola");
 									addLabel.setPreferredSize(new Dimension(200,50));
@@ -274,7 +275,7 @@ public class App {
 									addLabel = new JLabel("Password");
 									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
-									
+
 									passwordField = new JTextField();
 									passwordField.setBounds(85, 26, 144, 20);
 									userSetupPanel.add(passwordField);
@@ -283,7 +284,7 @@ public class App {
 									addLabel = new JLabel("Nome");
 									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
-									
+
 									nomeField = new JTextField();
 									nomeField.setBounds(85, 46, 144, 20);
 									userSetupPanel.add(nomeField);
@@ -293,7 +294,7 @@ public class App {
 									addLabel = new JLabel("Cognome");
 									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
-									
+
 									cognomeField = new JTextField();
 									cognomeField.setBounds(85, 66, 144, 20);
 									userSetupPanel.add(cognomeField);
@@ -303,8 +304,8 @@ public class App {
 									addLabel = new JLabel("Email");
 									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
-									
-									
+
+
 									emailField = new JTextField();
 									emailField.setBounds(85, 86, 144, 20);
 									userSetupPanel.add(emailField);
@@ -314,43 +315,43 @@ public class App {
 									addLabel = new JLabel("Amministratore");
 									addLabel.setPreferredSize(new Dimension(200,50));
 									userSetupPanel.add(addLabel);
-									
+
 									superuserField = new JRadioButton();
 									superuserField.setBounds(150, 106, 144, 20);
 									userSetupPanel.add(superuserField);									
 									superuserField.setSelected(Boolean.valueOf(arrayString[5]));
-									
+
 									//da sostituire con l'utente ottenuto in fase di return details
-									
+
 									saveBtn = new JButton("Save");
 									saveBtn.addActionListener(new ActionListener() {
-											public void actionPerformed(ActionEvent arg0) {
-												System.out.println("password:"+passwordField.getText());
-												Boolean passwordUpdate = true;
-												String passwordPassed = "";
-												if(passwordField.getText().equalsIgnoreCase("")){
-													passwordPassed = arrayString[1];
-													passwordUpdate = false;
-												}else{
-													passwordPassed = passwordField.getText();
-												}
+										public void actionPerformed(ActionEvent arg0) {
+											System.out.println("password:"+passwordField.getText());
+											Boolean passwordUpdate = true;
+											String passwordPassed = "";
+											if(passwordField.getText().equalsIgnoreCase("")){
+												passwordPassed = arrayString[1];
+												passwordUpdate = false;
+											}else{
+												passwordPassed = passwordField.getText();
+											}
 
 
-												citd.updateUtente(arrayString[0], passwordUpdate, new Utente(matricolaField.getText(),passwordPassed,nomeField.getText(),cognomeField.getText(),emailField.getText(),superuserField.isSelected()));
-											}});
+											citd.updateUtente(arrayString[0], passwordUpdate, new Utente(matricolaField.getText(),passwordPassed,nomeField.getText(),cognomeField.getText(),emailField.getText(),superuserField.isSelected()));
+										}});
 									saveBtn.setBounds(85, 66, 72, 20);
-								    userSetupPanel.add(saveBtn);
-								    
-								    mainPanel.add(userSetupPanel, "userSetupPanelEdit");
+									userSetupPanel.add(saveBtn);
+
+									mainPanel.add(userSetupPanel, "userSetupPanelEdit");
 									cl.show(mainPanel, "userSetupPanelEdit");
 								}
 							}
 						});
-					    editBtn.setBounds(85, 66, 72, 20);
-					    userPanel.add(editBtn);
-						
-					    deleteBtn = new JButton("Delete");
-					    deleteBtn.addActionListener(new ActionListener() {
+						editBtn.setBounds(85, 66, 72, 20);
+						userPanel.add(editBtn);
+
+						deleteBtn = new JButton("Delete");
+						deleteBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								if(arrayString[0] != "") {
 									citd.eliminaUtente(arrayString[0].toString());
@@ -369,13 +370,13 @@ public class App {
 								}
 							}
 						});
-					    deleteBtn.setBounds(85, 86, 72, 20);
-					    userPanel.add(deleteBtn);
+						deleteBtn.setBounds(85, 86, 72, 20);
+						userPanel.add(deleteBtn);
 						userSetupPanel.add(userPanel);
 					}catch(Exception e) {
 						System.out.println(e);
 					}
-					
+
 				}
 			});
 			if(userLogged.superuser) setupMenu.add(itemUserSetup);
@@ -389,10 +390,10 @@ public class App {
 
 					proiezioniSpesaProductButton = new JButton("Proiezioni spesa");
 					if(userLogged.superuser) productSetupPanel.add(proiezioniSpesaProductButton);
-					
+
 					addProductButton = new JButton("Aggiungi Prodotto");
 					productSetupPanel.add(addProductButton);
-						
+
 					viewProductButton = new JButton("Visualizza Prodotti");
 					productSetupPanel.add(viewProductButton);
 
@@ -402,22 +403,39 @@ public class App {
 
 					rentProductButton = new JButton("Gestisci Noleggio");
 					productSetupPanel.add(rentProductButton);
-					
+
 					//rinnovo licenze
 					renewalLicenseButton = new JButton("Rinnovo Licenze");
 					productSetupPanel.add(renewalLicenseButton);
-					
+
 					//richiesta manutenzione
 					careRequestBtn = new JButton("Richiesta Manutenzioni");
 					productSetupPanel.add(careRequestBtn);					
-					
+
+					//richiesta nuovo prodotto
+					newProductRequestBtn = new JButton("Richiesta Nuovo Prodotto");
+					productSetupPanel.add(newProductRequestBtn);					
+
+					//visualizza richieste
+					madeRequestBtn = new JButton("Richieste Effettuate");
+					productSetupPanel.add(madeRequestBtn);					
+
+
+					//accettazione nuovo prodotto
+					managementRequestBtn = new JButton("Gestisci Richieste");
+					productSetupPanel.add(managementRequestBtn);
+
+
 					if(userLogged != null && userLogged.superuser == false ) {
 						addProductButton.setVisible(false);
 						careProductButton.setVisible(false);
 						renewalLicenseButton.setVisible(false);
 						rentProductButton.setVisible(false);
+						managementRequestBtn.setVisible(false);
 					}else {
 						careRequestBtn.setVisible(false);
+						newProductRequestBtn.setVisible(false);
+						madeRequestBtn.setVisible(false);
 					}
 
 					mainPanel.add(productSetupPanel, "productSetupPanel");
@@ -426,7 +444,7 @@ public class App {
 					//Proiezioni di spesa
 					proiezioniSpesaProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							
+
 							proiezioniSpesaPanel = new JPanel();
 							proiezioniSpesaPanel.setLayout(new BoxLayout(proiezioniSpesaPanel, BoxLayout.Y_AXIS));
 
@@ -437,7 +455,7 @@ public class App {
 								}});
 							backBtn.setBounds(85, 66, 72, 20);
 							proiezioniSpesaPanel.add(backBtn);
-							
+
 							JPanel ricercaPanel = new JPanel(new FlowLayout());
 							// JPanel ricercaPanel2 = new JPanel(new FlowLayout());
 							resultPanel = new JPanel();
@@ -494,7 +512,7 @@ public class App {
 										Model table = new Model(filteredData,colonna);
 										jt.setModel(table);
 										((Model) jt.getModel()).fireTableDataChanged();
-										
+
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -505,7 +523,7 @@ public class App {
 
 							proiezioniSpesaPanel.add(ricercaPanel);
 							proiezioniSpesaPanel.add(resultPanel);
-														
+
 							mainPanel.add(proiezioniSpesaPanel, "proiezioniSpesaPanel");
 							cl.show(mainPanel, "proiezioniSpesaPanel");
 						}
@@ -514,7 +532,7 @@ public class App {
 					//evento aggiungi prodotto
 					addProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							
+
 							addProductPanel = new JPanel();
 							addProductPanel.setLayout(new BoxLayout(addProductPanel, BoxLayout.Y_AXIS));
 
@@ -525,76 +543,90 @@ public class App {
 								}});
 							backBtn.setBounds(85, 66, 72, 20);
 							addProductPanel.add(backBtn);
-
 							addProductLabel = new JLabel("Nome Prodotto");
-							addProductLabel.setPreferredSize(new Dimension(200,50));
+							addProductLabel.setPreferredSize(new Dimension(200,40));
 							addProductPanel.add(addProductLabel);
-
 							addProductField = new JTextField();
-							//addProductField.setBounds(300, 120, 144, 20);
 							addProductPanel.add(addProductField);
 							addProductField.setColumns(10);
-
-							JLabel iapProductLabel = new JLabel("IAP");
-							iapProductLabel.setPreferredSize(new Dimension(200,50));
+							/*JLabel iapProductLabel = new JLabel("IAP");
+							iapProductLabel.setPreferredSize(new Dimension(200,40));
 							addProductPanel.add(iapProductLabel);
-
 							iapProductField = new JTextField();  
 							addProductPanel.add(iapProductField);
-							iapProductField.setColumns(10);
-							
+							iapProductField.setColumns(10);*/
 							JLabel serialNumberProductLabel = new JLabel("Numero Seriale");
-							serialNumberProductLabel.setPreferredSize(new Dimension(200,50));
+							serialNumberProductLabel.setPreferredSize(new Dimension(200,40));
 							addProductPanel.add(serialNumberProductLabel);
-
 							serialNumberProductField = new JTextField();
-							//serialNumberProductField.setBounds(300, 150, 144, 20);
 							addProductPanel.add(serialNumberProductField);
 							serialNumberProductField.setColumns(10);				
-
 							JLabel typeProductLabel = new JLabel("Tipo");
-							typeProductLabel.setPreferredSize(new Dimension(200,50));
+							typeProductLabel.setPreferredSize(new Dimension(200,40));
 							addProductPanel.add(typeProductLabel);
-
 							typeProductField = new JTextField();
 							addProductPanel.add(typeProductField);
 							typeProductField.setColumns(10);
-
 							JLabel brandProductLabel = new JLabel("Marca");
-							brandProductLabel.setPreferredSize(new Dimension(200,50));
+							brandProductLabel.setPreferredSize(new Dimension(200,40));
 							addProductPanel.add(brandProductLabel);
-
 							brandProductField = new JTextField();
 							addProductPanel.add(brandProductField);
 							brandProductField.setColumns(10);
-
+							JLabel typeProdLabel = new JLabel("Tipologia Acquisto");
+							typeProdLabel.setPreferredSize(new Dimension(200,40));
+							addProductPanel.add(typeProdLabel);
+							typeProdField = new JTextField();  
+							addProductPanel.add(typeProdField);
+							typeProdField.setColumns(10);
+							JLabel costProductLabel = new JLabel("Costo");
+							costProductLabel.setPreferredSize(new Dimension(200,40));
+							addProductPanel.add(costProductLabel);
+							costProductField = new JTextField();
+							addProductPanel.add(costProductField);
+							costProductField.setColumns(10);
+							JLabel dateProductLabel = new JLabel("Scadenza");
+							dateProductLabel.setPreferredSize(new Dimension(200,40));
+							addProductPanel.add(dateProductLabel);
+							dateProductField = new JTextField();
+							addProductPanel.add(dateProductField);
+							dateProductField.setColumns(10);
+							JLabel linkProductLabel = new JLabel("Link");
+							linkProductLabel.setPreferredSize(new Dimension(200,40));
+							addProductPanel.add(linkProductLabel);
+							linkProductField = new JTextField();
+							addProductPanel.add(linkProductField);
+							linkProductField.setColumns(10);
 							addProductButton = new JButton("Aggiungi");
 							addProductPanel.add(addProductButton);
 							addProductButton.setBounds(300, 180, 144, 20);
 							addProductButton.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
+									//tutti i campi devono essere popolati
 									if(!addProductField.getText().equalsIgnoreCase("") && !serialNumberProductField.getText().equalsIgnoreCase("") 
-											&& !iapProductField.getText().equalsIgnoreCase("")&& !typeProductField.getText().equalsIgnoreCase("")
-											&& !brandProductField.getText().equalsIgnoreCase("")){
-										String product = citd.aggiungiProdotto(addProductField.getText(), iapProductField.getText(),serialNumberProductField.getText(), typeProductField.getText(),brandProductField.getText());
+											&& !typeProductField.getText().equalsIgnoreCase("")	&& !brandProductField.getText().equalsIgnoreCase("") 
+											&& !typeProdField.getText().equalsIgnoreCase("")&& !costProductField.getText().equalsIgnoreCase("") 
+											&& !dateProductField.getText().equalsIgnoreCase("")	&& !linkProductField.getText().equalsIgnoreCase("")){
+										Prodotto prod= new Prodotto(addProductField.getText(),serialNumberProductField.getText(),typeProductField.getText(),brandProductField.getText(),typeProdField.getText(),Integer.valueOf(costProductField.getText()),dateProductField.getText(),linkProductField.getText());
+										String product = citd.aggiungiProdotto(prod);
 
 										//String product = citd.aggiungiProdotto(addProductField.getText(),serialNumberProductField.getText());
-									if (product != null) {
-										cl.show(mainPanel, "productSetupPanel");
-										System.out.println(product);
-									}else {
-										System.out.println("Non è stato possibile inserire il prodotto in DB");														
-									
+										if (product != null) {
+											cl.show(mainPanel, "productSetupPanel");
+											System.out.println(product);
+										}else {
+											System.out.println("Non è stato possibile inserire il prodotto in DB");														
+
+										}
 									}
 								}
-								}
 							});
-														
+
 							mainPanel.add(addProductPanel, "addProductPanel");
 							cl.show(mainPanel, "addProductPanel");
 						}
 					});
-					
+
 					//evento elimina e modifica prodotto
 					viewProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
@@ -602,7 +634,7 @@ public class App {
 							viewProductPanel.setLayout(new BoxLayout(viewProductPanel, BoxLayout.Y_AXIS));
 							tableProductPanel = new JPanel(new FlowLayout());
 							researchProductPanel = new JPanel();
-							
+
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
@@ -613,7 +645,7 @@ public class App {
 
 							productLabel = new JLabel("Nome Prodotto");
 							researchProductPanel.add(productLabel);
-							
+
 							researchProductField = new JTextField();
 							researchProductPanel.add(researchProductField);
 							researchProductField.setColumns(10);
@@ -631,7 +663,7 @@ public class App {
 								String colonna[]={"NOME","IAP"};
 								jtProduct = new JTable(data,colonna);
 								tableProductPanel.add(new JScrollPane(jtProduct));
-								
+
 								jtProduct.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(final MouseEvent e){
@@ -640,7 +672,7 @@ public class App {
 											final int row = jTable.getSelectedRow();
 											// final int column = jTable.getSelectedColumn();
 											valueInCell = (String)jTable.getValueAt(row, 1);
-											
+
 											//EVENTO MODIFICA
 											if(!valueInCell.equalsIgnoreCase("") && userLogged != null && userLogged.superuser == true ) {
 												editProductBtn.addActionListener(new ActionListener() {
@@ -649,7 +681,7 @@ public class App {
 														editProductPanel = new JPanel();
 
 														backBtn = new JButton("Back");
-													
+
 														backBtn.addActionListener(new ActionListener() {
 															public void actionPerformed(ActionEvent arg0) {
 																cl.show(mainPanel, "viewProductPanel");
@@ -661,13 +693,13 @@ public class App {
 														JLabel nameProductLabel = new JLabel("Nome Prodotto");
 														nameProductLabel.setPreferredSize(new Dimension (50,50));
 														editProductPanel.add(nameProductLabel);
-														
+
 														nameProductField = new JTextField();  
 														nameProductField.setBounds(85, 6, 144, 20);
 														editProductPanel.add(nameProductField);
 														nameProductField.setColumns(10);
 														nameProductField.setText(prod.getNome());
-													
+
 														JLabel iapProductLabel = new JLabel("IAP");
 														editProductPanel.add(iapProductLabel);
 														iapProductLabel.setPreferredSize(new Dimension (50,50));
@@ -676,19 +708,19 @@ public class App {
 														editProductPanel.add(editIapProductField);
 														editIapProductField.setColumns(10);
 														editIapProductField.setText(prod.getIAP());
-													
-														
+
+
 														JLabel numberProductLabel = new JLabel("Numero Seriale");
 														numberProductLabel.setPreferredSize(new Dimension (50,50));
 														editProductPanel.add(numberProductLabel);
-														
+
 														numberProductField = new JTextField();
 														numberProductField.setBounds(300, 150, 144, 20);
 														editProductPanel.add(numberProductField);
 														numberProductField.setColumns(10);				
 														numberProductField.setText(prod.getSerialNumber());
-														
-														
+
+
 														JLabel typeProductLabel = new JLabel("Tipo");
 														editProductPanel.add(typeProductLabel);
 														typeProductLabel.setPreferredSize(new Dimension (50,50));
@@ -702,7 +734,7 @@ public class App {
 														editProductPanel.add(brandProductLabel);
 														brandProductLabel.setPreferredSize(new Dimension (50,50));
 
-														
+
 														editBrandProductField = new JTextField();
 														editProductPanel.add(editBrandProductField);
 														editBrandProductField.setColumns(10);
@@ -715,13 +747,13 @@ public class App {
 																prod.setProdotto(nameProductField.getText(), editIapProductField.getText(), numberProductField.getText(), editTypeProductField.getText(), editBrandProductField.getText());
 															}
 														});
-														
+
 														mainPanel.add(editProductPanel, "editProductPanel");
 														cl.show(mainPanel, "editProductPanel");
 													}
 												});
 											}
-											
+
 											if(!valueInCell.equalsIgnoreCase("") && userLogged != null && userLogged.superuser == true) {
 												deleteProductBtn.addActionListener(new ActionListener() {
 													public void actionPerformed(ActionEvent arg0) {
@@ -745,11 +777,11 @@ public class App {
 																System.out.println(e.getMessage());
 															}
 														}	
-														
+
 													}
 												});
 											}
-											
+
 											if (!valueInCell.equalsIgnoreCase(""))  {
 												detailProductButton.addActionListener(new ActionListener() {
 													public void actionPerformed(ActionEvent arg0) {
@@ -818,7 +850,7 @@ public class App {
 																						assignBtn.addActionListener(new ActionListener() {
 																							public void actionPerformed(ActionEvent arg0) {
 																								prod.setUtente(arrayString[0]);
-																								
+
 																								cl.show(mainPanel, "viewProductPanel");
 																							}});
 																					}
@@ -833,7 +865,7 @@ public class App {
 																	cl.show(mainPanel, "assignUsersPanel");
 																}
 															});
-															
+
 														}
 
 														mainPanel.add(detailProductPanel, "detailProductPanel");
@@ -841,7 +873,7 @@ public class App {
 													}
 												});
 											}
-											
+
 										}
 									}
 								});
@@ -867,38 +899,38 @@ public class App {
 										}
 									}
 								});
-								
+
 								resetProductTableButton = new JButton("Reset");
 								researchProductPanel.add(resetProductTableButton);
 								resetProductTableButton.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent arg0) {
-											String colonna[]={"NOME","NUMERO SERIALE"};
-											String data[][] = null;
-											try {
-												data = utility.getProductTableData(2);
-											} catch (IOException e) {
-												// TODO Auto-generated catch block
-												e.printStackTrace();
-											}
-											researchProductField.setText("");
-											Model table = new Model(data,colonna);
-											jtProduct.setModel(table);
-											((Model) jtProduct.getModel()).fireTableDataChanged();
+										String colonna[]={"NOME","NUMERO SERIALE"};
+										String data[][] = null;
+										try {
+											data = utility.getProductTableData(2);
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										researchProductField.setText("");
+										Model table = new Model(data,colonna);
+										jtProduct.setModel(table);
+										((Model) jtProduct.getModel()).fireTableDataChanged();
 									}
 								});
 							}catch(Exception e) {
 								System.out.println(e.getMessage());
 							}		
-							
+
 							detailProductButton = new JButton("Dettagli Prodotto");
 							detailProductButton.setBounds(85, 106, 72, 20);
 							tableProductPanel.add(detailProductButton);
-							
+
 							if(userLogged != null && userLogged.superuser == true ) {
 								editProductBtn = new JButton("Modifica");
 								editProductBtn.setBounds(85, 66, 72, 20);
 								tableProductPanel.add(editProductBtn);
-									
+
 								deleteProductBtn = new JButton("Elimina");
 								deleteProductBtn.setBounds(85, 66, 72, 20);
 								tableProductPanel.add(deleteProductBtn);
@@ -906,19 +938,19 @@ public class App {
 
 							viewProductPanel.add(researchProductPanel);
 							viewProductPanel.add(tableProductPanel);
-							
+
 							mainPanel.add(viewProductPanel, "viewProductPanel");
 							cl.show(mainPanel, "viewProductPanel");
 
 						}
 					});
-						
+
 					careProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							
+
 							careProductPanel = new JPanel();
 							careProductPanel.setLayout(new BoxLayout(careProductPanel, BoxLayout.Y_AXIS));
-							
+
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
@@ -931,17 +963,17 @@ public class App {
 							String colonna[]={"NOME","IAP","STATO MANUTENZIONE"};
 							jtProduct = new JTable(data,colonna);
 							careProductPanel.add(new JScrollPane(jtProduct));
-							
-						    jtProduct.addMouseListener(new MouseAdapter() {
-						        @Override
-						        public void mouseClicked(final MouseEvent e){
-						            if (e.getClickCount() == 1){
-						                final JTable jTable= (JTable)e.getSource();
-						                final int row = jTable.getSelectedRow();			                
+
+							jtProduct.addMouseListener(new MouseAdapter() {
+								@Override
+								public void mouseClicked(final MouseEvent e){
+									if (e.getClickCount() == 1){
+										final JTable jTable= (JTable)e.getSource();
+										final int row = jTable.getSelectedRow();			                
 										valueInCell = (String)jTable.getValueAt(row, 1);
 										String stato = (String)jTable.getValueAt(row, 2);
 										if(!valueInCell.equalsIgnoreCase("") && stato.equalsIgnoreCase("lavorazione")) {
-										
+
 											acceptMaintenanceBtn.addActionListener(new ActionListener() {
 												public void actionPerformed(ActionEvent arg0) {
 													String result[][] = citd.acceptMaintenance(valueInCell,"approvata");
@@ -960,11 +992,11 @@ public class App {
 													((Model) jtProduct.getModel()).fireTableDataChanged();
 												}
 											});
-										
+
 											detailrequestBtn.addActionListener(new ActionListener() {
 												public void actionPerformed(ActionEvent arg0) {													
-						        					JPanel detailRequestPanel = new JPanel();
-						        					detailRequestPanel.setLayout(new BoxLayout(detailRequestPanel, BoxLayout.Y_AXIS));
+													JPanel detailRequestPanel = new JPanel();
+													detailRequestPanel.setLayout(new BoxLayout(detailRequestPanel, BoxLayout.Y_AXIS));
 
 													backBtn = new JButton("Back");
 													backBtn.addActionListener(new ActionListener() {
@@ -974,45 +1006,45 @@ public class App {
 													});
 													backBtn.setBounds(85, 66, 72, 20);
 													detailRequestPanel.add(backBtn);
-						  							mainPanel.add(detailRequestPanel, "detailRequestPanel");
-						        					cl.show(mainPanel, "detailRequestPanel");
-													
-													
-													
+													mainPanel.add(detailRequestPanel, "detailRequestPanel");
+													cl.show(mainPanel, "detailRequestPanel");
+
+
+
 													String result[][] = citd.getCareRequest(valueInCell);
 													String colonna[]={"IAP","PROBLEMA"};
 													JTable jtDetail = new JTable(result,colonna);
 													detailRequestPanel.add(new JScrollPane(jtDetail));
 												}
 											});
-											
+
 										}
-						            }
-						        }
-						    });
-						    
-						    detailrequestBtn = new JButton("Dettaglio Richiesta");
-						    careProductPanel.add(detailrequestBtn);
-						    
+									}
+								}
+							});
+
+							detailrequestBtn = new JButton("Dettaglio Richiesta");
+							careProductPanel.add(detailrequestBtn);
+
 							acceptMaintenanceBtn = new JButton("Accetta Manutenzione");
 							careProductPanel.add(acceptMaintenanceBtn);	
-							
+
 							denyMaintenanceBtn = new JButton("Rifiuta   Manutenzione");
 							careProductPanel.add(denyMaintenanceBtn);	
-			
+
 							mainPanel.add(careProductPanel, "careProductPanel");
 							cl.show(mainPanel, "careProductPanel");
-							
+
 						}
 					});
 
-					
+
 					renewalLicenseButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							
+
 							renewalLicensePanel = new JPanel();
 							renewalLicensePanel.setLayout(new BoxLayout(renewalLicensePanel, BoxLayout.Y_AXIS));
-							
+
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
@@ -1026,33 +1058,33 @@ public class App {
 							String data[][]=citd.getLicense();
 							jtProduct = new JTable(data,colonna);
 							renewalLicensePanel.add(new JScrollPane(jtProduct));
-						    jtProduct.addMouseListener(new MouseAdapter() {
-						        @Override
-						        public void mouseClicked(final MouseEvent e){
-						            if (e.getClickCount() == 1){
-						                final JTable jTable= (JTable)e.getSource();
-						                final int row = jTable.getSelectedRow();			                
+							jtProduct.addMouseListener(new MouseAdapter() {
+								@Override
+								public void mouseClicked(final MouseEvent e){
+									if (e.getClickCount() == 1){
+										final JTable jTable= (JTable)e.getSource();
+										final int row = jTable.getSelectedRow();			                
 										valueInCell = (String)jTable.getValueAt(row, 1);
 										if(!valueInCell.equalsIgnoreCase("")) {
-											
-											
+
+
 											linkBtn.addActionListener(new ActionListener() {
-									            @Override
-									            public void actionPerformed(ActionEvent e) {
-									                String url = citd.getUrl(valueInCell);
-									                scadenza.setVisible(true);
-									                scadenza.setSize(300, 20);
-									                //renewalLicensePanel.revalidate();
-									                renewalLicensePanel.updateUI();
-									                //renewalLicensePanel.validate();
-									                try {
-									                    Desktop.getDesktop().browse(new URI(url));
-									                    linkBtn.removeActionListener(this);
-									                } catch (IOException | URISyntaxException ex) {
-									                    ex.printStackTrace();
-									                }
-									            }
-									        });
+												@Override
+												public void actionPerformed(ActionEvent e) {
+													String url = citd.getUrl(valueInCell);
+													scadenza.setVisible(true);
+													scadenza.setSize(300, 20);
+													//renewalLicensePanel.revalidate();
+													renewalLicensePanel.updateUI();
+													//renewalLicensePanel.validate();
+													try {
+														Desktop.getDesktop().browse(new URI(url));
+														linkBtn.removeActionListener(this);
+													} catch (IOException | URISyntaxException ex) {
+														ex.printStackTrace();
+													}
+												}
+											});
 											if(!scadenza.getText().equalsIgnoreCase("")) {
 
 												renewalBtn.addActionListener(new ActionListener() {
@@ -1075,32 +1107,32 @@ public class App {
 													}
 												});											
 											}
-											
+
 										}
-						            }
-						        }
-						    });    	    
-						    
+									}
+								}
+							});    	    
+
 							linkBtn = new JButton("Aggiorna Licenza");
 							renewalLicensePanel.add(linkBtn);
-							
-			                scadenza = new JTextField("Inserisci la nuova scadenza (dd/MM/yyyy)");
-			                renewalLicensePanel.add(scadenza);
-			                scadenza.setVisible(false);
-			                
+
+							scadenza = new JTextField("Inserisci la nuova scadenza (dd/MM/yyyy)");
+							renewalLicensePanel.add(scadenza);
+							scadenza.setVisible(false);
+
 							renewalBtn = new JButton("Aggiornata");
 							renewalLicensePanel.add(renewalBtn);	
 
 							mainPanel.add(renewalLicensePanel, "renewalLicensePanel");
 							cl.show(mainPanel, "renewalLicensePanel");
-							
+
 						}
 					});
 
-					
+
 					careRequestBtn.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							
+
 							careRequestPanel = new JPanel();
 							careRequestPanel.setLayout(new BoxLayout(careRequestPanel, BoxLayout.Y_AXIS));
 							careBtn = new JButton("Invia Segnalazione");
@@ -1115,26 +1147,26 @@ public class App {
 
 							String colonna[]={"NOME","IAP","STATO PRODOTTO","STATO RICHIESTA"};
 							String data[][]=citd.getUserProduct(userLogged.matricola);
-							
-							
+
+
 							jtProduct = new JTable(data,colonna);
 							careRequestPanel.add(new JScrollPane(jtProduct));
-						    jtProduct.addMouseListener(new MouseAdapter() {
-						        @Override
-						        public void mouseClicked(final MouseEvent e){
-						        	if (e.getClickCount() == 1){
-						        		final JTable jTable= (JTable)e.getSource();
-						        		final int row = jTable.getSelectedRow();
+							jtProduct.addMouseListener(new MouseAdapter() {
+								@Override
+								public void mouseClicked(final MouseEvent e){
+									if (e.getClickCount() == 1){
+										final JTable jTable= (JTable)e.getSource();
+										final int row = jTable.getSelectedRow();
 
-						        		valueInCell  = (String)jTable.getValueAt(row, 1);
-						        		String stato = (String)jTable.getValueAt(row, 2);
-						        		final JTextField problem= new JTextField("Descrivi il problema del tuo dispositivo");
-						        		if(!valueInCell.equalsIgnoreCase("") && !stato.equalsIgnoreCase("manutenzione")) {
-						        			
-						        			problemsBtn.addActionListener(new ActionListener() {
-						        				@Override
-						        				public void actionPerformed(ActionEvent e) {
-						        					JPanel problemsPanel = new JPanel();
+										valueInCell  = (String)jTable.getValueAt(row, 1);
+										String stato = (String)jTable.getValueAt(row, 2);
+										final JTextField problem= new JTextField("Descrivi il problema del tuo dispositivo");
+										if(!valueInCell.equalsIgnoreCase("") && !stato.equalsIgnoreCase("manutenzione")) {
+
+											problemsBtn.addActionListener(new ActionListener() {
+												@Override
+												public void actionPerformed(ActionEvent e) {
+													JPanel problemsPanel = new JPanel();
 													backBtn = new JButton("Back");
 													backBtn.addActionListener(new ActionListener() {
 														public void actionPerformed(ActionEvent arg0) {
@@ -1143,53 +1175,301 @@ public class App {
 													});
 													backBtn.setBounds(85, 66, 72, 20);
 													problem.setBounds(150, 66, 150, 20);
-						        					problemsPanel.add(backBtn);
-						        					problemsPanel.add(problem);	
-						        					problemsPanel.add(careBtn);
-						        					problemsBtn.removeActionListener(this);
-						  							mainPanel.add(problemsPanel, "problemsPanel");
-						        					cl.show(mainPanel, "problemsPanel");
-						        				}
-						        			});
+													problemsPanel.add(backBtn);
+													problemsPanel.add(problem);	
+													problemsPanel.add(careBtn);
+													problemsBtn.removeActionListener(this);
+													mainPanel.add(problemsPanel, "problemsPanel");
+													cl.show(mainPanel, "problemsPanel");
+												}
+											});
 
-						        			if(!problem.getText().equalsIgnoreCase("")) {
-						        				careBtn.addActionListener(new ActionListener() {
-							        				@Override
-							        				public void actionPerformed(ActionEvent e) {
-								        				citd.setProblemRequest(valueInCell, problem.getText());
-							        					careBtn.removeActionListener(this);
-								        				cl.show(mainPanel, "careRequestPanel");
-								        				
+											if(!problem.getText().equalsIgnoreCase("")) {
+												careBtn.addActionListener(new ActionListener() {
+													@Override
+													public void actionPerformed(ActionEvent e) {
+														citd.setProblemRequest(valueInCell, problem.getText());
+														careBtn.removeActionListener(this);
+														cl.show(mainPanel, "careRequestPanel");
+
 														String colonna[]={"NOME","IAP","STATO PRODOTTO","STATO RICHIESTA"};
 														String data[][]=citd.getUserProduct(userLogged.matricola);
 														Model table = new Model(data,colonna);
 														jtProduct.setModel(table);
 														((Model) jtProduct.getModel()).fireTableDataChanged();
-							        				}
-							        			});
-						           			}
-						        		}
-						        	}
-							        
-						        }
-						    });
+													}
+												});
+											}
+										}
+									}
+
+								}
+							});
 							problemsBtn = new JButton("Segnala un problema");
 							careRequestPanel.add(problemsBtn);	
-						    
+
 
 							mainPanel.add(careRequestPanel, "careRequestPanel");
 							cl.show(mainPanel, "careRequestPanel");
+
+						}
+					});
+
+
+					newProductRequestBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							newProductRequestPanel = new JPanel();
+							//newProductRequestPanel.setLayout(new BoxLayout(newProductRequestPanel, BoxLayout.Y_AXIS));
+							newProductRequestPanel.setLayout(null);
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.show(mainPanel, "productSetupPanel");
+								}
+							});
+							backBtn.setBounds(1, 1, 80, 20);
+							newProductRequestPanel.add(backBtn);
+							JLabel nameProductLabel = new JLabel("Nome");
+							nameProductLabel.setBounds(350, 250, 70, 15);
+							newProductRequestPanel.add(nameProductLabel);
+
+							nameProductField = new JTextField();  
+							nameProductField.setBounds(420, 250, 144, 20);
+							newProductRequestPanel.add(nameProductField);
+							nameProductField.setColumns(10);
+
+							JLabel typeProductLabel = new JLabel("Tipo");
+							newProductRequestPanel.add(typeProductLabel);
+							typeProductLabel.setBounds(350, 280, 70, 15);
+
+							typeProductField = new JTextField();
+							newProductRequestPanel.add(typeProductField);
+							typeProductField.setColumns(10);
+							typeProductField.setBounds(420, 280, 144, 20);
+
+							JLabel brandProductLabel = new JLabel("Marca");
+							newProductRequestPanel.add(brandProductLabel);
+							brandProductLabel.setBounds(350, 310, 70, 15);
+
+							brandProductField = new JTextField();
+							newProductRequestPanel.add(brandProductField);
+							brandProductField.setColumns(10);
+							brandProductField.setBounds(420, 310, 144, 20);
+
+							JLabel reasonProductLabel = new JLabel("Motivo");
+							newProductRequestPanel.add(reasonProductLabel);
+							reasonProductLabel.setBounds(350, 340, 70, 15);
+
+							reasonProductField = new JTextField();
+							newProductRequestPanel.add(reasonProductField);
+							reasonProductField.setColumns(10);
+							reasonProductField.setBounds(420, 340, 144, 20);
+
+							JButton requestProductButton = new JButton("Salva");
+							newProductRequestPanel.add(requestProductButton);
+							requestProductButton.setBounds(435, 370, 80, 20);							
+							requestProductButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									if(!nameProductField.getText().equalsIgnoreCase("") && !typeProductField.getText().equalsIgnoreCase("") && !brandProductField.getText().equalsIgnoreCase("") && !reasonProductField.getText().equalsIgnoreCase("")) {
+										String esito = citd.aggiungiRichiesta(nameProductField.getText(),typeProductField.getText(),brandProductField.getText(),reasonProductField.getText(),userLogged.matricola);
+										if(esito!=null) {
+											nameProductField.setText("");
+											typeProductField.setText("");
+											brandProductField.setText("");
+											reasonProductField.setText("");	
+										}
+									}
+								}
+							});
+
+
+							mainPanel.add(newProductRequestPanel, "newProductRequestPanel");
+							cl.show(mainPanel, "newProductRequestPanel");						
+						}
+					});
+
+					//permette all'utente di visualizzare le richieste effettuate
+					madeRequestBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							madeRequestPanel = new JPanel();
+							madeRequestPanel.setLayout(new BoxLayout(madeRequestPanel, BoxLayout.Y_AXIS));
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.show(mainPanel, "productSetupPanel");
+								}
+							});
+							backBtn.setBounds(85, 66, 72, 20);
+							madeRequestPanel.add(backBtn);
 							
+							String data[][]=citd.visualizzaRichieste(userLogged);
+							if(data != null) {
+								String colonna[]={"NOME","TIPO","MARCA","DETTAGLI", "STATO MANUTENZIONE"};
+								jtProduct = new JTable(data,colonna);
+								madeRequestPanel.add(new JScrollPane(jtProduct));
+
+							}
+							mainPanel.add(madeRequestPanel, "madeRequestPanel");
+							cl.show(mainPanel, "madeRequestPanel");						
+						}
+					});
+
+					
+					
+					
+					
+					
+					//permette all'amministratore di gestire le richieste effettuate
+					managementRequestBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							managementRequestPanel = new JPanel();
+							managementRequestPanel.setLayout(new BoxLayout(managementRequestPanel, BoxLayout.Y_AXIS));
+							backBtn = new JButton("Back");
+							backBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									cl.show(mainPanel, "productSetupPanel");
+								}
+							});
+							backBtn.setBounds(85, 66, 72, 20);
+							managementRequestPanel.add(backBtn);
+
+							String data[][]=citd.visualizzaRichieste(userLogged);
+							if(data != null) {
+								String colonna[]={"IAP","NOME","TIPO","MARCA","DETTAGLI","UTENTE","STATO RICHIESTA"};
+								jtProduct = new JTable(data,colonna);
+								managementRequestPanel.add(new JScrollPane(jtProduct));
+								jtProduct.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(final MouseEvent e){
+										if (e.getClickCount() == 1){
+											final JTable jTable= (JTable)e.getSource();
+											final int row = jTable.getSelectedRow();			                
+											valueInCell = (String)jTable.getValueAt(row, 0);
+											String stato = (String)jTable.getValueAt(row, 6);
+												if(!valueInCell.equalsIgnoreCase("") && stato.equalsIgnoreCase("In attesa di approvazione")) {
+												acceptRequestBtn.addActionListener(new ActionListener() {
+													public void actionPerformed(ActionEvent arg0) {
+														final RichiestaProdotto req= new RichiestaProdotto(valueInCell);
+														completeRequestPanel = new JPanel();
+														//newProductRequestPanel.setLayout(new BoxLayout(newProductRequestPanel, BoxLayout.Y_AXIS));
+														completeRequestPanel.setLayout(null);
+														backBtn = new JButton("Back");
+														backBtn.addActionListener(new ActionListener() {
+															public void actionPerformed(ActionEvent arg0) {
+																cl.show(mainPanel, "managementRequestPanel");
+															}
+														});
+														backBtn.setBounds(1, 1, 80, 20);
+														completeRequestPanel.add(backBtn);
+														JLabel typeProductLabel = new JLabel("Tipologia");
+														typeProductLabel.setBounds(350, 250, 70, 15);
+														completeRequestPanel.add(typeProductLabel);
+														typeProductField = new JTextField();  
+														typeProductField.setBounds(420, 250, 144, 20);
+														completeRequestPanel.add(typeProductField);
+														typeProductField.setColumns(10);
+														JLabel costProductLabel = new JLabel("Costo");
+														completeRequestPanel.add(costProductLabel);
+														costProductLabel.setBounds(350, 280, 70, 15);
+														final JTextField costProductField = new JTextField();
+														completeRequestPanel.add(costProductField);
+														costProductField.setColumns(10);
+														costProductField.setBounds(420, 280, 144, 20);
+														JLabel dateProductLabel = new JLabel("Scadenza");
+														completeRequestPanel.add(dateProductLabel);
+														dateProductLabel.setBounds(350, 310, 70, 15);
+														final JTextField dateProductField = new JTextField();
+														completeRequestPanel.add(dateProductField);
+														dateProductField.setColumns(10);
+														dateProductField.setBounds(420, 310, 144, 20);
+														JLabel linkProductLabel = new JLabel("Link");
+														completeRequestPanel.add(linkProductLabel);
+														linkProductLabel.setBounds(350, 340, 70, 15);
+														final JTextField linkProductField = new JTextField();
+														completeRequestPanel.add(linkProductField);
+														linkProductField.setColumns(10);
+														linkProductField.setBounds(420, 340, 144, 20);
+														JButton requestProductButton = new JButton("Salva");
+														completeRequestPanel.add(requestProductButton);
+														requestProductButton.setBounds(435, 370, 80, 20);
+														requestProductButton.addActionListener(new ActionListener() {
+															public void actionPerformed(ActionEvent arg0) {
+																//devo scrivere sul db relativo ai prodotti
+																//tutti i campi devono essere popolati
+																if(!typeProductField.getText().equalsIgnoreCase("") && !costProductField.getText().equalsIgnoreCase("") 
+																		&& !dateProductField.getText().equalsIgnoreCase("")	&& !linkProductField.getText().equalsIgnoreCase("") ){
+															        Random random = new Random();
+															        // Genera un numero casuale compreso tra 0 e 999
+															        int randomNumber = random.nextInt(1000);
+																	String serial_number="SN" + randomNumber;
+																	Prodotto prod= new Prodotto(req.getNome(),serial_number, req.getTipo(), req.getMarca(),req.getUtente(), typeProductField.getText(),Integer.valueOf(costProductField.getText()),dateProductField.getText(),linkProductField.getText());
+																	String product = citd.aggiungiProdotto(prod);
+
+																	citd.editRequest(valueInCell, "approvata");
+																	String result [][]=citd.visualizzaRichieste(userLogged);
+																	String colonna[]={"IAP","NOME","TIPO","MARCA","DETTAGLI","UTENTE","STATO RICHIESTA"};
+
+																	//String product = citd.aggiungiProdotto(addProductField.getText(),serialNumberProductField.getText());
+																	if (product != null) {
+																		cl.show(mainPanel, "managementRequestPanel");
+																		Model table = new Model(result,colonna);
+																		jtProduct.setModel(table);
+																		((Model) jtProduct.getModel()).fireTableDataChanged();
+																	}else {
+																		System.out.println("Non è stato possibile inserire il prodotto in DB");														
+
+																	}
+																}
+															}
+														});
+														
+														
+														
+														mainPanel.add(completeRequestPanel, "completeRequestPanel");
+														cl.show(mainPanel, "completeRequestPanel");	
+													}
+												});
+												denyRequestBtn.addActionListener(new ActionListener() {
+													public void actionPerformed(ActionEvent arg0) {
+														citd.editRequest(valueInCell, "rifiutata");
+														String result [][]=citd.visualizzaRichieste(userLogged);
+														String colonna[]={"IAP","NOME","TIPO","MARCA","DETTAGLI","UTENTE","STATO RICHIESTA"};
+														//cl.show(mainPanel, "managementRequestPanel");
+														Model table = new Model(result,colonna);
+														jtProduct.setModel(table);
+														((Model) jtProduct.getModel()).fireTableDataChanged();
+
+													}
+												});
+											}
+										}
+									}
+								});
+
+
+							}
+							acceptRequestBtn = new JButton("Accetta Richiesta");
+							managementRequestPanel.add(acceptRequestBtn);	
+
+							denyRequestBtn = new JButton("Rifiuta   Richiesta");
+							managementRequestPanel.add(denyRequestBtn);
+
+
+							mainPanel.add(managementRequestPanel, "managementRequestPanel");
+							cl.show(mainPanel, "managementRequestPanel");						
 						}
 					});
 					
 					
+					
+					
+
 					rentProductButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 
 							rentProductPanel = new JPanel();
 							rentProductPanel.setLayout(new BoxLayout(rentProductPanel, BoxLayout.Y_AXIS));
-							
+
 							backBtn = new JButton("Back");
 							backBtn.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent arg0) {
@@ -1200,7 +1480,7 @@ public class App {
 							rentProductPanel.add(backBtn);
 
 							JLabel newScadenzaLabel = new JLabel("Nuova scadenza");
-							
+
 							newScadenzaField = new JTextField();
 
 							String data[][]=citd.getNoleggio().getListaNoleggi();
@@ -1209,61 +1489,61 @@ public class App {
 							rentProductPanel.add(new JScrollPane(jtProduct));
 
 							jtProduct.addMouseListener(new MouseAdapter() {
-						        @Override
-						        public void mouseClicked(final MouseEvent e){
-						            if (e.getClickCount() == 1){
-						                final JTable jTable= (JTable)e.getSource();
-						                final int row = jTable.getSelectedRow();
+								@Override
+								public void mouseClicked(final MouseEvent e){
+									if (e.getClickCount() == 1){
+										final JTable jTable= (JTable)e.getSource();
+										final int row = jTable.getSelectedRow();
 										valueInCell = (String)jTable.getValueAt(row, 1);
-											updateRentBtn.addActionListener(new ActionListener() {
-												public void actionPerformed(ActionEvent arg0) {
-													if(newScadenzaField.getText() != "")
-														citd.getNoleggio().updateNoleggio(valueInCell, newScadenzaField.getText());
+										updateRentBtn.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												if(newScadenzaField.getText() != "")
+													citd.getNoleggio().updateNoleggio(valueInCell, newScadenzaField.getText());
 
-														String data[][]=citd.getNoleggio().getListaNoleggi();
-														String colonna[]={"NOME","IAP","SCADENZA TRA"};
-														Model table = new Model(data,colonna);
-														jtProduct.setModel(table);
-														((Model) jtProduct.getModel()).fireTableDataChanged();
+												String data[][]=citd.getNoleggio().getListaNoleggi();
+												String colonna[]={"NOME","IAP","SCADENZA TRA"};
+												Model table = new Model(data,colonna);
+												jtProduct.setModel(table);
+												((Model) jtProduct.getModel()).fireTableDataChanged();
+											}
+										});
+										openFileBtn.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												System.out.println("open documento button");
+												try {
+													citd.getNoleggio().openDocumentoNoleggio(valueInCell);
+													openFileBtn.removeActionListener(this);
+
+												} catch (IOException e) {
+													// TODO Auto-generated catch block
+													e.printStackTrace();
 												}
-											});
-											openFileBtn.addActionListener(new ActionListener() {
-												public void actionPerformed(ActionEvent arg0) {
-													System.out.println("open documento button");
-													try {
-														citd.getNoleggio().openDocumentoNoleggio(valueInCell);
-														openFileBtn.removeActionListener(this);
+											}
+										});
 
+										updateDocBtn.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												JFileChooser fileChooser = new JFileChooser();
+
+												int response = fileChooser.showSaveDialog(null);
+
+												if(response == JFileChooser.APPROVE_OPTION){
+													try {
+														citd.getNoleggio().setDocumentoNoleggio(valueInCell, fileChooser.getSelectedFile().getAbsolutePath());
 													} catch (IOException e) {
 														// TODO Auto-generated catch block
 														e.printStackTrace();
 													}
 												}
-											});
-
-											updateDocBtn.addActionListener(new ActionListener() {
-												public void actionPerformed(ActionEvent arg0) {
-													JFileChooser fileChooser = new JFileChooser();
-
-													int response = fileChooser.showSaveDialog(null);
-
-													if(response == JFileChooser.APPROVE_OPTION){
-														try {
-															citd.getNoleggio().setDocumentoNoleggio(valueInCell, fileChooser.getSelectedFile().getAbsolutePath());
-														} catch (IOException e) {
-															// TODO Auto-generated catch block
-															e.printStackTrace();
-														}
-													}
-												}
-											});
-						            }
-						        }
-						    });
+											}
+										});
+									}
+								}
+							});
 
 							openFileBtn = new JButton("Apri documento");
 							rentProductPanel.add(openFileBtn);	
-							
+
 							rentProductPanel.add(newScadenzaLabel);
 							newScadenzaLabel.setPreferredSize(new Dimension (50,50));
 
@@ -1280,7 +1560,7 @@ public class App {
 							cl.show(mainPanel, "rentProductPanel");
 						}
 					});
-					
+
 				}
 			});
 			setupMenuLogout = new JMenu("Profilo");
@@ -1300,7 +1580,7 @@ public class App {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -1313,6 +1593,6 @@ public class App {
 			}
 		});
 	}
-	
-	
+
+
 }

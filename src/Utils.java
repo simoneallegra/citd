@@ -71,6 +71,38 @@ public class Utils {
 		return userdata;
 	}
 	
+	public String getIap(BufferedReader br,int indice) {
+		//se il db è di tipo prodotto l'indice è 1, per le richieste nuovo prodotto invece è 0
+		try {
+			String s="";
+			int index =0;
+			int maxIap=0;
+			while((s = br.readLine()) != null){
+				String split[]	= s.split(",");
+				index = split[indice].indexOf("D");
+				String substring = split[indice].substring(index+1);
+				index= Integer.valueOf(substring);
+				if (index>maxIap) {
+					maxIap=index;
+				}
+			}
+			maxIap++;
+			String IAP = String.valueOf(maxIap);
+			if(IAP.length() == 1) {
+				IAP = "CITD00" + IAP; 
+			}else if(IAP.length() == 2) {
+				IAP = "CITD0" + IAP; 
+			}else {
+				IAP = "CITD0" + IAP; 
+			}
+			return IAP;
+		}catch(IOException e) {
+			System.out.println(e.getMessage());
+			return null;
+
+		}
+	}
+	
 
 	
 	
