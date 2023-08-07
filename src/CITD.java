@@ -9,169 +9,213 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
 public class CITD{
 
-	
 	private Utils utility;
-	private Utente utente;
-	private Prodotto prod;
-	private Proiezioni proiezioni;
-	private Manutenzione manutenzione;
+
+	private List<Utente> listaUtenti;
+	private UtenteDao utenteDao;
+
+	private List<Prodotto> listaProdotti;
+	private ProdottoDao prodottoDao;
+
+	private List<Richiesta> listaRichieste;
+	private RichiestaDao richiestaDao;
+
 	private Noleggio noleggio;
 
 	public CITD(){
+		
 		utility = new Utils();
-		utente = new Utente();
-		prod = new Prodotto();
-		proiezioni = new Proiezioni();
-		manutenzione = new Manutenzione();
-		noleggio = new Noleggio(null);
+
+		utenteDao = new UtenteDao();
+		listaUtenti = utenteDao.get();
+
+		prodottoDao = new ProdottoDao(listaUtenti);
+		listaProdotti = prodottoDao.get();
+
+		richiestaDao = new RichiestaDao();
+		listaRichieste = richiestaDao.get();
+
+		// proiezioni = new Proiezioni();
+		// noleggio = new Noleggio(null);
+	}
+
+	public List<Utente> getListaUtenti(){
+		return listaUtenti;
 	}
 	
 	public Utente Login(String matricola, String password) {
 		
-		
-		
-		try {
-			
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
-			
-			
-			String s = "";
-				while((s = br.readLine()) != null){
-					String data[] = new String[2];
-					data = s.split(",");
-					
-					
-					if((data[0].equals(matricola)) && (data[1].equals(utility.getEncryptPassword(password)))){
-						System.out.println("login done");
-						return new Utente(data[0], data[1], data[2], data[3], data[4], Boolean.valueOf(data[5]));
-					}else {
-						System.out.println("wrong credentials");
-					}
-					
-				}
-			
-				br.close();
-		}catch(Exception e) {}
-		
+		for(Utente utente : listaUtenti)
+			if(utente.getMatricola().equals(matricola)  && utente.getEncryptedPassword().equals(utility.getEncryptPassword(password)))
+				return utente;
+				
+		System.out.println("Credenziali non valide");
 		return null;
 	}
 	
 	public Utente getDetailsUtente(String matricola) {
-		return utente.get(matricola);
+
+		for(Utente utente : listaUtenti)
+			if(utente.getMatricola().equals(matricola))
+				return utente;
+
+		System.out.println("Utente non trovato");
+		return null;
 	}
 	
 	public void inserisciNuovoUtente (Utente user) {
-		System.out.println(user.password);
-		utente.set(user, true);
-	}
-	
-	public void updateUtente(String oldMatricola, Boolean passwordUpdate, Utente user) {
-		utente.edit(oldMatricola, passwordUpdate, user);
+		listaUtenti.add(user);
 	}
 	
 	public void eliminaUtente(String matricola) {
-		utente.remove(new Utente(matricola));
+		listaUtenti.remove(getDetailsUtente(matricola));
 	}
 	
-	
-	public Prodotto visualizzaProdotto(String nome) {
-		Prodotto prodotto;
-		try {
-			prodotto = prod.visualizza(nome);
-			if(prodotto == null) {
-				return null;
-			}else {
+	public void updateUtente(String oldMatricola, String matricola, String password, String nome, String cognome, String email, Boolean isSuperuser) {
+		Utente utente = getDetailsUtente(oldMatricola);
+		utente.setMatricola(matricola);
+		if(!password.equalsIgnoreCase(""))
+			utente.setPassword(utility.getEncryptPassword(password));
+		utente.setNome(nome);
+		utente.setCognome(cognome);
+		utente.setEmail(email);
+		utente.setIsSuperuser(isSuperuser);
+	}
+
+	public void saveAllInDB(){
+		utenteDao.set(listaUtenti);
+		prodottoDao.set(listaProdotti);
+		richiestaDao.set(listaRichieste);
+	}
+
+	//----------------------------PRODOTTI---------------------------
+
+	public List<Prodotto> getListaProdotti(){
+		return listaProdotti;
+	}
+
+	public Prodotto getDetailsProdotto(String iap) {
+		for(Prodotto prodotto : listaProdotti)
+			if(prodotto.getIAP().equalsIgnoreCase(iap))
 				return prodotto;
-			}
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
+		System.out.println("Prodotto non trovato");
+		return null;
 	}
 
-	public Prodotto modificaProdotto(String prodotto) {
-		try{
-			prod = prod.edit(prodotto);
-			return prod;
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
+	public void aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
+
+		Prodotto newProdotto = new ProdottoBuilder()
+									.nome(nome)
+									.iap(iap)
+									.serial_number(serial_number)
+									.tipo(tipo)
+									.marca(marca)
+									.buildProdotto();
+		
+		listaProdotti.add(newProdotto);
 	}
 
-	public String eliminaProdotto(String iap) {
-		try {
-			String product = prod.destroy(iap);
-			return product;
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
+	public void eliminaProdotto(String iap) {
+		listaProdotti.remove(getDetailsProdotto(iap));
 	}
 
-	public String aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
-		try {
-			String product = prod.aggiungiProdotto(nome, iap, serial_number, tipo, marca);
-			return product;
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
+	public void modificaProdotto(String oldIAP, String nome, String iap, String serial_number, String tipo, String marca){
+		Prodotto prodotto = getDetailsProdotto(oldIAP);
+		prodotto.setNome(nome);
+		prodotto.setIAP(iap);
+		prodotto.setSerialNumber(serial_number);
+		prodotto.setTipo(tipo);
+		prodotto.setMarca(marca);
 	}
+	
 
 	public String[][] getProiezioni(String possesso, String tipo, String costoMin,String costoMax, String impiegatoAssegnato, String date, String cadenza ) throws IOException, NumberFormatException{
 
         String filteredData[][] = new String[1][1];
-        filteredData[0][0] = Integer.toString(proiezioni.proiezione(possesso, tipo, costoMin, costoMax, impiegatoAssegnato, date, cadenza)) + "\u20AC";
+        filteredData[0][0] = Integer.toString(new Proiezioni(listaProdotti).proiezione(possesso, tipo, costoMin, costoMax, impiegatoAssegnato, date, cadenza)) + "\u20AC";
         
         return filteredData;
 		
 	}
-	
-	public String[][] getMaintenance(){
-		String data[][] = manutenzione.getMaintenanceProduct();
-		return data;
-	}
-	
-	public String[][] acceptMaintenance(String iap,String stato) {
-		manutenzione.acceptMaintenance(iap,stato, false);
-		String data[][] = getMaintenance();
-		return data;
-	}
-	
-	public String[][] getLicense(){
-		String data[][] = prod.getLicense();
-		return data;
-	}
 
-	public String getUrl(String iap){
-		String url = prod.getUrl(iap);
-		return url;
+	public List<Manutenzione> getListaManutenzione(){
+		List<Manutenzione> listaManutenzione = new ArrayList<>();
+		for(Prodotto prodotto : listaProdotti){
+			if (prodotto instanceof Manutenzione){
+				listaManutenzione.add((Manutenzione)prodotto);
+			}
+		}
+		return listaManutenzione;
 	}
 	
-	public String rinnovaScadenza(String iap, String scadenza) {
-		String controllo =prod.rinnovaScadenza(iap, scadenza);
-		return controllo;
+	public String[][] getDetailsManutenzione(){
+		String[][] data = utility.listToMatrixString(getListaManutenzione());
+		String[][] dataFiltered = new String[data.length][3];
+		for (int i = 0; i<data.length; i++) {
+			dataFiltered[i][0] = data[i][0]; //nome
+			dataFiltered[i][1] = data[i][1]; //IAP
+			dataFiltered[i][2] = data[i][9]; //stato
+		}
+		return dataFiltered;
 	}
 	
-	public String[][] getUserProduct(String matricola) {
-		String data[][] = prod.getUserProduct(matricola);
-		return data;
-	}
-	
-	public void setProblemRequest(String iap, String problema){
-		manutenzione.setProblemRequest(iap,problema);
-		manutenzione.acceptMaintenance(iap, "lavorazione", true);
+	public String[][] gestisciStatoManutenzione(String iap,String stato) {
+		
+		for(Manutenzione manutenzione : getListaManutenzione()){
+			if(manutenzione.getIAP().equalsIgnoreCase(iap))
+				manutenzione.setStato(stato);
+				if(stato.equalsIgnoreCase("rifiutata"))
+					manutenzione.setManutenzione("");
+		}
+		return getDetailsManutenzione();
 	}
 
 	public String[][] getCareRequest(String iap){
-		String data[][]=manutenzione.getCareRequest(iap);
+		List<Richiesta> listReqTemp = new ArrayList<>();
+		for(Richiesta richiesta : listaRichieste)
+			if(richiesta.getIAP().equalsIgnoreCase(iap))
+				listReqTemp.add(richiesta);
+
+		return utility.listToMatrixString(listReqTemp);
+	}
+	
+	public String[][] getUserProduct(String matricola) {
+		List<Prodotto> listaProdottiFiltered = new ArrayList<>();
+		for(Prodotto prodotto : listaProdotti)
+			if(prodotto.getUtente().getMatricola().equalsIgnoreCase(matricola))
+				listaProdottiFiltered.add(prodotto);
+
+		String[][] data = utility.listToMatrixString(listaProdottiFiltered);
+		String[][] dataFiltered = new String[data.length][4];
+		for (int i = 0; i<data.length; i++) {
+			dataFiltered[i][0] = data[i][0]; //nome
+			dataFiltered[i][1] = data[i][1]; //IAP
+			dataFiltered[i][2] = data[i][9]; //tipo prodotto
+			dataFiltered[i][3] = data[i][10]; //stato
+		}
+		return dataFiltered;
+	}
+
+	public void setProblemRequest(String iap, String problema){
+		listaRichieste.add(new Richiesta(iap,problema));
+		gestisciStatoManutenzione(iap, "lavorazione");
+	}
+	
+	public String[][] getLicense(){
+		String[][] data = new String[1][1];
 		return data;
+	}
+	
+	public String rinnovaScadenza(String iap, String scadenza) {
+		getDetailsProdotto(iap).setScadenza(scadenza);
+		return "done";
 	}
 
 	

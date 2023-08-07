@@ -19,6 +19,7 @@ public class Noleggio extends Prodotto{
 	String documentoNoleggio;
 	Utils utils;
 	
+	
 	public Noleggio(String documentoNoleggio) {
 		this.documentoNoleggio = documentoNoleggio;
 		utils = new Utils();
@@ -27,7 +28,7 @@ public class Noleggio extends Prodotto{
 	public String [][] getListaNoleggi() {
 		String data[][] = null;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_products.txt"));
 			String s = "";
 			int i = 0;
 			int counter = 0;
@@ -61,7 +62,6 @@ public class Noleggio extends Prodotto{
 			br.close();
 			return data;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -74,7 +74,7 @@ public class Noleggio extends Prodotto{
 // }
 	
 	public int giorniRimanenti(String scadenza){
-
+		
 		// String [] splStrings =  scadenza.split("/");
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy", Locale.getDefault());
@@ -86,9 +86,9 @@ public class Noleggio extends Prodotto{
 			return (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 
 		return 0;
 		// String [] splStrings =  scadenza.split("/");
@@ -97,7 +97,7 @@ public class Noleggio extends Prodotto{
 
 	}
 
-	public void openDocumentoNoleggio(String iap) throws IOException{
+	public int openDocumentoNoleggio(String iap) throws IOException{
 		System.out.println("openDocument");
 
 		String namepath = "null";
@@ -119,6 +119,7 @@ public class Noleggio extends Prodotto{
 
 				if (Desktop.isDesktopSupported()) {
 					Desktop.getDesktop().open(pdfFile);
+					return 0;
 				} else {
 					System.out.println("Awt Desktop is not supported!");
 				}
@@ -127,9 +128,9 @@ public class Noleggio extends Prodotto{
 				System.out.println("File is not exists!");
 			}
 
-			System.out.println("Done");
+			
 		}
-
+		return 1;
 	}
 
 	public void setDocumentoNoleggio(String iap, String filePath) throws IOException{
@@ -177,13 +178,12 @@ public class Noleggio extends Prodotto{
 
 				
 
-			FileWriter fw = new FileWriter("./database/db_product.txt");
+			FileWriter fw = new FileWriter("./database/db_products.txt");
 	        BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(rewrite);
 	        bw.flush();
 	        bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -4,60 +4,40 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 public class Manutenzione extends Prodotto{
 
-	
-	public Manutenzione() {
-		
-	}
-	
-	public String [][] getMaintenanceProduct() {
-		String data[][] = null;
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
-			String s = "";
-			int i = 0;
-			int counter = 0;
-			ArrayList <String[]>listOfArrays = new ArrayList<>();
-			while((s = br.readLine()) != null){
-				String split[]	= s.split(",");
-				if(split[9].equalsIgnoreCase("manutenzione") && !split[10].equalsIgnoreCase("rifiutata")) {
-					String dati[] =  new String[3];
-					counter++;
-					dati[0] = split[0];
-					dati[1] = split[1];
-					dati[2] = split[10];
-					listOfArrays.add(dati);
-				}	
-				i++;
-			}
-			int riga=0;
-			data = new String[counter][3];
-	        // Copia gli elementi non nulli nella nuova matrice
-	        for (String[] array : listOfArrays) {
-				int column=0;
-	            for (String element : array) {
-	            	data[riga][column]= element;
-	            	column++;
-	            }
-	            riga++;
-	        }
-			br.close();
-			return data;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+	private String manutenzione;
 
+	public Manutenzione(Prodotto prodotto, String manutenzione) {
+		super(
+			prodotto.getNome(),
+			prodotto.getSerialNumber(),
+			prodotto.getIAP(),
+			prodotto.getTipo(),
+			prodotto.getMarca(),
+			prodotto.getUtente(),
+			prodotto.getScadenza(),
+			prodotto.getCosto(),
+			prodotto.getTipoPossesso(),
+			prodotto.getStato(),
+			prodotto.getUrl(),
+			prodotto.getPathDoc()
+		);
+		this.manutenzione = manutenzione;
+	}
+
+	public String getManutenzione() {
+		return manutenzione;
+	}
+
+	public void setManutenzione(String manutenzione) {
+		this.manutenzione = manutenzione;
 	}
 	
 	public void acceptMaintenance(String iap, String stato, Boolean request) {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_product.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("./database/db_products.txt"));
 				String s, file = "";
 				String result ="";
 				int i =0;				
@@ -81,7 +61,7 @@ public class Manutenzione extends Prodotto{
 				for(int j=0; j<riga.length; j++) {
 					file = file + riga[j] + "\n";
 			}			
-	        FileWriter fw = new FileWriter("./database/db_product.txt");
+	        FileWriter fw = new FileWriter("./database/db_products.txt");
 	        BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(file);
 			br.close();
@@ -126,13 +106,27 @@ public class Manutenzione extends Prodotto{
 			br.close();
 			return dati;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 		
 		
 		
+	}
+
+	public String toString(){
+		return this.getNome() + "," 
+		+ this.getIAP() + ","
+		+ this.getSerialNumber() + ","
+		+ this.getMarca() + ","
+		+ ((this.getUtente() != null) ? this.getUtente().getMatricola(): "null") + ","
+		+ this.getScadenza() + ","
+		+ this.getCosto() + ","
+		+ this.getTipo() + ","
+		+ manutenzione + ","
+		+ this.getStato() + ","
+		+ this.getUrl() + ","
+		+ this.getPathDoc();
 	}
 	
 }
