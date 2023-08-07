@@ -22,12 +22,10 @@ public class Prodotto {
 	
 	private String url;//per le licenze software
 
-	private String pathDoc;
-	
 	/**
 	 *  
 	 */
-	public Prodotto(String nome, String IAP, String serial_number, String tipo, String marca, Utente utente, String scadenza, int costo, String tipoPossesso, String stato, String url, String pathDoc) {
+	public Prodotto(String nome, String IAP, String serial_number, String tipo, String marca, Utente utente, String scadenza, int costo, String tipoPossesso, String url) {
 		this.nome = nome;
 		this.serial_number = serial_number;
 		this.IAP = IAP;
@@ -37,9 +35,7 @@ public class Prodotto {
 		this.scadenza = scadenza;
 		this.costo = costo;
 		this.tipoPossesso = tipoPossesso;
-		this.stato = stato;
 		this.url = url;
-		this.pathDoc = pathDoc;
 	}
 
 	public String getNome() {
@@ -81,16 +77,8 @@ public class Prodotto {
 		return tipoPossesso;
 	}
 
-	public String getStato() {
-		return stato;
-	}
-
 	public String getUrl() {
 		return url;
-	}
-
-	public String getPathDoc() {
-		return pathDoc;
 	}
 
 	public void setNome(String nome) {
@@ -129,20 +117,12 @@ public class Prodotto {
 		 this.tipoPossesso = tipoPossesso;
 	}
 
-	public void setStato(String stato) {
-		this.stato = stato;
-	}
-
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	public void setPathDoc(String pathDoc) {
-		this.pathDoc = pathDoc;
-	}
-
 	public String toString(){
-		return nome+","+IAP+","+serial_number+","+marca+","+((utente != null) ? utente.getMatricola(): "null")+","+scadenza+","+costo+","+tipo+","+","+stato+","+url+","+pathDoc;
+		return nome+","+IAP+","+serial_number+","+marca+","+((utente != null) ? utente.getMatricola(): "null")+","+scadenza+","+costo+","+tipo+","+","+stato+","+url;
 	}
 	
 }

@@ -8,15 +8,13 @@ public class ProdottoBuilder {
 	private Utente _utente = null;
 	private String _scadenza = "null";
 	private int _costo = 0;
-	private String _tipoPossesso = "null";
-	private String _stato = "null";
+	private String _tipoPossesso = "acquisto";
 	private String _url = "null";
-	private String _pathDoc = "null";
 
 	public ProdottoBuilder(){}
 
 	public Prodotto buildProdotto(){
-		return new Prodotto(_nome, _IAP, _serial_number, _tipo, _marca, _utente, _scadenza, _costo, _tipoPossesso, _stato, _url, _pathDoc);
+		return new Prodotto(_nome, _IAP, _serial_number, _tipo, _marca, _utente, _scadenza, _costo, _tipoPossesso, _url);
 	}
 
 	public ProdottoBuilder nome(String _nome){
@@ -64,18 +62,8 @@ public class ProdottoBuilder {
 		return this;
 	}
 
-	public ProdottoBuilder stato(String _stato){
-		this._stato = _stato;
-		return this;
-	}
-
 	public ProdottoBuilder url(String _url){
 		this._url = _url;
-		return this;
-	}
-
-	public ProdottoBuilder pathDoc(String _pathDoc){
-		this._pathDoc = _pathDoc;
 		return this;
 	}
 

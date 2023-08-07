@@ -1,15 +1,10 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Manutenzione extends Prodotto{
 
 	private String manutenzione;
 
-	public Manutenzione(Prodotto prodotto, String manutenzione) {
+	private String statoRichiesta;
+
+	public Manutenzione(Prodotto prodotto, String manutenzione, String statoRichiesta) {
 		super(
 			prodotto.getNome(),
 			prodotto.getSerialNumber(),
@@ -20,11 +15,10 @@ public class Manutenzione extends Prodotto{
 			prodotto.getScadenza(),
 			prodotto.getCosto(),
 			prodotto.getTipoPossesso(),
-			prodotto.getStato(),
-			prodotto.getUrl(),
-			prodotto.getPathDoc()
+			prodotto.getUrl()
 		);
 		this.manutenzione = manutenzione;
+		this.statoRichiesta = statoRichiesta;
 	}
 
 	public String getManutenzione() {
@@ -35,84 +29,13 @@ public class Manutenzione extends Prodotto{
 		this.manutenzione = manutenzione;
 	}
 	
-	public void acceptMaintenance(String iap, String stato, Boolean request) {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_products.txt"));
-				String s, file = "";
-				String result ="";
-				int i =0;				
-				int found=0;
-			while((s = br.readLine()) != null){
-					result = result + s + "\n";
-					String data[] = s.split(",");
-					 if(data[1].equalsIgnoreCase(iap)) {
-						found=i; 
-					 }
-				     i++;
-				}
-				String riga[] = result.split("\n");
-				String campi[] = riga[found].split(",");
-				//cambiare indice ad ogni set
-				campi[10] = stato;
-				if(request) {
-					campi[9] ="manutenzione";					
-				}
-				riga[found] = campi[0] + "," + campi[1] + "," + campi[2] + "," +campi[3]+ ","+campi[4]+ "," + campi[5]+ ","+campi[6]+ ","+campi[7]+ ","+campi[8]+ ","+campi[9]+ ","+campi[10]+ ","+campi[11];
-				for(int j=0; j<riga.length; j++) {
-					file = file + riga[j] + "\n";
-			}			
-	        FileWriter fw = new FileWriter("./database/db_products.txt");
-	        BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(file);
-			br.close();
-	        bw.flush();
-	        bw.close();
+	public String getStatoRichiesta() {
+		return statoRichiesta;
+	}
 
-		 }catch(Exception e) {
-			System.out.println(e.getMessage()); 
-		 }
-	}
-	
-	public void setProblemRequest(String iap, String problema) {
-		try {
-			String richiesta = iap + "," + problema;
-	        FileWriter fw = new FileWriter("./database/db_requests.txt", true);
-	        BufferedWriter bw = new BufferedWriter(fw);
-	        bw.write(richiesta);
-	        bw.write("\n");
-	        bw.flush();
-	        bw.close();			
-		}catch(FileNotFoundException e) {
-			System.out.println(e.getMessage());
-		}catch(IOException e) {
-			System.out.println(e.getMessage());			
-		}catch(Exception e) {
-			System.out.println(e.getMessage());			
-		}
-	}
-	
-	public String[][] getCareRequest(String iap){
-		String dati[][] = new String[1][2];
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_requests.txt"));
-			String s = "";
-			while((s = br.readLine()) != null){
-				String split[]	= s.split(",");
-				if(split[0].equalsIgnoreCase(iap)) {
-					dati[0][0] = split[0];
-					dati[0][1] = split[1];
-				}	
-			}
-			br.close();
-			return dati;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		
-		
-	}
+	public void setStatoRichiesta(String statoRichiesta) {
+		this.statoRichiesta = statoRichiesta;
+	}	
 
 	public String toString(){
 		return this.getNome() + "," 
@@ -124,9 +47,9 @@ public class Manutenzione extends Prodotto{
 		+ this.getCosto() + ","
 		+ this.getTipo() + ","
 		+ manutenzione + ","
-		+ this.getStato() + ","
+		+ statoRichiesta + ","
 		+ this.getUrl() + ","
-		+ this.getPathDoc();
+		+ "null";
 	}
 	
 }

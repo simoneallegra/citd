@@ -1,14 +1,4 @@
 import java.io.*;
-import java.math.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,6 +144,30 @@ public class CITD{
 		}
 		return listaManutenzione;
 	}
+
+	public List<Noleggio> getListaNoleggi(){
+		List<Noleggio> listaNoleggi = new ArrayList<>();
+		for(Prodotto prodotto : listaProdotti){
+			if (prodotto instanceof Noleggio){
+				listaNoleggi.add((Noleggio)prodotto);
+			}
+		}
+		return listaNoleggi;
+	}
+
+	public Richiesta getRichiesta(String iap){
+		for(Richiesta richiesta : listaRichieste)
+			if(richiesta.getIAP().equalsIgnoreCase(iap))
+				return richiesta;
+		return null;
+	}
+
+	public Noleggio getNoleggio(String iap){
+		for(Noleggio noleggio : getListaNoleggi())
+			if(noleggio.getIAP().equalsIgnoreCase(iap))
+				return noleggio;
+		return null;
+	}
 	
 	public String[][] getDetailsManutenzione(){
 		String[][] data = utility.listToMatrixString(getListaManutenzione());
@@ -168,11 +182,16 @@ public class CITD{
 	
 	public String[][] gestisciStatoManutenzione(String iap,String stato) {
 		
+		Richiesta richiesta = getRichiesta(iap);
 		for(Manutenzione manutenzione : getListaManutenzione()){
 			if(manutenzione.getIAP().equalsIgnoreCase(iap))
-				manutenzione.setStato(stato);
-				if(stato.equalsIgnoreCase("rifiutata"))
-					manutenzione.setManutenzione("");
+				manutenzione.setStatoRichiesta(stato);
+				if(richiesta != null)
+					listaRichieste.remove(richiesta);
+			if(stato.equalsIgnoreCase("rifiutata"))
+				manutenzione.setManutenzione("");
+				if(richiesta != null)
+					listaRichieste.remove(richiesta);
 		}
 		return getDetailsManutenzione();
 	}

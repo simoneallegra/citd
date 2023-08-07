@@ -4,3 +4,4 @@ CITD005, Obsolescenza
 CITD008, Richiede aggiornamenti
 CITD001,rotto
 CITD008,è morto pippo
+CITD008,Descrivi il problema del tuo dispositivo

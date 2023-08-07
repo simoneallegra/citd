@@ -1178,8 +1178,8 @@ public class App {
 							
 							newScadenzaField = new JTextField();
 
-							String data[][]=citd.getNoleggio().getListaNoleggi();
-							String colonna[]={"NOME","IAP","SCADENZA TRA"};
+							String data[][] = utility.listToMatrixString(citd.getListaNoleggi());
+							String colonna[] = {"NOME","IAP","SCADENZA TRA"};
 							jtProduct = new JTable(data,colonna);
 							rentProductPanel.add(new JScrollPane(jtProduct));
 
@@ -1193,9 +1193,9 @@ public class App {
 											updateRentBtn.addActionListener(new ActionListener() {
 												public void actionPerformed(ActionEvent arg0) {
 													if(newScadenzaField.getText() != "")
-														citd.getNoleggio().updateNoleggio(valueInCell, newScadenzaField.getText());
+														citd.getNoleggio(valueInCell).setScadenza(newScadenzaField.getText());
 
-														String data[][]=citd.getNoleggio().getListaNoleggi();
+														String data[][] = utility.listToMatrixString(citd.getListaNoleggi());
 														String colonna[]={"NOME","IAP","SCADENZA TRA"};
 														Model table = new Model(data,colonna);
 														jtProduct.setModel(table);
@@ -1223,7 +1223,7 @@ public class App {
 
 													if(response == JFileChooser.APPROVE_OPTION){
 														try {
-															citd.getNoleggio().setDocumentoNoleggio(valueInCell, fileChooser.getSelectedFile().getAbsolutePath());
+															citd.getNoleggio(valueInCell).setDocumentoNoleggio(fileChooser.getSelectedFile().getAbsolutePath());
 														} catch (IOException e) {
 															e.printStackTrace();
 														}

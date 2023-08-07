@@ -29,9 +29,13 @@ public class ProdottoDao{
 					if(utente.getMatricola().equalsIgnoreCase(data[5]))
 						utenteTrovato = utente;	
 						
-				Prodotto nuovoProdotto = new Prodotto(data[0], data[1], data[2], data[3], data[4], utenteTrovato, data[6], Integer.parseInt(data[7]), data[8], data[10], data[11], data[12]);
+				Prodotto nuovoProdotto = new Prodotto(data[0], data[1], data[2], data[3], data[4], utenteTrovato, data[6], Integer.parseInt(data[7]), data[8], data[11]);
 				if(data[9].equalsIgnoreCase("manutenzione"))
-					prodotti.add(new Manutenzione(nuovoProdotto, data[9]));
+					prodotti.add(new Manutenzione(nuovoProdotto, data[9], data[10]));
+				else if(data[8].equalsIgnoreCase("noleggio"))
+					prodotti.add(new Noleggio(nuovoProdotto, data[12]));
+				// else if(data[10].equalsIgnoreCase("abbonamento"))
+				// 	prodotti.add(new Noleggio(nuovoProdotto, data[11]));
 				else
 					prodotti.add(nuovoProdotto);
 			}
@@ -62,9 +66,9 @@ public class ProdottoDao{
 					+ String.valueOf(prodotto.getCosto()) + "," 
 					+ prodotto.getTipoPossesso() + "," 
 					+ ((prodotto instanceof Manutenzione) ? ((Manutenzione)prodotto).getManutenzione() : "null") + "," 
-					+ prodotto.getStato() + "," 
+					+ ((prodotto instanceof Manutenzione) ? ((Manutenzione)prodotto).getStatoRichiesta() : "null") + "," 
 					+ prodotto.getUrl() + "," 
-					+ prodotto.getPathDoc() +'\n';
+					+ ((prodotto instanceof Noleggio) ? ((Noleggio)prodotto).getDocumentoNoleggio() : "null" ) +'\n';
 			}
 			
 			writer.print(fields);
