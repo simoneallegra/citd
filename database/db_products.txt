@@ -1,5 +1,5 @@
 api,CITD004,SN0564,software,Google,,15/04/2023,50,abbonamento,null,null,https://cloud.google.com/,null
-schermo,CITD005,SN7855,hardware,DELL,thasup,,111,noleggio,null,null,null,915.pdf
-mouse,CITD006,SN7531,hardware,LG,pippo,01/01/2021,23,noleggio,manutenzione,rifiutata,null,null
+schermo,CITD005,SN0564,hardware,DELL,thasup,01/01/2100,111,noleggio,null,null,null,521.pdf
+mouse,CITD006,SN0564,hardware,LG,pippo,01/01/2021,23,noleggio,manutenzione,rifiutata,null,null
 astah,CITD007,SN1593,software,Astah,,28/11/2022,520,abbonamento,null,null,https://astah.net/,null
-pc,CITD008,SN1595,hardware,Samsung,ciao,null,45,acquisto,manutenzione,approvata,null,null
+pc,CITD008,SN0564,hardware,Samsung,ciao,null,45,acquisto,manutenzione,approvata,null,null

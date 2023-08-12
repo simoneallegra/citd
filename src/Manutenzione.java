@@ -7,8 +7,8 @@ public class Manutenzione extends Prodotto{
 	public Manutenzione(Prodotto prodotto, String manutenzione, String statoRichiesta) {
 		super(
 			prodotto.getNome(),
-			prodotto.getSerialNumber(),
 			prodotto.getIAP(),
+			prodotto.getSerialNumber(),
 			prodotto.getTipo(),
 			prodotto.getMarca(),
 			prodotto.getUtente(),

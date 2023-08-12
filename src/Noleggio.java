@@ -1,15 +1,10 @@
 import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -21,8 +16,8 @@ public class Noleggio extends Prodotto{
 	public Noleggio(Prodotto prodotto, String documentoNoleggio) {
 		super(
 			prodotto.getNome(),
-			prodotto.getSerialNumber(),
 			prodotto.getIAP(),
+			prodotto.getSerialNumber(),
 			prodotto.getTipo(),
 			prodotto.getMarca(),
 			prodotto.getUtente(),
@@ -61,7 +56,7 @@ public class Noleggio extends Prodotto{
 		fileInput.close();
 		fileOutput.close();
 
-		this.documentoNoleggio = filePath;
+		this.documentoNoleggio = newName;
 	}
 	
 	public int giorniRimanenti(){
@@ -85,7 +80,7 @@ public class Noleggio extends Prodotto{
 
 	}
 
-	public int openDocumentoNoleggio(String iap) throws IOException{
+	public int openDocumentoNoleggio() throws IOException{
 		System.out.println("openDocument");
 
 		String path = "./documents/" + this.documentoNoleggio;

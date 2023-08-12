@@ -155,6 +155,17 @@ public class CITD{
 		return listaNoleggi;
 	}
 
+	public String[][] getTableNoleggi(){
+		String[][] data = utility.listToMatrixString(getListaNoleggi());
+		String[][] dataFiltered = new String[data.length][3];
+		for (int i = 0; i<data.length; i++) {
+			dataFiltered[i][0] = data[i][0]; //nome
+			dataFiltered[i][1] = data[i][1]; //IAP
+			dataFiltered[i][2] = data[i][5]; //scadenza
+		}
+		return dataFiltered;
+	}
+
 	public Richiesta getRichiesta(String iap){
 		for(Richiesta richiesta : listaRichieste)
 			if(richiesta.getIAP().equalsIgnoreCase(iap))

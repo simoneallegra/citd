@@ -1178,7 +1178,7 @@ public class App {
 							
 							newScadenzaField = new JTextField();
 
-							String data[][] = utility.listToMatrixString(citd.getListaNoleggi());
+							String data[][] = citd.getTableNoleggi();
 							String colonna[] = {"NOME","IAP","SCADENZA TRA"};
 							jtProduct = new JTable(data,colonna);
 							rentProductPanel.add(new JScrollPane(jtProduct));
@@ -1195,7 +1195,7 @@ public class App {
 													if(newScadenzaField.getText() != "")
 														citd.getNoleggio(valueInCell).setScadenza(newScadenzaField.getText());
 
-														String data[][] = utility.listToMatrixString(citd.getListaNoleggi());
+														String data[][] = citd.getTableNoleggi();
 														String colonna[]={"NOME","IAP","SCADENZA TRA"};
 														Model table = new Model(data,colonna);
 														jtProduct.setModel(table);
@@ -1206,7 +1206,7 @@ public class App {
 												public void actionPerformed(ActionEvent arg0) {
 													System.out.println("open documento button");
 													try {
-														citd.getNoleggio().openDocumentoNoleggio(valueInCell);
+														citd.getNoleggio(valueInCell).openDocumentoNoleggio();
 														openFileBtn.removeActionListener(this);
 
 													} catch (IOException e) {
