@@ -23,8 +23,8 @@ public class Noleggio extends Prodotto{
 			prodotto.getUtente(),
 			prodotto.getScadenza(),
 			prodotto.getCosto(),
-			"noleggio",
-			prodotto.getUrl()
+			"noleggio"/*,
+			prodotto.getUrl()*/
 		);
 		this.documentoNoleggio = documentoNoleggio;
 	}
@@ -105,6 +105,7 @@ public class Noleggio extends Prodotto{
 		return this.getNome() + "," 
 		+ this.getIAP() + ","
 		+ this.getSerialNumber() + ","
+		+ this.getTipo() + ","
 		+ this.getMarca() + ","
 		+ ((this.getUtente() != null) ? this.getUtente().getMatricola(): "null") + ","
 		+ this.getScadenza() + ","
@@ -112,7 +113,7 @@ public class Noleggio extends Prodotto{
 		+ "noleggio" + ","
 		+ "null,"
 		+ "null,"
-		+ this.getUrl() + ","
+		+ "null,"
 		+ documentoNoleggio;
 	}
 	

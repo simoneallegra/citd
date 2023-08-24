@@ -29,13 +29,13 @@ public class ProdottoDao{
 					if(utente.getMatricola().equalsIgnoreCase(data[5]))
 						utenteTrovato = utente;	
 						
-				Prodotto nuovoProdotto = new Prodotto(data[0], data[1], data[2], data[3], data[4], utenteTrovato, data[6], Integer.parseInt(data[7]), data[8], data[11]);
+				Prodotto nuovoProdotto = new Prodotto(data[0], data[1], data[2], data[3], data[4], utenteTrovato, data[6], Integer.parseInt(data[7]), data[8]);
 				if(data[9].equalsIgnoreCase("manutenzione"))
 					prodotti.add(new Manutenzione(nuovoProdotto, data[9], data[10]));
 				else if(data[8].equalsIgnoreCase("noleggio"))
 					prodotti.add(new Noleggio(nuovoProdotto, data[12]));
-				// else if(data[10].equalsIgnoreCase("abbonamento"))
-				// 	prodotti.add(new Noleggio(nuovoProdotto, data[11]));
+				 else if(data[8].equalsIgnoreCase("abbonamento"))
+				 	prodotti.add(new Abbonamento(nuovoProdotto, data[11]));
 				else
 					prodotti.add(nuovoProdotto);
 			}
@@ -67,7 +67,7 @@ public class ProdottoDao{
 					+ prodotto.getTipoPossesso() + "," 
 					+ ((prodotto instanceof Manutenzione) ? ((Manutenzione)prodotto).getManutenzione() : "null") + "," 
 					+ ((prodotto instanceof Manutenzione) ? ((Manutenzione)prodotto).getStatoRichiesta() : "null") + "," 
-					+ prodotto.getUrl() + "," 
+					+ ((prodotto instanceof Abbonamento) ? ((Abbonamento)prodotto).getUrl() : "null") + "," 
 					+ ((prodotto instanceof Noleggio) ? ((Noleggio)prodotto).getDocumentoNoleggio() : "null" ) +'\n';
 			}
 			

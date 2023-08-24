@@ -14,9 +14,10 @@ public class ProdottoBuilder {
 	public ProdottoBuilder(){}
 
 	public Prodotto buildProdotto(){
-		return new Prodotto(_nome, _IAP, _serial_number, _tipo, _marca, _utente, _scadenza, _costo, _tipoPossesso, _url);
+		return new Prodotto(_nome, _IAP, _serial_number, _tipo, _marca, _utente, _scadenza, _costo, _tipoPossesso);
 	}
 
+	
 	public ProdottoBuilder nome(String _nome){
 		this._nome = _nome;
 		return this;

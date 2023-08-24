@@ -1,5 +1,9 @@
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -17,6 +21,9 @@ public class CITD{
 	private List<Richiesta> listaRichieste;
 	private RichiestaDao richiestaDao;
 
+	private List<RichiestaProdotto> listaRichiesteProdotto;
+	private RichiestaProdottoDao richiestaProdottoDao;
+	
 	private Noleggio noleggio;
 
 	public CITD(){
@@ -31,6 +38,9 @@ public class CITD{
 
 		richiestaDao = new RichiestaDao();
 		listaRichieste = richiestaDao.get();
+		
+		richiestaProdottoDao = new RichiestaProdottoDao();
+		listaRichiesteProdotto = richiestaProdottoDao.get();
 
 		// proiezioni = new Proiezioni();
 		// noleggio = new Noleggio(null);
@@ -83,6 +93,7 @@ public class CITD{
 		utenteDao.set(listaUtenti);
 		prodottoDao.set(listaProdotti);
 		richiestaDao.set(listaRichieste);
+		richiestaProdottoDao.set(listaRichiesteProdotto);
 	}
 
 	//----------------------------PRODOTTI---------------------------
@@ -111,7 +122,43 @@ public class CITD{
 		
 		listaProdotti.add(newProdotto);
 	}
-
+	
+	public void aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca, String tipoPossesso, int costo, String scadenza, String url) {
+		//manca utente, di default null
+		Prodotto newProdotto = new ProdottoBuilder()
+									.nome(nome)
+									.iap(iap)
+									.serial_number(serial_number)
+									.tipo(tipo)
+									.marca(marca)
+									.tipoPossesso(tipoPossesso)
+									.costo(costo)
+									.scadenza(scadenza)
+									.url(url)
+									.buildProdotto();
+		
+		listaProdotti.add(newProdotto);
+	}
+	
+	public void aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca, Utente utente, String tipoPossesso, int costo, String scadenza, String url) {
+		//manca utente, di default null
+		Prodotto newProdotto = new ProdottoBuilder()
+									.nome(nome)
+									.iap(iap)
+									.serial_number(serial_number)
+									.tipo(tipo)
+									.marca(marca)
+									.utente(utente)
+									.tipoPossesso(tipoPossesso)
+									.costo(costo)
+									.scadenza(scadenza)
+									.url(url)
+									.buildProdotto();
+		
+		listaProdotti.add(newProdotto);
+	}
+	
+	
 	public void eliminaProdotto(String iap) {
 		listaProdotti.remove(getDetailsProdotto(iap));
 	}
@@ -161,7 +208,7 @@ public class CITD{
 		for (int i = 0; i<data.length; i++) {
 			dataFiltered[i][0] = data[i][0]; //nome
 			dataFiltered[i][1] = data[i][1]; //IAP
-			dataFiltered[i][2] = data[i][5]; //scadenza
+			dataFiltered[i][2] = data[i][6]; //scadenza
 		}
 		return dataFiltered;
 	}
@@ -180,31 +227,24 @@ public class CITD{
 		return null;
 	}
 	
-	public String[][] getDetailsManutenzione(){
-		String[][] data = utility.listToMatrixString(getListaManutenzione());
-		String[][] dataFiltered = new String[data.length][3];
-		for (int i = 0; i<data.length; i++) {
-			dataFiltered[i][0] = data[i][0]; //nome
-			dataFiltered[i][1] = data[i][1]; //IAP
-			dataFiltered[i][2] = data[i][9]; //stato
+	public void setManutenzione(String iap, String stato){
+		for(Prodotto prodotto : listaProdotti) {
+			if(prodotto.getIAP().equalsIgnoreCase(iap)) {
+				Manutenzione manutenzione = new Manutenzione(prodotto, "manutenzione", stato);
+				listaProdotti.set(listaProdotti.indexOf(prodotto), manutenzione);
+			}
 		}
-		return dataFiltered;
 	}
 	
-	public String[][] gestisciStatoManutenzione(String iap,String stato) {
-		
-		Richiesta richiesta = getRichiesta(iap);
-		for(Manutenzione manutenzione : getListaManutenzione()){
-			if(manutenzione.getIAP().equalsIgnoreCase(iap))
-				manutenzione.setStatoRichiesta(stato);
-				if(richiesta != null)
-					listaRichieste.remove(richiesta);
-			if(stato.equalsIgnoreCase("rifiutata"))
-				manutenzione.setManutenzione("");
-				if(richiesta != null)
-					listaRichieste.remove(richiesta);
+	public void deleteMaintenanceRequest(String iap) {
+		try {
+			for(Richiesta req: listaRichieste) {
+				if(req.getIAP().equalsIgnoreCase(iap))
+					listaRichieste.remove(req);
+			}			
+		}catch(Exception e) {
+			
 		}
-		return getDetailsManutenzione();
 	}
 
 	public String[][] getCareRequest(String iap){
@@ -219,28 +259,75 @@ public class CITD{
 	public String[][] getUserProduct(String matricola) {
 		List<Prodotto> listaProdottiFiltered = new ArrayList<>();
 		for(Prodotto prodotto : listaProdotti)
-			if(prodotto.getUtente().getMatricola().equalsIgnoreCase(matricola))
-				listaProdottiFiltered.add(prodotto);
-
+			if(!prodotto.getTipo().equalsIgnoreCase("software") && !prodotto.getTipoPossesso().equalsIgnoreCase("noleggio")) {
+				if(prodotto instanceof Manutenzione ) {
+					listaProdottiFiltered.add(prodotto);
+				} else if(prodotto.getUtente().getMatricola().equalsIgnoreCase(matricola)) {
+					listaProdottiFiltered.add(prodotto);
+				}
+			}
 		String[][] data = utility.listToMatrixString(listaProdottiFiltered);
 		String[][] dataFiltered = new String[data.length][4];
+			for (int i = 0; i<data.length; i++) {
+				dataFiltered[i][0] = data[i][0]; //nome
+				dataFiltered[i][1] = data[i][1]; //IAP
+				if(data[i][9].equalsIgnoreCase("null")) {
+					dataFiltered[i][2] = "funzionante";
+					dataFiltered[i][3] = "-";
+				}else {
+					dataFiltered[i][2] = data[i][9]; //tipo prodotto
+					dataFiltered[i][3] = data[i][10]; //stato	
+				}
+			}			
+		return dataFiltered;
+	}
+	
+	//ritorna
+	public String[][] getAllMaintenanceProduct(){
+		List<Prodotto> listaProdottiFiltered = new ArrayList<>();
+		for(Prodotto prodotto : listaProdotti)
+			if(!prodotto.getTipo().equalsIgnoreCase("software") && !prodotto.getTipoPossesso().equalsIgnoreCase("noleggio") && prodotto instanceof Manutenzione) {
+					listaProdottiFiltered.add(prodotto);
+			}
+		
+		String[][] data = utility.listToMatrixString(listaProdottiFiltered);
+		String[][] dataFiltered = new String[data.length][3];
 		for (int i = 0; i<data.length; i++) {
 			dataFiltered[i][0] = data[i][0]; //nome
 			dataFiltered[i][1] = data[i][1]; //IAP
-			dataFiltered[i][2] = data[i][9]; //tipo prodotto
-			dataFiltered[i][3] = data[i][10]; //stato
+			dataFiltered[i][2] = data[i][10]; //stato
 		}
 		return dataFiltered;
+
 	}
+	
+	
+	
+	
+	
+	public String[][] reduceObject (String data[][], ArrayList<String> campi){
+		String[][] dataFiltered = new String[data.length][campi.size()];
+		for (int i = 0; i<data.length; i++) {
+			/*dataFiltered[i][0] = data[i][0]; //nome
+			dataFiltered[i][1] = data[i][1]; //IAP
+			if(data[i][9].equalsIgnoreCase("null")) {
+				dataFiltered[i][2] = "funzionante";
+				dataFiltered[i][3] = "-";
+			}else {
+				dataFiltered[i][2] = data[i][9]; //tipo prodotto
+				dataFiltered[i][3] = data[i][10]; //stato	
+			}*/
+			
+			
+		}
+		return dataFiltered;
+		
+	}
+	
 
 	public void setProblemRequest(String iap, String problema){
 		listaRichieste.add(new Richiesta(iap,problema));
-		gestisciStatoManutenzione(iap, "lavorazione");
-	}
-	
-	public String[][] getLicense(){
-		String[][] data = new String[1][1];
-		return data;
+		//gestisciStatoManutenzione(iap, "lavorazione");
 	}
 	
 	public String rinnovaScadenza(String iap, String scadenza) {
@@ -253,4 +340,70 @@ public class CITD{
 		System.out.println("getNoleggio");
 		return noleggio;
 	}
+	
+	//--------------RICHIESTE NUOVI PRODOTTI
+	
+	public List<RichiestaProdotto> getListaRichiestaNuovoProdotto(Boolean superuser, String matricola){
+		if(superuser) {
+			return listaRichiesteProdotto;	
+		}else {
+			List<RichiestaProdotto> richiesteUtente= new ArrayList<RichiestaProdotto>();
+			for(RichiestaProdotto req : listaRichiesteProdotto) {
+				if(req.getUtente().equalsIgnoreCase(matricola)) {
+					richiesteUtente.add(req);					
+				}
+			}
+			return richiesteUtente;
+		}
+	}
+	
+	public void aggiungiRichiestaNuovoProdotto(String iap,String nome, String tipo, String marca, String motivo, String utente) {
+		RichiestaProdotto reqProd = new RichiestaProdotto(iap, utente, nome, tipo, marca, motivo);
+		listaRichiesteProdotto.add(reqProd);
+	}
+	
+	
+	public void deleteNewProductRequest(String iap) {
+		try {
+			for(RichiestaProdotto req: listaRichiesteProdotto) {
+				if(req.getIap().equalsIgnoreCase(iap))
+					listaRichiesteProdotto.remove(req);
+			}			
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	
+	public List<Abbonamento> getListaAbbonamenti(){
+		List<Abbonamento> listaAbbonamenti = new ArrayList<>();
+		for(Prodotto prodotto : listaProdotti){
+			if (prodotto instanceof Abbonamento){
+				int risultato=0;			
+			        DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+			        Date scad=null;
+			        try {
+			            scad = formatoData.parse(prodotto.getScadenza());
+			        } catch (ParseException e) {
+			            e.printStackTrace();
+			        }
+			        Date dataOggi = new Date();
+			        risultato = scad.compareTo(dataOggi);
+			        if(risultato<0)
+			        	//se risultato è minore di 0, la scadenza è precedente alla data di oggi
+			        	listaAbbonamenti.add((Abbonamento)prodotto);
+			}
+		}
+		return listaAbbonamenti;
+	}
+
+	public Abbonamento getAbbonamento(String iap) {
+		for(Prodotto prodotto : listaProdotti){
+			if (prodotto instanceof Abbonamento && prodotto.getIAP().equalsIgnoreCase(iap)){
+				return (Abbonamento)prodotto;
+			}
+		}
+		return null;
+	}
+	
 }

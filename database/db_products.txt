@@ -1,5 +1,14 @@
-api,CITD004,SN0564,software,Google,,15/04/2023,50,abbonamento,null,null,https://cloud.google.com/,null
-schermo,CITD005,SN0564,hardware,DELL,thasup,01/01/2100,111,noleggio,null,null,null,521.pdf
-mouse,CITD006,SN0564,hardware,LG,pippo,01/01/2021,23,noleggio,manutenzione,rifiutata,null,null
-astah,CITD007,SN1593,software,Astah,,28/11/2022,520,abbonamento,null,null,https://astah.net/,null
-pc,CITD008,SN0564,hardware,Samsung,ciao,null,45,acquisto,manutenzione,approvata,null,null
+api,CITD001,SN0564,software,Google,,1/1/2025,50,abbonamento,null,null,https://cloud.google.com/apis,null
+schermo,CITD002,SN0564,hardware,DELL,thasup,01/01/2100,111,noleggio,null,null,null,521.pdf
+mouse,CITD003,SN0564,hardware,LG,pippo,01/01/2021,23,noleggio,null,null,null,null
+astah,CITD004,SN1593,software,Astah,pippo,25/12/2024,520,abbonamento,null,null,https://astah.net/,null
+pc,CITD005,SN0564,hardware,Samsung,ciao,null,45,acquisto,null,null,null,null
+cuffie,CITD006,SN5875,hardware,sony,,null,0,acquisto,null,null,null,null
+cuffie,CITD007,SN760,hardware,LG,pippo,null,10,acquisto,manutenzione,In lavorazione,null,null
+schermo,CITD008,SN571,hardware,Samsung,,null,0,acquisto,null,null,null,null
+tavolo,CITD009,SN0789,hardware,Ikea,,null,0,acquisto,null,null,null,null
+sedia,CITD010,SN7845,hardware,Ikea,pippo,,15,acquisto,manutenzione,approvata,null,null
+office,CITD011,SN4580,software,Office,,24/10/2023,25,abbonamento,null,null,https://astah.net/,null
+pc,CITD012,SN518,hardware,Apple,pippo,null,5,acquisto,manutenzione,approvata,null,null
+caricatore,CITD013,SN518,hardware,DELL,pippo,null,5,acquisto,manutenzione,rifiutata,null,null
+computer,CITD014,SN8426,hardware,Apple,,,1223,acquisto,null,null,null,null

@@ -20,12 +20,12 @@ public class Prodotto {
 
 	private String stato;
 	
-	private String url;//per le licenze software
+	//private String url;//per le licenze software
 
 	/**
 	 *  
 	 */
-	public Prodotto(String nome, String IAP, String serial_number, String tipo, String marca, Utente utente, String scadenza, int costo, String tipoPossesso, String url) {
+	public Prodotto(String nome, String IAP, String serial_number, String tipo, String marca, Utente utente, String scadenza, int costo, String tipoPossesso){//, String url) {
 		this.nome = nome;
 		this.serial_number = serial_number;
 		this.IAP = IAP;
@@ -35,7 +35,7 @@ public class Prodotto {
 		this.scadenza = scadenza;
 		this.costo = costo;
 		this.tipoPossesso = tipoPossesso;
-		this.url = url;
+		//this.url = url;
 	}
 
 	public String getNome() {
@@ -77,9 +77,9 @@ public class Prodotto {
 		return tipoPossesso;
 	}
 
-	public String getUrl() {
+	/*public String getUrl() {
 		return url;
-	}
+	}*/
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -117,12 +117,13 @@ public class Prodotto {
 		 this.tipoPossesso = tipoPossesso;
 	}
 
-	public void setUrl(String url) {
+	/*public void setUrl(String url) {
 		this.url = url;
-	}
+	}*/
 
 	public String toString(){
-		return nome+","+IAP+","+serial_number+","+marca+","+((utente != null) ? utente.getMatricola(): "null")+","+scadenza+","+costo+","+tipo+","+","+stato+","+url;
+		return nome+","+IAP+","+serial_number+","+tipo+","+marca+","+((utente != null) ? utente.getMatricola(): "null")
+			   + ","+ scadenza+","+ costo + "," + tipoPossesso + ",null,null,null,null" ;//+","+","+stato+",";+url;
 	}
 	
 }

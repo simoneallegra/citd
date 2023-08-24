@@ -43,7 +43,52 @@ public class Utils {
 		return data;
 	}
 	
-
+	public String getIapProduct(List<Prodotto> lista) {
+		int index =0;
+		int maxIap=0;
+		for (Prodotto prodotto : lista) {
+			index = prodotto.getIAP().indexOf("D");
+			String substring = prodotto.getIAP().substring(index+1);
+			index= Integer.valueOf(substring);
+			if (index>maxIap) {
+				maxIap=index;
+			}
+		}
+		maxIap++;
+		String IAP = String.valueOf(maxIap);
+		if(IAP.length() == 1) {
+			IAP = "CITD00" + IAP; 
+		}else if(IAP.length() == 2) {
+			IAP = "CITD0" + IAP; 
+		}else {
+			IAP = "CITD0" + IAP; 
+		}
+		return IAP;
+	}
+	
+	public String getIapProductRequest(List<RichiestaProdotto> lista) {
+		int index =0;
+		int maxIap=0;
+		for (RichiestaProdotto richiesta : lista) {
+			index = richiesta.getIap().indexOf("D");
+			String substring = richiesta.getIap().substring(index+1);
+			index= Integer.valueOf(substring);
+			if (index>maxIap) {
+				maxIap=index;
+			}
+		}
+		maxIap++;
+		String IAP = String.valueOf(maxIap);
+		if(IAP.length() == 1) {
+			IAP = "CITD00" + IAP; 
+		}else if(IAP.length() == 2) {
+			IAP = "CITD0" + IAP; 
+		}else {
+			IAP = "CITD0" + IAP; 
+		}
+		return IAP;
+	}
+	
 	
 	
 }

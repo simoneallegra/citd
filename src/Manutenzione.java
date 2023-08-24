@@ -14,13 +14,27 @@ public class Manutenzione extends Prodotto{
 			prodotto.getUtente(),
 			prodotto.getScadenza(),
 			prodotto.getCosto(),
-			prodotto.getTipoPossesso(),
-			prodotto.getUrl()
+			prodotto.getTipoPossesso()
 		);
 		this.manutenzione = manutenzione;
 		this.statoRichiesta = statoRichiesta;
 	}
 
+	public Manutenzione(Prodotto prodotto) {
+		super(
+			prodotto.getNome(),
+			prodotto.getIAP(),
+			prodotto.getSerialNumber(),
+			prodotto.getTipo(),
+			prodotto.getMarca(),
+			prodotto.getUtente(),
+			prodotto.getScadenza(),
+			prodotto.getCosto(),
+			prodotto.getTipoPossesso()
+		);
+	}
+	
+	
 	public String getManutenzione() {
 		return manutenzione;
 	}
@@ -41,14 +55,15 @@ public class Manutenzione extends Prodotto{
 		return this.getNome() + "," 
 		+ this.getIAP() + ","
 		+ this.getSerialNumber() + ","
+		+ this.getTipo() + ","
 		+ this.getMarca() + ","
 		+ ((this.getUtente() != null) ? this.getUtente().getMatricola(): "null") + ","
 		+ this.getScadenza() + ","
 		+ this.getCosto() + ","
-		+ this.getTipo() + ","
+		+ this.getTipoPossesso() + ","
 		+ manutenzione + ","
 		+ statoRichiesta + ","
-		+ this.getUrl() + ","
+		+ "null,"
 		+ "null";
 	}
 	
