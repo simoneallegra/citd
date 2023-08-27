@@ -366,7 +366,7 @@ public class CITD{
 			        Calendar calendar = Calendar.getInstance();
 			        calendar.setTime(dataOggi);
 			        // Sottrai un mese
-			        calendar.add(Calendar.MONTH, -1);			        
+			        calendar.add(Calendar.MONTH, 1);			        
 			        Date data = calendar.getTime();
 			        risultato = scad.compareTo(data);
 			        if(risultato<0)
