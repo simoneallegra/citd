@@ -9,7 +9,6 @@ public class ProdottoBuilder {
 	private String _scadenza = "null";
 	private int _costo = 0;
 	private String _tipoPossesso = "acquisto";
-	private String _url = "null";
 
 	public ProdottoBuilder(){}
 
@@ -60,11 +59,6 @@ public class ProdottoBuilder {
 
 	public ProdottoBuilder tipoPossesso(String _tipoPossesso){
 		this._tipoPossesso = _tipoPossesso;
-		return this;
-	}
-
-	public ProdottoBuilder url(String _url){
-		this._url = _url;
 		return this;
 	}
 

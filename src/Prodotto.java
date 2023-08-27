@@ -17,10 +17,7 @@ public class Prodotto {
 	private int costo; //indica il costo mensile
 
 	private String tipoPossesso;
-
-	private String stato;
 	
-	//private String url;//per le licenze software
 
 	/**
 	 *  
@@ -37,7 +34,7 @@ public class Prodotto {
 		this.tipoPossesso = tipoPossesso;
 		//this.url = url;
 	}
-
+	
 	public String getNome() {
 		return nome;
 	}
@@ -77,10 +74,6 @@ public class Prodotto {
 		return tipoPossesso;
 	}
 
-	/*public String getUrl() {
-		return url;
-	}*/
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -116,10 +109,6 @@ public class Prodotto {
 	public void setTipoPossesso(String tipoPossesso) {
 		 this.tipoPossesso = tipoPossesso;
 	}
-
-	/*public void setUrl(String url) {
-		this.url = url;
-	}*/
 
 	public String toString(){
 		return nome+","+IAP+","+serial_number+","+tipo+","+marca+","+((utente != null) ? utente.getMatricola(): "null")

@@ -617,7 +617,7 @@ public class App {
 											&& !typeProdField.getText().equalsIgnoreCase("")&& !costProductField.getText().equalsIgnoreCase("")){
 											//&& !dateProductField.getText().equalsIgnoreCase("")	&& !linkProductField.getText().equalsIgnoreCase("")
 										String iap = utility.getIapProduct(citd.getListaProdotti()); 		
-										citd.aggiungiProdotto(addProductField.getText(), iap,serialNumberProductField.getText(), typeProductField.getText(),brandProductField.getText(),typeProdField.getText(),Integer.valueOf(costProductField.getText()),dateProductField.getText(),linkProductField.getText());
+										citd.aggiungiProdotto(addProductField.getText(), iap,serialNumberProductField.getText(), typeProductField.getText(),brandProductField.getText(),null, typeProdField.getText(),Integer.valueOf(costProductField.getText()),dateProductField.getText(),linkProductField.getText());
 
 										cl.show(mainPanel, "productSetupPanel");
 									}
@@ -1046,6 +1046,7 @@ public class App {
 							renewalLicensePanel.add(backBtn);
 							String colonna[]={"NOME","IAP","SERIAL NUMBER", "MARCA", "UTENTE", "SCADENZA"};
 							String data[][]=utility.listToMatrixString(citd.getListaAbbonamenti());
+							data = citd.reduceLicenseObject(data); 
 							jtProduct = new JTable(data,colonna);
 							renewalLicensePanel.add(new JScrollPane(jtProduct));
 							jtProduct.addMouseListener(new MouseAdapter() {
@@ -1121,7 +1122,7 @@ public class App {
 						}
 					});
 
-
+					//richiesta di manutenzione
 					careRequestBtn.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 

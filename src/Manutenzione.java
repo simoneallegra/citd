@@ -19,21 +19,6 @@ public class Manutenzione extends Prodotto{
 		this.manutenzione = manutenzione;
 		this.statoRichiesta = statoRichiesta;
 	}
-
-	public Manutenzione(Prodotto prodotto) {
-		super(
-			prodotto.getNome(),
-			prodotto.getIAP(),
-			prodotto.getSerialNumber(),
-			prodotto.getTipo(),
-			prodotto.getMarca(),
-			prodotto.getUtente(),
-			prodotto.getScadenza(),
-			prodotto.getCosto(),
-			prodotto.getTipoPossesso()
-		);
-	}
-	
 	
 	public String getManutenzione() {
 		return manutenzione;

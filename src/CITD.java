@@ -3,6 +3,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -109,54 +110,33 @@ public class CITD{
 		System.out.println("Prodotto non trovato");
 		return null;
 	}
-
-	public void aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca) {
-
-		Prodotto newProdotto = new ProdottoBuilder()
-									.nome(nome)
-									.iap(iap)
-									.serial_number(serial_number)
-									.tipo(tipo)
-									.marca(marca)
-									.buildProdotto();
-		
-		listaProdotti.add(newProdotto);
-	}
-	
-	public void aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca, String tipoPossesso, int costo, String scadenza, String url) {
-		//manca utente, di default null
-		Prodotto newProdotto = new ProdottoBuilder()
-									.nome(nome)
-									.iap(iap)
-									.serial_number(serial_number)
-									.tipo(tipo)
-									.marca(marca)
-									.tipoPossesso(tipoPossesso)
-									.costo(costo)
-									.scadenza(scadenza)
-									.url(url)
-									.buildProdotto();
-		
-		listaProdotti.add(newProdotto);
-	}
 	
 	public void aggiungiProdotto(String nome, String iap, String serial_number, String tipo, String marca, Utente utente, String tipoPossesso, int costo, String scadenza, String url) {
 		//manca utente, di default null
-		Prodotto newProdotto = new ProdottoBuilder()
-									.nome(nome)
-									.iap(iap)
-									.serial_number(serial_number)
-									.tipo(tipo)
-									.marca(marca)
-									.utente(utente)
-									.tipoPossesso(tipoPossesso)
-									.costo(costo)
-									.scadenza(scadenza)
-									.url(url)
-									.buildProdotto();
+		if((url.equalsIgnoreCase("")|| url.equalsIgnoreCase("null")) && !tipoPossesso.equalsIgnoreCase("noleggio")) {
+			Prodotto newProdotto = new ProdottoBuilder()
+					.nome(nome)
+					.iap(iap)
+					.serial_number(serial_number)
+					.tipo(tipo)
+					.marca(marca)
+					.utente(utente)
+					.tipoPossesso(tipoPossesso)
+					.costo(costo)
+					.scadenza(scadenza)
+					.buildProdotto();	
+			listaProdotti.add(newProdotto);
+		}else if ((url.equalsIgnoreCase("") || url.equalsIgnoreCase("null")) && tipoPossesso.equalsIgnoreCase("noleggio")) {
+			Noleggio newProdotto = new Noleggio(new Prodotto(nome, iap, serial_number, tipo, marca, null, scadenza, costo, tipoPossesso), "null");
+			listaProdotti.add(newProdotto);
+		}else if (!url.equalsIgnoreCase("") && !url.equalsIgnoreCase("null")) {
+			Abbonamento newProdotto = new Abbonamento(new Prodotto(nome, iap, serial_number, tipo, marca, null, scadenza, costo, tipoPossesso), url);
+			listaProdotti.add(newProdotto);
+		}
 		
-		listaProdotti.add(newProdotto);
+		
 	}
+	
 	
 	
 	public void eliminaProdotto(String iap) {
@@ -305,20 +285,15 @@ public class CITD{
 	
 	
 	
-	public String[][] reduceObject (String data[][], ArrayList<String> campi){
-		String[][] dataFiltered = new String[data.length][campi.size()];
+	public String[][] reduceLicenseObject (String data[][]){
+		String[][] dataFiltered = new String[data.length][6];
 		for (int i = 0; i<data.length; i++) {
-			/*dataFiltered[i][0] = data[i][0]; //nome
+			dataFiltered[i][0] = data[i][0]; //nome
 			dataFiltered[i][1] = data[i][1]; //IAP
-			if(data[i][9].equalsIgnoreCase("null")) {
-				dataFiltered[i][2] = "funzionante";
-				dataFiltered[i][3] = "-";
-			}else {
-				dataFiltered[i][2] = data[i][9]; //tipo prodotto
-				dataFiltered[i][3] = data[i][10]; //stato	
-			}*/
-			
-			
+			dataFiltered[i][2] = data[i][2]; //serial number
+			dataFiltered[i][3] = data[i][4]; //marca	
+			dataFiltered[i][4] = data[i][5]; //utente
+			dataFiltered[i][5] = data[i][6]; //scadenza	
 		}
 		return dataFiltered;
 		
@@ -388,9 +363,14 @@ public class CITD{
 			            e.printStackTrace();
 			        }
 			        Date dataOggi = new Date();
-			        risultato = scad.compareTo(dataOggi);
+			        Calendar calendar = Calendar.getInstance();
+			        calendar.setTime(dataOggi);
+			        // Sottrai un mese
+			        calendar.add(Calendar.MONTH, -1);			        
+			        Date data = calendar.getTime();
+			        risultato = scad.compareTo(data);
 			        if(risultato<0)
-			        	//se risultato è minore di 0, la scadenza è precedente alla data di oggi
+			        	//se risultato è minore di 0, la scadenza è precedente alla data di un mese fa
 			        	listaAbbonamenti.add((Abbonamento)prodotto);
 			}
 		}

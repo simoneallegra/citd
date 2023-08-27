@@ -59,26 +59,20 @@ public class Noleggio extends Prodotto{
 		this.documentoNoleggio = newName;
 	}
 	
-	public int giorniRimanenti(){
+	/*public int giorniRimanenti(){
 		
 		// String [] splStrings =  scadenza.split("/");
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy", Locale.getDefault());
 			Date dateScadenza = formatter.parse(this.getScadenza());
-			Date today = new Date();
-
+			Date today = new Date();	
 			long diffInMillies = dateScadenza.getTime() - today.getTime();
-
 			return (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
-
 		return 0;
-
-	}
+	}*/
 
 	public int openDocumentoNoleggio() throws IOException{
 		System.out.println("openDocument");
