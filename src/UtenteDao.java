@@ -7,15 +7,17 @@ import java.util.List;
 public class UtenteDao{
 
 	private List<Utente> utenti;
+	private String db_path;
 	
-	public UtenteDao(){
+	public UtenteDao(String db_path){
 		utenti = new ArrayList<>();
+		this.db_path = db_path;
 	}
 
 	
 	public List<Utente> get(){
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_users.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(db_path));
 			String s = "";
 			while((s = br.readLine()) != null){
 				String data[] = new String[6];
@@ -34,7 +36,7 @@ public class UtenteDao{
 
 
 		try {
-			PrintWriter writer = new PrintWriter("./database/db_users.txt");
+			PrintWriter writer = new PrintWriter(db_path);
 			
 			String fields = "";
 			for(Utente utente : newUtenti){

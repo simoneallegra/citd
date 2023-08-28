@@ -7,15 +7,17 @@ import java.util.List;
 public class RichiestaProdottoDao{
 
 	private List<RichiestaProdotto> richieste;
+	private String db_path;
 	
-	public RichiestaProdottoDao(){
+	public RichiestaProdottoDao(String db_path){
 		richieste = new ArrayList<>();
+		this.db_path = db_path;
 	}
 
 	
 	public List<RichiestaProdotto> get(){
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_request_newproduct.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(db_path));
 			String s = "";
 			while((s = br.readLine()) != null){
 				String data[] = new String[7];
@@ -32,7 +34,7 @@ public class RichiestaProdottoDao{
 	public void set(List<RichiestaProdotto> newUtenti) {
 
 		try {
-			PrintWriter writer = new PrintWriter("./database/db_request_newproduct.txt");
+			PrintWriter writer = new PrintWriter(db_path);
 			
 			String fields = "";
 			for(RichiestaProdotto richiesta : richieste){

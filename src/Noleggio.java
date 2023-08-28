@@ -33,9 +33,9 @@ public class Noleggio extends Prodotto{
 		return documentoNoleggio;
 	}
 
-	public void setDocumentoNoleggio(String filePath) throws IOException{
+	public void setDocumentoNoleggio(String filePath, String endFilePath) throws IOException{
 
-		File saveDirectory = new File("./Documents");
+		File saveDirectory = new File(endFilePath);
 
 		FileInputStream fileInput = new FileInputStream(filePath);
 
@@ -59,7 +59,7 @@ public class Noleggio extends Prodotto{
 		this.documentoNoleggio = newName;
 	}
 	
-	/*public int giorniRimanenti(){
+	public int giorniRimanenti(){
 		
 		// String [] splStrings =  scadenza.split("/");
 		try {
@@ -72,7 +72,7 @@ public class Noleggio extends Prodotto{
 			e.printStackTrace();
 		}
 		return 0;
-	}*/
+	}
 
 	public int openDocumentoNoleggio() throws IOException{
 		System.out.println("openDocument");

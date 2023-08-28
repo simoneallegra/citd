@@ -8,17 +8,19 @@ public class ProdottoDao{
 
 	private List<Prodotto> prodotti;
 	private List<Utente> utenti;
+	private String db_path;
 
-	public ProdottoDao(List<Utente> listaUtenti){
+	public ProdottoDao(List<Utente> listaUtenti, String db_path){
 		prodotti = new ArrayList<>();
 		this.utenti = listaUtenti;
+		this.db_path = db_path;
 	}
 
 
 	
 	public List<Prodotto> get(){
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("./database/db_products.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(db_path));
 			String s = "";
 			while((s = br.readLine()) != null){
 				String data[] = new String[12];
@@ -51,7 +53,7 @@ public class ProdottoDao{
 
 
 		try {
-			PrintWriter writer = new PrintWriter("./database/db_products.txt");
+			PrintWriter writer = new PrintWriter(db_path);
 			
 			String fields = "";
 			for(Prodotto prodotto : newProdotti){

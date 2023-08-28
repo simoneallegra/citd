@@ -27,20 +27,20 @@ public class CITD{
 	
 	private Noleggio noleggio;
 
-	public CITD(){
+	public CITD(String utenteDBPath, String prodottoDBPath, String richiestaDBPath, String richiestaProdottoDBPath){
 		
 		utility = new Utils();
 
-		utenteDao = new UtenteDao();
+		utenteDao = new UtenteDao(utenteDBPath);
 		listaUtenti = utenteDao.get();
 
-		prodottoDao = new ProdottoDao(listaUtenti);
+		prodottoDao = new ProdottoDao(listaUtenti, prodottoDBPath);
 		listaProdotti = prodottoDao.get();
 
-		richiestaDao = new RichiestaDao();
+		richiestaDao = new RichiestaDao(richiestaDBPath);
 		listaRichieste = richiestaDao.get();
 		
-		richiestaProdottoDao = new RichiestaProdottoDao();
+		richiestaProdottoDao = new RichiestaProdottoDao(richiestaProdottoDBPath);
 		listaRichiesteProdotto = richiestaProdottoDao.get();
 
 		// proiezioni = new Proiezioni();
@@ -50,7 +50,7 @@ public class CITD{
 	public List<Utente> getListaUtenti(){
 		return listaUtenti;
 	}
-	
+
 	public Utente Login(String matricola, String password) {
 		
 		for(Utente utente : listaUtenti)
@@ -60,7 +60,7 @@ public class CITD{
 		System.out.println("Credenziali non valide");
 		return null;
 	}
-	
+
 	public Utente getDetailsUtente(String matricola) {
 
 		for(Utente utente : listaUtenti)
@@ -142,7 +142,7 @@ public class CITD{
 	public void eliminaProdotto(String iap) {
 		listaProdotti.remove(getDetailsProdotto(iap));
 	}
-
+	
 	public void modificaProdotto(String oldIAP, String nome, String iap, String serial_number, String tipo, String marca){
 		Prodotto prodotto = getDetailsProdotto(oldIAP);
 		prodotto.setNome(nome);
@@ -193,6 +193,10 @@ public class CITD{
 		return dataFiltered;
 	}
 
+	public List<RichiestaProdotto> getAllRichiesteProdotto(){
+		return listaRichiesteProdotto;
+	}
+
 	public Richiesta getRichiesta(String iap){
 		for(Richiesta richiesta : listaRichieste)
 			if(richiesta.getIAP().equalsIgnoreCase(iap))
@@ -215,7 +219,7 @@ public class CITD{
 			}
 		}
 	}
-	
+
 	public void deleteMaintenanceRequest(String iap) {
 		try {
 			for(Richiesta req: listaRichieste) {
@@ -223,7 +227,7 @@ public class CITD{
 					listaRichieste.remove(req);
 			}			
 		}catch(Exception e) {
-			
+			System.out.println(e);
 		}
 	}
 
@@ -331,12 +335,11 @@ public class CITD{
 			return richiesteUtente;
 		}
 	}
-	
+
 	public void aggiungiRichiestaNuovoProdotto(String iap,String nome, String tipo, String marca, String motivo, String utente) {
 		RichiestaProdotto reqProd = new RichiestaProdotto(iap, utente, nome, tipo, marca, motivo);
 		listaRichiesteProdotto.add(reqProd);
 	}
-	
 	
 	public void deleteNewProductRequest(String iap) {
 		try {
