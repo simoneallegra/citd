@@ -843,9 +843,8 @@ public class App {
 																					if (!arrayString[0].equalsIgnoreCase("")){
 																						assignBtn.addActionListener(new ActionListener() {
 																							public void actionPerformed(ActionEvent arg0) {
-
-																								prod.setUtente(citd.getDetailsUtente(arrayString[0]));
-
+																								
+																								citd.assegnaUtente(prod, arrayString[0]);
 																								cl.show(mainPanel, "viewProductPanel");
 																							}});
 																					}
@@ -1491,7 +1490,7 @@ public class App {
 										updateRentBtn.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent arg0) {
 												if(newScadenzaField.getText() != "")
-													citd.getNoleggio(valueInCell).setScadenza(newScadenzaField.getText());
+													citd.setScadenza(valueInCell, newScadenzaField.getText());
 
 												String data[][] = citd.getTableNoleggi();
 												String colonna[]={"NOME","IAP","SCADENZA TRA"};
@@ -1503,13 +1502,7 @@ public class App {
 										openFileBtn.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent arg0) {
 												System.out.println("open documento button");
-												try {
-													citd.getNoleggio(valueInCell).openDocumentoNoleggio();
-													openFileBtn.removeActionListener(this);
-
-												} catch (IOException e) {
-													e.printStackTrace();
-												}
+												citd.apriDocumento(valueInCell);
 											}
 										});
 
@@ -1518,11 +1511,7 @@ public class App {
 												JFileChooser fileChooser = new JFileChooser();
 												int response = fileChooser.showSaveDialog(null);
 												if(response == JFileChooser.APPROVE_OPTION){
-													try {
-														citd.getNoleggio(valueInCell).setDocumentoNoleggio(fileChooser.getSelectedFile().getAbsolutePath(), "./documents");
-													} catch (IOException e) {
-														e.printStackTrace();
-													}
+													citd.aggiornaDocumento(valueInCell, fileChooser.getSelectedFile().getAbsolutePath(), "./documents");
 												}
 											}
 										});

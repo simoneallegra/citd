@@ -237,6 +237,24 @@ public class CITDTest{
     }
 
     @Test
+    public void testAssegnaUtente(){
+        CITD citd = new CITD(
+            "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
+            "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
+            "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
+            "C:\\Users\\simon\\citd\\citd\\database\\db_request_newproduct.txt"
+        );
+
+        citd.aggiungiProdotto("Nome", "IAP", "SN", "Tipo", "Marca",null,"acquisto", 10, "01/01/2024","");
+        Utente utente = new Utente("matricola", "password", "nome", "cognome", "email", false);
+        citd.inserisciNuovoUtente(utente);
+
+        citd.assegnaUtente(citd.getDetailsProdotto("IAP"), "matricola");
+
+        assertEquals("Utente", true, citd.getDetailsProdotto("IAP").getUtente().getMatricola() == "matricola");
+    }
+
+    @Test
     public void testAggiungiRichiestaNuovoProdotto(){
         CITD citd = new CITD(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",

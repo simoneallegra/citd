@@ -151,6 +151,10 @@ public class CITD{
 		prodotto.setTipo(tipo);
 		prodotto.setMarca(marca);
 	}
+
+	public void assegnaUtente(Prodotto prodotto, String matricola){
+		prodotto.setUtente(this.getDetailsUtente(matricola));
+	}
 	
 
 	public String[][] getProiezioni(String possesso, String tipo, String costoMin,String costoMax, String impiegatoAssegnato, String date, String cadenza ) throws IOException, NumberFormatException{
@@ -188,7 +192,11 @@ public class CITD{
 		for (int i = 0; i<data.length; i++) {
 			dataFiltered[i][0] = data[i][0]; //nome
 			dataFiltered[i][1] = data[i][1]; //IAP
-			dataFiltered[i][2] = data[i][6]; //scadenza
+			// dataFiltered[i][2] = data[i][6];
+			if(data[i][6] != "")
+				dataFiltered[i][2] = (String) utility.giorniRimanenti(data[i][6]) + " giorni"; //scadenza
+			else
+				dataFiltered[i][2] = null;
 		}
 		return dataFiltered;
 	}
@@ -204,12 +212,35 @@ public class CITD{
 		return null;
 	}
 
+	// ----- Noleggio -------
+
 	public Noleggio getNoleggio(String iap){
 		for(Noleggio noleggio : getListaNoleggi())
 			if(noleggio.getIAP().equalsIgnoreCase(iap))
 				return noleggio;
 		return null;
 	}
+
+	public void setScadenza(String iap, String newScadenza){
+		this.getNoleggio(iap).setScadenza(newScadenza);
+	}
+
+	public void apriDocumento(String iap){
+		try {
+			this.getNoleggio(iap).openDocumentoNoleggio();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void aggiornaDocumento(String iap, String path, String endPath){
+		try {
+			this.getNoleggio(iap).setDocumentoNoleggio(path, endPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	// ------------------------
 	
 	public void setManutenzione(String iap, String stato){
 		for(Prodotto prodotto : listaProdotti) {

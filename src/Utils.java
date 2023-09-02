@@ -5,7 +5,12 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
@@ -87,6 +92,21 @@ public class Utils {
 			IAP = "CITD0" + IAP; 
 		}
 		return IAP;
+	}
+
+	public String giorniRimanenti(String data){
+		
+		// String [] splStrings =  scadenza.split("/");
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy", Locale.getDefault());
+			Date dateScadenza = formatter.parse(data);
+			Date today = new Date();	
+			long diffInMillies = dateScadenza.getTime() - today.getTime();
+			return "" + TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	
