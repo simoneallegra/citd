@@ -3,3 +3,4 @@ CITD002,pippo,cuffie,hardware,LG,servono programmi mela,approvata
 CITD003,pippo,tastiera,hardware,lg,non ergonomica,rifiutata
 CITD004,pippo,schermo,hardware,LG,guardare meglio,In attesa di approvazione
 CITD005,pippo,schermo,hardware,Samsung,schermo piatto,rifiutata
+CITD006,pippo,mouse,ergonomico,logitech,upgrade postazione lavorativa,approvata

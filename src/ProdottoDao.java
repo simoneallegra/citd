@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class ProdottoDao{
 					prodotti.add(nuovoProdotto);
 			}
 			br.close();
-		}catch(Exception e) {
+		}catch(IOException  e) {
 			System.out.println(e.getMessage());
 		}
 		
@@ -76,7 +78,7 @@ public class ProdottoDao{
 			writer.print(fields);
 			writer.close();
 			
-		}catch(Exception e) {
+		}catch(FileNotFoundException  e) {
 			System.out.println(e.getMessage());
 		}
 	}

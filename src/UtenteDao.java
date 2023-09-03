@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class UtenteDao{
 				utenti.add(new Utente(data[0], data[1], data[2], data[3], data[4], Boolean.valueOf(data[5])));
 			}
 			br.close();
-		}catch(Exception e) {
+		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}
 		
@@ -52,7 +54,7 @@ public class UtenteDao{
 			writer.print(fields);
 			writer.close();
 			
-		}catch(Exception e) {
+		}catch(FileNotFoundException  e) {
 			System.out.println(e.getMessage());
 		}
 	}

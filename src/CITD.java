@@ -28,7 +28,18 @@ public class CITD{
 	
 	private Noleggio noleggio;
 
-	public CITD(String utenteDBPath, String prodottoDBPath, String richiestaDBPath, String richiestaProdottoDBPath){
+	// Unica istanza della classe
+    private static CITD instance = null; 
+ 
+    public static CITD getInstance() {
+        // Crea l'oggetto solo se NON esiste:
+        if (instance == null) {
+            instance = new CITD("./database/db_users.txt","./database/db_products.txt","./database/db_requests.txt","./database/db_request_newproduct.txt");
+        }
+        return instance;
+    }
+
+	private CITD(String utenteDBPath, String prodottoDBPath, String richiestaDBPath, String richiestaProdottoDBPath){
 		
 		utility = new Utils();
 
@@ -253,14 +264,10 @@ public class CITD{
 	}
 
 	public void deleteMaintenanceRequest(String iap) {
-		try {
-			for(Richiesta req: listaRichieste) {
-				if(req.getIAP().equalsIgnoreCase(iap))
-					listaRichieste.remove(req);
-			}			
-		}catch(Exception e) {
-			System.out.println(e);
-		}
+		for(Richiesta req: listaRichieste) {
+			if(req.getIAP().equalsIgnoreCase(iap))
+				listaRichieste.remove(req);
+		}			
 	}
 
 	public String[][] getCareRequest(String iap){

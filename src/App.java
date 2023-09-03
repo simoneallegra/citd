@@ -65,7 +65,7 @@ public class App {
 		frame.setBounds(600,300,980,720);
 		frame.setLocationRelativeTo(null);
 
-		//frame.setResizable(false);
+		frame.setResizable(false);
 		loginPanel = new JPanel();
 		loginPanel.setLayout(null);
 
@@ -92,7 +92,7 @@ public class App {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(matricolaField.getText() +" "+ passwordField.getText());
 
-				citd = new CITD("./database/db_users.txt","./database/db_products.txt","./database/db_requests.txt","./database/db_request_newproduct.txt");
+				citd = CITD.getInstance();
 
 				frame.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent e) {

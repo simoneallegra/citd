@@ -1,11 +1,11 @@
 api,CITD001,SN0564,software,Google,,5/9/2023,50,abbonamento,null,null,https://cloud.google.com/apis,null
 schermo,CITD002,SN0564,hardware,DELL,thasup,01/01/2100,111,noleggio,null,null,null,521.pdf
-mouse,CITD003,SN0564,hardware,LG,pippo,30/12/2023,23,noleggio,null,null,null,null
+mouse,CITD003,SN0564,hardware,LG,pippo,23/08/2025,23,noleggio,null,null,null,null
 astah,CITD004,SN1593,software,Astah,pippo,30/07/2023,520,abbonamento,null,null,https://astah.net/,null
 pc,CITD005,SN0564,hardware,Samsung,ciao,null,45,acquisto,null,null,null,null
 cuffie,CITD006,SN5875,hardware,sony,,null,0,acquisto,null,null,null,null
 cuffie,CITD007,SN760,hardware,LG,pippo,null,10,acquisto,manutenzione,In lavorazione,null,null
-schermo,CITD008,SN571,hardware,Samsung,,null,0,acquisto,null,null,null,null
+schermo,CITD008,SN571,hardware,Samsung,pippo,null,0,acquisto,null,null,null,null
 tavolo,CITD009,SN0789,hardware,Ikea,,null,0,acquisto,null,null,null,null
 sedia,CITD010,SN7845,hardware,Ikea,pippo,,15,acquisto,manutenzione,approvata,null,null
 office,CITD011,SN4580,software,Office,,24/09/2023,25,abbonamento,null,null,https://astah.net/,null
@@ -15,3 +15,4 @@ computer,CITD014,SN8426,hardware,Apple,,,1223,acquisto,null,null,null,null
 proiettore,CITD015,SN7412,hardware,LG,,,10,noleggio,null,null,null,null
 photoshop,CITD016,sn1111,software,Adobe,,11/1/2023,11,abbonamento,null,null,https://www.adobe.com/it/products/photoshop/landpb.html,null
 schermo,CITD017,SN783,hardware,Samsung,pippo,null,850,acquisto,null,null,null,null
+mouse,CITD018,SN403,ergonomico,logitech,,03/09/2026,35,abbonamento,null,null,aaa,null
