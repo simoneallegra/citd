@@ -69,6 +69,12 @@ public class App {
 		loginPanel = new JPanel();
 		loginPanel.setLayout(null);
 
+		JLabel logo_citd = new JLabel(); 
+        logo_citd.setIcon(new ImageIcon("./documents/logo_citd")); 
+        Dimension size = logo_citd.getPreferredSize(); 
+        logo_citd.setBounds(200, 70, size.width, size.height); 
+		loginPanel.add(logo_citd);
+
 		matricolaLabel = new JLabel("matricola");
 		matricolaLabel.setBounds(350, 250, 70, 15);
 		loginPanel.add(matricolaLabel);
@@ -122,6 +128,13 @@ public class App {
 	private void home(Utente utente){
 		try {
 			homePanel = new JPanel();
+
+			homePanel.setLayout(null);
+			JLabel logo_citd = new JLabel(); 
+			logo_citd.setIcon(new ImageIcon("./documents/logo_citd")); 
+			Dimension size = logo_citd.getPreferredSize(); 
+			logo_citd.setBounds(200, 200, size.width, size.height); 
+			homePanel.add(logo_citd);
 
 			homeBar = new JMenuBar();
 			frame.setJMenuBar(homeBar);
