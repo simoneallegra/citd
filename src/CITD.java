@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 
@@ -203,8 +204,8 @@ public class CITD{
 
 	public List<RichiestaProdotto> getAllRichiesteProdotto(){
 		return listaRichiesteProdotto;
-	}
-
+	}	
+	
 	public Richiesta getRichiesta(String iap){
 		for(Richiesta richiesta : listaRichieste)
 			if(richiesta.getIAP().equalsIgnoreCase(iap))
@@ -370,19 +371,7 @@ public class CITD{
 	public void aggiungiRichiestaNuovoProdotto(String iap,String nome, String tipo, String marca, String motivo, String utente) {
 		RichiestaProdotto reqProd = new RichiestaProdotto(iap, utente, nome, tipo, marca, motivo);
 		listaRichiesteProdotto.add(reqProd);
-	}
-	
-	public void deleteNewProductRequest(String iap) {
-		try {
-			for(RichiestaProdotto req: listaRichiesteProdotto) {
-				if(req.getIap().equalsIgnoreCase(iap))
-					listaRichiesteProdotto.remove(req);
-			}			
-		}catch(Exception e) {
-			
-		}
-	}
-	
+	}	
 	
 	public List<Abbonamento> getListaAbbonamenti(){
 		List<Abbonamento> listaAbbonamenti = new ArrayList<>();
@@ -419,5 +408,29 @@ public class CITD{
 		}
 		return null;
 	}
+	public RichiestaProdotto getDetailsRichiestaProdotto(String iap){
+		for(RichiestaProdotto richiesta : listaRichiesteProdotto)
+			if(richiesta.getIap().equalsIgnoreCase(iap))
+				return richiesta;
+		return null;
+	}
+
+	public void approvaRichiesta(String iapRequest, String tipoPossesso, String costo, String scadenza, String url ) {
+		RichiestaProdotto req = getDetailsRichiestaProdotto(iapRequest);
+		Utente utente= getDetailsUtente(req.getUtente());
+		String iapProduct = utility.getIapProduct(getListaProdotti());
+		Random random = new Random();
+		// Genera un numero casuale compreso tra 0 e 999
+		int randomNumber = random.nextInt(1000);
+		String serial_number="SN" + randomNumber;
+		aggiungiProdotto(req.getNomeProdotto(),iapProduct, serial_number, req.getTipo(), req.getMarca(),utente, tipoPossesso,Integer.valueOf(costo),scadenza,url);
+		req.setStato("approvata");
+	}
 	
+	public void rifiutaRichiesta(String iapRequest) {
+		RichiestaProdotto req = getDetailsRichiestaProdotto(iapRequest);
+		req.setStato("rifiutata");
+	}
+
+
 }

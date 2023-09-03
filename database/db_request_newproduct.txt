@@ -1,5 +1,5 @@
 CITD001,pippo,pc,hardware,Apple,servono programmi apple,approvata
 CITD002,pippo,cuffie,hardware,LG,servono programmi mela,approvata
 CITD003,pippo,tastiera,hardware,lg,non ergonomica,rifiutata
-CITD001,pippo,caricatore,hardware,DELL,il vecchio è rotto,approvata
-CITD004,pippo,cuffie,hardware,Bosch,mi servono,rifiutata
+CITD004,pippo,schermo,hardware,LG,guardare meglio,In attesa di approvazione
+CITD005,pippo,schermo,hardware,Samsung,schermo piatto,rifiutata

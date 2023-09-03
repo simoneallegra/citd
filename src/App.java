@@ -1293,9 +1293,7 @@ public class App {
 							try {
 								String data[][] = null;
 								data = utility.listToMatrixString(citd.getListaRichiestaNuovoProdotto(userLogged.getIsSuperuser(), userLogged.getMatricola()));
-								System.out.println(data);
 								if(data != null) {
-									//String colonna[]={"NOME","TIPO","MARCA","DETTAGLI", "STATO MANUTENZIONE"};
 									String colonna[]={"IAP","UTENTE","NOME","TIPO","MARCA","DETTAGLI","STATO RICHIESTA"};
 									jtProduct = new JTable(data,colonna);
 									madeRequestPanel.add(new JScrollPane(jtProduct));
@@ -1336,7 +1334,7 @@ public class App {
 											final int row = jTable.getSelectedRow();			                
 											valueInCell = (String)jTable.getValueAt(row, 0);
 											String stato = (String)jTable.getValueAt(row, 6);
-											final List<RichiestaProdotto> richieste = citd.getListaRichiestaNuovoProdotto(userLogged.getIsSuperuser(), userLogged.getMatricola());
+											//final List<RichiestaProdotto> richieste = citd.getListaRichiestaNuovoProdotto(userLogged.getIsSuperuser(), userLogged.getMatricola());
 											if(!valueInCell.equalsIgnoreCase("") && stato.equalsIgnoreCase("In attesa di approvazione")) {
 												acceptRequestBtn.addActionListener(new ActionListener() {
 													public void actionPerformed(ActionEvent arg0) {
@@ -1385,33 +1383,15 @@ public class App {
 														requestProductButton.setBounds(435, 370, 80, 20);
 														requestProductButton.addActionListener(new ActionListener() {
 															public void actionPerformed(ActionEvent arg0) {
-																//devo scrivere sul db relativo ai prodotti
-																//tutti i campi devono essere popolati
 																if(!typeProductField.getText().equalsIgnoreCase("") && !costProductField.getText().equalsIgnoreCase("") 
 																		&& !dateProductField.getText().equalsIgnoreCase("")	&& !linkProductField.getText().equalsIgnoreCase("") ){
-																	Random random = new Random();
-																	// Genera un numero casuale compreso tra 0 e 999
-																	int randomNumber = random.nextInt(1000);
-																	String serial_number="SN" + randomNumber;
-																	for(RichiestaProdotto req: richieste) {
-																		if(req.getIap().equalsIgnoreCase(valueInCell)) {
-																			List<Utente> utenti =citd.getListaUtenti();
-																			for (Utente utente: utenti) {
-																				if(utente.getMatricola().equalsIgnoreCase(req.getUtente())) {
-																					String iap = utility.getIapProduct(citd.getListaProdotti());
-																					citd.aggiungiProdotto(req.getNomeProdotto(),iap, serial_number, req.getTipo(), req.getMarca(),utente, typeProductField.getText(),Integer.valueOf(costProductField.getText()),dateProductField.getText(),linkProductField.getText());
-																					req.setStato("approvata");
-																					String result [][]=utility.listToMatrixString(citd.getListaRichiestaNuovoProdotto(userLogged.getIsSuperuser(), userLogged.getMatricola()));
-																					String colonna[]={"IAP","UTENTE","NOME","TIPO","MARCA","DETTAGLI","STATO RICHIESTA"};
-																					cl.show(mainPanel, "managementRequestPanel");
-																					Model table = new Model(result,colonna);
-																					jtProduct.setModel(table);
-																					((Model) jtProduct.getModel()).fireTableDataChanged();
-																				}
-																			}
-																		}
-																	}
-
+																	citd.approvaRichiesta(valueInCell,typeProductField.getText(),costProductField.getText(), dateProductField.getText(),linkProductField.getText());
+																	String result [][]=utility.listToMatrixString(citd.getListaRichiestaNuovoProdotto(userLogged.getIsSuperuser(), userLogged.getMatricola()));
+																	String colonna[]={"IAP","UTENTE","NOME","TIPO","MARCA","DETTAGLI","STATO RICHIESTA"};
+																	cl.show(mainPanel, "managementRequestPanel");
+																	Model table = new Model(result,colonna);
+																	jtProduct.setModel(table);
+																	((Model) jtProduct.getModel()).fireTableDataChanged();
 																}
 															}
 														});
@@ -1422,11 +1402,7 @@ public class App {
 												});
 												denyRequestBtn.addActionListener(new ActionListener() {
 													public void actionPerformed(ActionEvent arg0) {
-														for(RichiestaProdotto req: richieste) {
-															if(req.getIap().equalsIgnoreCase(valueInCell)) {
-																req.setStato("rifiutata");
-															}
-														}
+														citd.rifiutaRichiesta(valueInCell);
 														String result [][]=utility.listToMatrixString(citd.getListaRichiestaNuovoProdotto(userLogged.getIsSuperuser(), userLogged.getMatricola()));
 														String colonna[]={"IAP","UTENTE","NOME","TIPO","MARCA","DETTAGLI","STATO RICHIESTA"};
 														//cl.show(mainPanel, "managementRequestPanel");

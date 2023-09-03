@@ -14,3 +14,4 @@ caricatore,CITD013,SN518,hardware,DELL,pippo,null,5,acquisto,manutenzione,rifiut
 computer,CITD014,SN8426,hardware,Apple,,,1223,acquisto,null,null,null,null
 proiettore,CITD015,SN7412,hardware,LG,,,10,noleggio,null,null,null,null
 photoshop,CITD016,sn1111,software,Adobe,,11/1/2023,11,abbonamento,null,null,https://www.adobe.com/it/products/photoshop/landpb.html,null
+schermo,CITD017,SN783,hardware,Samsung,pippo,null,850,acquisto,null,null,null,null
