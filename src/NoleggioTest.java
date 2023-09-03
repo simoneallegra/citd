@@ -18,11 +18,11 @@ public class NoleggioTest {
         
         //Test noleggio scaduto
         noleggio.setScadenza("14/04/2023");
-        assertEquals("Prodotto Scaduto", false, noleggio.giorniRimanenti() > 0);
+        assertFalse("Prodotto Scaduto", noleggio.giorniRimanenti() > 0);
 
         //Test noleggio NON scaduto
         noleggio.setScadenza("14/04/2024");
-        assertEquals("Prodotto NON Scaduto", true, noleggio.giorniRimanenti() > 0);
+        assertTrue("Prodotto NON Scaduto", noleggio.giorniRimanenti() > 0);
     }
 
     @Test

@@ -3,6 +3,7 @@ import static org.junit.Assume.assumeNoException;
 
 import org.junit.Test;
 
+import java.beans.Transient;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class CITDTest{
 
         utente = new Utente("matricola", "password", "nome", "cognome", "email", false);
         citd.inserisciNuovoUtente(utente);
-        assertEquals("Utente aggiunto", true, citd.getListaUtenti().size() > size_before);
+        assertTrue("Utente aggiunto", citd.getListaUtenti().size() > size_before);
 
     }
 
@@ -83,7 +84,7 @@ public class CITDTest{
         citd.inserisciNuovoUtente(utente);
 
         citd.eliminaUtente("matricola");
-        assertEquals("Utente aggiunto ed eliminato", true, citd.getListaUtenti().size() == size_before);
+        assertTrue("Utente aggiunto ed eliminato", citd.getListaUtenti().size() == size_before);
 
     }
 
@@ -103,7 +104,7 @@ public class CITDTest{
         citd.inserisciNuovoUtente(utente);
 
         citd.updateUtente("matricola","matricola2", "password", "nome", "cognome", "email", false);
-        assertEquals("Matricola utente modificata", true, citd.getDetailsUtente("matricola2") != null);
+        assertTrue("Matricola utente modificata", citd.getDetailsUtente("matricola2") != null);
 
     }
 
@@ -141,15 +142,15 @@ public class CITDTest{
         int size_before = citd.getListaProdotti().size();
 
         citd.aggiungiProdotto("Nome", "IAP1", "SN", "Tipo", "Marca",null,"acquisto", 10, "01/01/2024","");
-        assertEquals("Prodotto Acquistato", true, citd.getDetailsProdotto("IAP1") instanceof Prodotto);
+        assertTrue("Prodotto Acquistato", citd.getDetailsProdotto("IAP1") instanceof Prodotto);
 
         citd.aggiungiProdotto("Nome", "IAP2", "SN", "Tipo", "Marca",null,"abbonamento", 10, "01/01/2024","678.pdf");
-        assertEquals("Prodotto in Abbonamento", true, citd.getDetailsProdotto("IAP2") instanceof Abbonamento);
+        assertTrue("Prodotto in Abbonamento", citd.getDetailsProdotto("IAP2") instanceof Abbonamento);
 
         citd.aggiungiProdotto("Nome", "IAP3", "SN", "Tipo", "Marca",null,"noleggio", 10, "01/01/2024","");
-        assertEquals("Prodotto Noleggiato", true, citd.getDetailsProdotto("IAP3") instanceof Noleggio);
+        assertTrue("Prodotto Noleggiato", citd.getDetailsProdotto("IAP3") instanceof Noleggio);
 
-        assertEquals("Prodotti aggiunti", true, citd.getListaProdotti().size() == size_before + 3);
+        assertTrue("Prodotti aggiunti", citd.getListaProdotti().size() == size_before + 3);
 
     }
 
@@ -168,7 +169,7 @@ public class CITDTest{
 
         citd.eliminaProdotto("IAP");
 
-        assertEquals("Prodotti aggiunto ed eliminato", true, citd.getListaProdotti().size() == size_before);
+        assertTrue("Prodotti aggiunto ed eliminato", citd.getListaProdotti().size() == size_before);
 
     }
 
@@ -202,7 +203,7 @@ public class CITDTest{
         citd.aggiungiProdotto("Nome", "IAP", "SN", "Tipo", "Marca",null,"acquisto", 10, "01/01/2024","");
         int size_before = citd.getListaManutenzione().size();
         citd.setManutenzione("IAP", "lavorazione");
-        assertEquals("Manutenzione attivata", true, citd.getListaManutenzione().size() > size_before);
+        assertTrue("Manutenzione attivata", citd.getListaManutenzione().size() > size_before);
     }
 
     @Test
@@ -218,7 +219,7 @@ public class CITDTest{
         
         citd.setProblemRequest("IAP", "problema");
         citd.deleteMaintenanceRequest("IAP");
-        assertEquals("Aggiunta e rimozione richiesta manutenzione", true, citd.getRichiesta("IAP") == null);
+        assertTrue("Aggiunta e rimozione richiesta manutenzione", citd.getRichiesta("IAP") == null);
     }
 
     @Test
@@ -233,7 +234,7 @@ public class CITDTest{
         String[][] stringa = citd.getUserProduct("IAP");
         System.out.println(stringa[0][0]);
         // assertEquals("Get utente-prodotto", true, stringa[0][0] == "nome");
-        assertEquals("Get utente-prodotto", true, stringa[0][0] != null);
+        assertTrue("Get utente-prodotto", stringa[0][0] != null);
     }
 
     @Test
@@ -251,7 +252,7 @@ public class CITDTest{
 
         citd.assegnaUtente(citd.getDetailsProdotto("IAP"), "matricola");
 
-        assertEquals("Utente", true, citd.getDetailsProdotto("IAP").getUtente().getMatricola() == "matricola");
+        assertTrue("Utente", citd.getDetailsProdotto("IAP").getUtente().getMatricola() == "matricola");
     }
 
     @Test
@@ -269,28 +270,25 @@ public class CITDTest{
         citd.aggiungiRichiestaNuovoProdotto("IAP", "nome", "tipo", "marca", "descrizione", utente.getNome());
         citd.getListaRichiestaNuovoProdotto(true, "matricola");
         
-        // assertEquals("Get utente-prodotto", true, stringa[0][0] == "nome");
-        assertEquals("Aggiungi richiesta prodotto", true, citd.getAllRichiesteProdotto().size() > size_before);
+        assertTrue("Aggiungi richiesta prodotto", citd.getAllRichiesteProdotto().size() > size_before);
     }
 
     @Test
-    public void testDeleteNewProductRequest(){
+    public void testApprovaRichiesta(){
         CITD citd = new CITD(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_request_newproduct.txt"
         );
-
-        int size_before = citd.getAllRichiesteProdotto().size();
-
-        Utente utente = new Utente("matricola", "password", "nome", "cognome", "email", false);
-        citd.aggiungiRichiestaNuovoProdotto("IAP", "nome", "tipo", "marca", "descrizione", utente.getNome());
-        citd.getListaRichiestaNuovoProdotto(true, "matricola");
         
-        assertEquals("Aggiungi richiesta prodotto", true, citd.getAllRichiesteProdotto().size() > size_before);
+        citd.aggiungiRichiestaNuovoProdotto("IAP_REQ", "nome", "tipo", "marca", "inutile", "matricola");
+        String status = citd.getDetailsRichiestaProdotto("IAP_REQ").getStato();
 
-        citd.deleteNewProductRequest("IAP");
-        assertEquals("Remove richiesta prodotto", true, citd.getAllRichiesteProdotto().size() == size_before);
+        citd.approvaRichiesta("IAP_REQ", "acquisto", "10", "21/12/2012", "null");
+        
+        assertTrue("approvato!", citd.getDetailsRichiestaProdotto("IAP_REQ").getStato() == "approvata");
+        
     }
+
 }
