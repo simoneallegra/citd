@@ -98,7 +98,7 @@ public class App {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(matricolaField.getText() +" "+ passwordField.getText());
 
-				citd = CITD.getInstance();
+				citd = CITD.getInstance("./database/db_users.txt","./database/db_products.txt","./database/db_requests.txt","./database/db_request_newproduct.txt");
 
 				frame.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent e) {

@@ -31,10 +31,10 @@ public class CITD{
 	// Unica istanza della classe
     private static CITD instance = null; 
  
-    public static CITD getInstance() {
+    public static CITD getInstance(String utenteDBPath, String prodottoDBPath, String richiestaDBPath, String richiestaProdottoDBPath) {
         // Crea l'oggetto solo se NON esiste:
         if (instance == null) {
-            instance = new CITD("./database/db_users.txt","./database/db_products.txt","./database/db_requests.txt","./database/db_request_newproduct.txt");
+            instance = new CITD(utenteDBPath,prodottoDBPath,richiestaDBPath,richiestaProdottoDBPath);
         }
         return instance;
     }
@@ -264,10 +264,15 @@ public class CITD{
 	}
 
 	public void deleteMaintenanceRequest(String iap) {
-		for(Richiesta req: listaRichieste) {
-			if(req.getIAP().equalsIgnoreCase(iap))
-				listaRichieste.remove(req);
-		}			
+		try {
+			for(Richiesta req: listaRichieste) {
+				if(req.getIAP().equalsIgnoreCase(iap))
+					listaRichieste.remove(req);
+			}	
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+				
 	}
 
 	public String[][] getCareRequest(String iap){

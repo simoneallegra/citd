@@ -16,7 +16,7 @@ public class CITDTest{
     public void testLogin(){
 
         Utente utente;
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -35,7 +35,7 @@ public class CITDTest{
     public void testGetDetailsUtente(){
     
         Utente utente;
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -54,7 +54,7 @@ public class CITDTest{
     public void testInserisciNuovoUtente(){
     
         Utente utente;
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -72,7 +72,7 @@ public class CITDTest{
     public void testEliminaUtente(){
     
         Utente utente;
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -92,7 +92,7 @@ public class CITDTest{
     public void testUpdateUtente(){
     
         Utente utente;
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -114,7 +114,7 @@ public class CITDTest{
     public void testGetDetailsProdotto(){
     
         Prodotto prodotto;
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -133,7 +133,7 @@ public class CITDTest{
     @Test
     public void testAggiungiProdotto(){
     
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -157,7 +157,7 @@ public class CITDTest{
     @Test
     public void testEliminaProdotto(){
     
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -176,7 +176,7 @@ public class CITDTest{
     @Test
     public void testModificaProdotto(){
     
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -194,7 +194,7 @@ public class CITDTest{
     @Test
     public void testSetManutenzione(){
     
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -209,7 +209,7 @@ public class CITDTest{
     @Test
     public void testDeleteMaintenanceRequest(){
     
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -224,7 +224,7 @@ public class CITDTest{
 
     @Test
     public void testGetUserProduct(){
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -239,7 +239,7 @@ public class CITDTest{
 
     @Test
     public void testAssegnaUtente(){
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -257,7 +257,7 @@ public class CITDTest{
 
     @Test
     public void testAggiungiRichiestaNuovoProdotto(){
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",
@@ -275,7 +275,7 @@ public class CITDTest{
 
     @Test
     public void testApprovaRichiesta(){
-        CITD citd = new CITD(
+        CITD citd = CITD.getInstance(
             "C:\\Users\\simon\\citd\\citd\\database\\db_users.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_products.txt",
             "C:\\Users\\simon\\citd\\citd\\database\\db_requests.txt",

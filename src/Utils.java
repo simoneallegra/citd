@@ -54,7 +54,11 @@ public class Utils {
 		for (Prodotto prodotto : lista) {
 			index = prodotto.getIAP().indexOf("D");
 			String substring = prodotto.getIAP().substring(index+1);
-			index= Integer.valueOf(substring);
+			try {
+				index= Integer.valueOf(substring);
+			} catch (NumberFormatException e) {
+				System.err.println(e);
+			}
 			if (index>maxIap) {
 				maxIap=index;
 			}
